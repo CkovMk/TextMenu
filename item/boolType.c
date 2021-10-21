@@ -1,5 +1,7 @@
 #include "boolType.h"
 
+
+
 #define SYSLOG_TAG  ("MENU.ITEM")
 #define SYSLOG_LVL  (TEXTMENU_ITEM_LOG_LVL)
 #include <inc_syslog.h>
@@ -17,6 +19,9 @@ const menu_itemAdapter_t menu_itemAdapter_boolType =
     .ItemPrintDisp = MENU_ItemPrintDisp_boolType,
     .ItemKeyOp = MENU_ItemKeyOp_boolType,
 };
+
+extern menu_itemIfce_t *menu_currItem;
+extern menu_list_t *menu_currList;
 
 void MENU_ItemConstruct_boolType(menu_itemIfce_t *_item, void *_data)
 {

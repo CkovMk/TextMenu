@@ -21,6 +21,9 @@ const menu_itemAdapter_t menu_itemAdapter_variType =
 const int32_t menu_itemAdjustLut[] =
 { 1, 10, 100, 1000, 10000, 100000 };
 
+extern menu_itemIfce_t *menu_currItem;
+extern menu_list_t *menu_currList;
+
 void MENU_ItemGetContent_variType(int32_t *const v, int32_t *const e, int32_t data)
 {
     *v = data;

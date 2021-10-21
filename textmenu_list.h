@@ -9,8 +9,6 @@
 #include "textmenu_core.h"
 #include "textmenu_item.h"
 
-//#include "item/menuType.h"
-
 /*************************************
  ************ 菜单列表结构体 **********
  *************************************/
@@ -21,6 +19,8 @@ struct _menu_list
     uint32_t disp_p, slct_p; /// 显示数组下标和选择数组下标。
     char nameStr[MENU_NAME_STR_SIZE]; /// 菜单列表名称字符串。
 };
+
+#include "item/menuType.h"
 
 /** 菜单列表结构体 前置定义 */
 typedef struct _menu_list menu_list_t;

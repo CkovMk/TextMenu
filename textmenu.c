@@ -42,6 +42,12 @@
  * 菜单定义
  */
 
+menu_list_t *menu_currList;             ///< 状态变量：指向当前所在的菜单列表。
+menu_itemIfce_t *menu_currItem;         ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
+menu_list_t *menu_menuRoot;             ///< 根菜单指针。
+menu_list_t *menu_manageList;           ///< 管理菜单指针。
+int32_t menu_currRegionNum[3] = { 0, 0, TEXTMENU_NVM_REGION_CNT - 1 };    ///< 当前局部存储区号
+int32_t menu_statusFlag;                ///< 状态标志位
 
 
 
@@ -222,10 +228,7 @@ menu_list_t *MENU_DirGetList(const char *str)
         return nullptr;
     }
     /** 环境准备 */
-    char *str_copy = new char[str_length + 1U];
-    // 退出时析构，自动释放内存
-    std::unique_ptr<char, void(*)(char*)>
-            bufferGuard(str_copy, [](char* p){ delete[] p; });
+    char *str_copy = (char*)malloc(str_length + 1U);
     strncpy(str_copy, str, str_length + 1U);
     char *pch = strtok(str_copy, "/");
     menu_list_t *currDirList = menu_menuRoot;
@@ -245,10 +248,12 @@ menu_list_t *MENU_DirGetList(const char *str)
         }
         if(false == isFound)
         {
-            return nullptr;
+            free(str_copy);
+            return NULL;
         }
         pch = strtok(nullptr, "/");
     }
+    free(str_copy);
     return currDirList;
 }
 

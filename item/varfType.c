@@ -21,6 +21,9 @@ const menu_itemAdapter_t menu_itemAdapter_varfType =
 const int32_t menu_itemAdjustLut[] =
 { 1, 10, 100, 1000, 10000, 100000 };
 
+extern menu_itemIfce_t *menu_currItem;
+extern menu_list_t *menu_currList;
+
 void MENU_ItemGetContent_varfType(int32_t *const v, int32_t *const e, float data)
 {
     *e = 0;

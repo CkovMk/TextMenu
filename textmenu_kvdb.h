@@ -9,8 +9,9 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "textmenu_core.h"
+//#include "textmenu_core.h"
 #include "textmenu_item.h"
+#include "textmenu_list.h"
 #include "textmenu_iter.h"
 /*!
  * @addtogroup menu_kvdb
