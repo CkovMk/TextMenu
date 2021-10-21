@@ -3,6 +3,7 @@
 
 #include "../textmenu_core.h"
 #include "../textmenu_item.h"
+#include "../textmenu_list.h"
 
 /** @brief : 布尔类型菜单项句柄。 */
 typedef struct

@@ -3,6 +3,10 @@
 
 #include "../textmenu_core.h"
 #include "../textmenu_item.h"
+#include "../textmenu_list.h"
+
+/** 菜单列表结构体 前置定义 */
+typedef struct _menu_list menu_list_t;
 
 /** @brief : 跳转类型菜单项句柄。 */
 typedef struct

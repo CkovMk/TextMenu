@@ -3,6 +3,7 @@
 
 #include "../textmenu_core.h"
 #include "../textmenu_item.h"
+#include "../textmenu_list.h"
 
 /**
  * @brief : 函数类型菜单项的响应句柄。

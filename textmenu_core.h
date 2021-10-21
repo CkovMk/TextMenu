@@ -17,8 +17,7 @@
  */
 #define MENU_NAME_STR_SIZE (16u)
 
-#include "textmenu_item.h"
-#include "textmenu_list.h"
+#include "textmenu_keyop.h"
 
 /*! @brief Error codes for MENU. */
 enum
@@ -27,76 +26,6 @@ enum
     kStatus_MENU_KVDB_ReadError  = MAKE_STATUS(kStatusGroup_MENU, 11), /*!< Value read from KVDB error. */
     kStatus_MENU_KVDB_SaveError  = MAKE_STATUS(kStatusGroup_MENU, 12), /*!< Value save to KVDB error. */
 };
-
-/**
- * BUTTON
- */
-
-/**
- * @brief : 按键操作宏定义。
- *
- */
-typedef enum _menu_keyOpCode
-{
-    menuOpCode_generic_nl = 0, ///< NULL
-
-    /* 五向按键，UP+DN+LF+RT+OK */
-    menuOpCode_5wayStick_ok = 1,
-    menuOpCode_5wayStick_up = 2,
-    menuOpCode_5wayStick_dn = 3,
-    menuOpCode_5wayStick_lf = 4,
-    menuOpCode_5wayStick_rt = 5,
-
-    /* 三向按键，LF+RT+OK */
-    menuOpCode_3wayStick_ok = 6,
-    menuOpCode_3wayStick_lf = 7,
-    menuOpCode_3wayStick_rt = 8,
-
-    /* 3*4矩阵键盘，0~9 + '*' + '#' */
-    menuOpCode_numpad3b4_n0 = 10,
-    menuOpCode_numpad3b4_n1 = 11,
-    menuOpCode_numpad3b4_n2 = 12,
-    menuOpCode_numpad3b4_n3 = 13,
-    menuOpCode_numpad3b4_n4 = 14,
-    menuOpCode_numpad3b4_n5 = 15,
-    menuOpCode_numpad3b4_n6 = 16,
-    menuOpCode_numpad3b4_n7 = 17,
-    menuOpCode_numpad3b4_n8 = 18,
-    menuOpCode_numpad3b4_n9 = 19,
-    menuOpCode_numpad3b4_as = 20, // '*', asterisk
-    menuOpCode_numpad3b4_hs = 21, // '#', hash
-
-    /* 双层编码器 */
-    menuOpCode_2dEncoder_hp = 30, // 高层编码器，加
-    menuOpCode_2dEncoder_hn = 31, // 高层编码器，减
-    menuOpCode_2dEncoder_lp = 32, // 低层编码器，加
-    menuOpCode_2dEncoder_ln = 33, // 低层编码器，减
-    menuOpCode_2dEncoder_ok = 34, // 编码器按键按下
-
-    /* 通用功能 */
-    menuOpCode_genericfn_home = 200, // home
-    menuOpCode_genericfn_back = 201, // back
-    menuOpCode_genericfn_acpt = 202, // accept
-    menuOpCode_genericfn_deny = 203, // deny
-    menuOpCode_genericfn_info = 204, // info
-} menu_keyOpCode_t;
-
-typedef enum _menu_keyOpType_t
-{
-    menuOpType_shrt = 1 << 8,
-    menuOpType_long = 2 << 8,
-    menuOpType_lrpt = 3 << 8,
-    menuOpType_doub = 4 << 8,
-} menu_keyOpType_t;
-
-typedef uint32_t menu_keyOp_t;
-
-/**
- * @brief : 按键操作生成宏
- */
-#define MENU_BUTTON_MAKE_OP(code, type) (menuOpCode_##code | menuOpType_##type)
-
-extern menu_keyOp_t menu_keyOpBuff;
 
 
 
@@ -132,24 +61,11 @@ extern uint32_t menu_listCnt;               ///< 菜单列表计数器
  */
 
 /**
- * @brief : 菜单状态机。
- * @ {
- */
-extern menu_list_t *menu_currList;          ///< 状态变量：指向当前所在的菜单列表
-extern menu_itemIfce_t *menu_currItem;      ///< 状态变量：指向当前所在的菜单项，仅位于菜单项
-extern menu_list_t *menu_menuRoot;          ///< 根菜单指针。
-extern int32_t menu_currRegionNum[3];    ///< 当前局部存储区号
-extern int32_t menu_statusFlag;             ///< 状态标志位
-extern uint32_t menu_nvm_statusFlagAddr;    ///< 存储状态标志位的NVM存储地址
-/**
- * @ }
- */
-
-/**
  * @brief 设置MENU状态标志位
  */
 static inline void MENU_StatusFlagSet(uint32_t _mask)
 {
+    extern int32_t menu_statusFlag;                ///< 状态标志位
     menu_statusFlag |= _mask;
 }
 
@@ -158,6 +74,7 @@ static inline void MENU_StatusFlagSet(uint32_t _mask)
  */
 static inline void MENU_StatusFlagClr(uint32_t _mask)
 {
+    extern int32_t menu_statusFlag;                ///< 状态标志位
     menu_statusFlag &= (~_mask);
 }
 

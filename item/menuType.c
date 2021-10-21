@@ -18,6 +18,9 @@ const menu_itemAdapter_t menu_itemAdapter_menuType =
     .ItemKeyOp = MENU_ItemKeyOp_menuType,
 };
 
+extern menu_itemIfce_t *menu_currItem;
+extern menu_list_t *menu_currList;
+
 void MENU_ItemConstruct_menuType(menu_itemIfce_t *_item, void *_data)
 {
     _item->adapter = &menu_itemAdapter_menuType;

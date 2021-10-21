@@ -1,21 +1,25 @@
 #include "textmenu_core.h"
 
+#include "textmenu_item.h"
+#include "textmenu_list.h"
+
 #define SYSLOG_TAG  ("MENU.MAIN")
 #define SYSLOG_LVL  (TEXTMENU_MAIN_LOG_LVL)
 #include <inc_syslog.h>
 
-//menu_t menuInst;
-menu_list_t *menu_currList;
-menu_itemIfce_t *menu_currItem;
-menu_list_t *menu_menuRoot;
-menu_list_t *menu_manageList;
-int32_t menu_currRegionNum[3] = { 0, 0, TEXTMENU_NVM_REGION_CNT - 1 };
-int32_t menu_statusFlag;
-uint32_t menu_nvm_statusFlagAddr;
-
-
-
-menu_keyOp_t menu_keyOpBuff;
+/**
+ * @brief : 菜单状态机。
+ * @ {
+ */
+extern menu_list_t *menu_currList;             ///< 状态变量：指向当前所在的菜单列表。
+extern menu_itemIfce_t *menu_currItem;         ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
+extern menu_list_t *menu_menuRoot;             ///< 根菜单指针。
+extern menu_list_t *menu_manageList;           ///< 管理菜单指针。
+extern int32_t menu_currRegionNum[3];    ///< 当前局部存储区号
+extern int32_t menu_statusFlag;                ///< 状态标志位
+/**
+ * @ }
+ */
 
 void MENU_PrintDisp(void)
 {

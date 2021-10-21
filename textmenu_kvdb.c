@@ -2,6 +2,23 @@
 
 #if defined(TEXTMENU_USE_KVDB) && (TEXTMENU_USE_KVDB > 0)
 
+#include "item/variType.h"
+#include "item/varfType.h"
+
+/**
+ * @brief : 菜单状态机。
+ * @ {
+ */
+extern menu_list_t *menu_currList;             ///< 状态变量：指向当前所在的菜单列表。
+extern menu_itemIfce_t *menu_currItem;         ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
+extern menu_list_t *menu_menuRoot;             ///< 根菜单指针。
+extern menu_list_t *menu_manageList;           ///< 管理菜单指针。
+extern int32_t menu_currRegionNum[3];    ///< 当前局部存储区号
+extern int32_t menu_statusFlag;                ///< 状态标志位
+/**
+ * @ }
+ */
+
 /*!
  * @addtogroup menu_kvdb
  * @{
@@ -26,7 +43,7 @@ status_t MENU_KVDB_MetadataInit(menu_kvdb_metadata_t *_data)
 
     do
     {
-        menuItemIfce_t *item = MENU_IteratorDerefItem(iter);
+        menu_itemIfce_t *item = MENU_IteratorDerefItem(iter);
 
         //Type constrain, only vari & varf will be saved.
         if((item->adapter != &menu_itemAdapter_variType) && (item->adapter != &menu_itemAdapter_varfType))
@@ -146,7 +163,7 @@ status_t MENU_KVDB_RegistryInit(void *_data, uint32_t *_size)
 
     do
     {
-        menuItemIfce_t *item = MENU_IteratorDerefItem(iter);
+        menu_itemIfce_t *item = MENU_IteratorDerefItem(iter);
 
         //Type constrain, only vari & varf will be saved.
         if((item->adapter != &menu_itemAdapter_variType) && (item->adapter != &menu_itemAdapter_varfType))
@@ -169,7 +186,7 @@ status_t MENU_KVDB_RegistryInit(void *_data, uint32_t *_size)
 
     do
     {
-        menuItemIfce_t *item = MENU_IteratorDerefItem(iter);
+        menu_itemIfce_t *item = MENU_IteratorDerefItem(iter);
 
         //Type constrain, only vari & varf will be saved.
         if((item->adapter != &menu_itemAdapter_variType) && (item->adapter != &menu_itemAdapter_varfType))

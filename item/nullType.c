@@ -17,6 +17,10 @@ const menu_itemAdapter_t menu_itemAdapter_nullType =
     .ItemPrintDisp = MENU_ItemPrintDisp_nullType,
     .ItemKeyOp = MENU_ItemKeyOp_nullType,
 };
+
+extern menu_itemIfce_t *menu_currItem;
+extern menu_list_t *menu_currList;
+
 void MENU_ItemConstruct_nullType(menu_itemIfce_t *_item, void *_data)
 {
     _item->adapter = &menu_itemAdapter_nullType;

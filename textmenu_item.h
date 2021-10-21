@@ -7,6 +7,7 @@
 #include <assert.h>
 
 #include "textmenu_core.h"
+#include "textmenu_keyop.h"
 
 /*!
  * @addtogroup menu_type
@@ -150,9 +151,6 @@ typedef struct _menu_nvmData_t
     char nameStr[MENU_NAME_STR_SIZE];
     uint32_t data[4];
 } menu_nvmData_t;
-
-
-
 
 /*************************************
  ************ 菜单项操作接口 **********

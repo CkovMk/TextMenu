@@ -18,6 +18,9 @@ const menu_itemAdapter_t menu_itemAdapter_procType =
     .ItemKeyOp = MENU_ItemKeyOp_procType,
 };
 
+extern menu_itemIfce_t *menu_currItem;
+extern menu_list_t *menu_currList;
+
 void MENU_ItemConstruct_procType(menu_itemIfce_t *_item, void *_data)
 {
     _item->adapter = &menu_itemAdapter_procType;
