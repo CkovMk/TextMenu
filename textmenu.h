@@ -186,7 +186,7 @@ void MENU_Data_NvmReadRegionConfig_Boxed(menu_keyOp_t *const _op);
  * @brief : 定时中断管理器句柄。
  *
  */
-void MENU_PitIsr(void* userData);
+void MENU_PitIsr(void);
 
 /**
  * @brief : 菜单事件处理函数。

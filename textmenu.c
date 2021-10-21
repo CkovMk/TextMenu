@@ -51,15 +51,7 @@ int32_t menu_statusFlag;                ///< 状态标志位
 
 
 
- // FIXME: move this outside
-pitmgr_handle_t menu_pitHandle =
-{
-    .tickInterval = 250UL,
-    .tickOffset = 7UL,
-    .handler = MENU_PitIsr,
-    .pptFlag = pitmgr_pptEnable,
-    .userData = NULL,
-};
+
 
 
 volatile uint32_t menu_suspendCnt = 0U;
@@ -102,70 +94,70 @@ void MENU_Init(void)
 
 #if defined(TEXTMENU_USE_KVDB) && (TEXTMENU_USE_KVDB > 0)
 
-	SYSLOG_I("Init: kvdb init begin.");
-
-	menu_kvdb_metadata_t currMeta, kvdbMeta;
-	MENU_KVDB_MetadataInit(&currMeta);
-
-	void *currReg = NULL, *kvdbReg = NULL;
-	uint32_t currRegSize = 0U, kvdbRegSize = 0U;
-
-
-	status_t kvdbMetaStatus = kStatus_Success;
-	status_t kvdbRegStatus = kStatus_Success;
-
-	kvdbMetaStatus = MENU_KVDB_MetadataRead(&kvdbMeta);
-
-	kvdbRegStatus = MENU_KVDB_RegistryRead(kvdbReg, &kvdbRegSize);
-
-
-	if((kStatus_MENU_KVDB_KeyAbsence == kvdbMetaStatus) && (kStatus_MENU_KVDB_KeyAbsence == kvdbRegStatus))
-	{
-		//SYSLOG_I("Init: kvdb registry read failed!");
-
-		SYSLOG_I("Init: kvdb metadata read failed!");
-
-		SYSLOG_I("Create new metadata in kvdb.");
-		kvdbMetaStatus = MENU_KVDB_MetadataSave(&currMeta);
-		if(kStatus_Success != kvdbMetaStatus)
-		{
-			assert(0);
-		}
-
-		SYSLOG_I("Create new registry in kvdb.");
-		kvdbRegStatus = MENU_KVDB_RegistryInit(currReg, &currRegSize);
-		if(kStatus_Success != kvdbRegStatus)
-		{
-			assert(0);
-		}
-		kvdbRegStatus = MENU_KVDB_RegistrySave(currReg, currRegSize);
-		if(kStatus_Success != kvdbRegStatus)
-		{
-			assert(0);
-		}
-	}
-	else if((kStatus_MENU_KVDB_KeyAbsence == kvdbMetaStatus) && (kStatus_Success == kvdbRegStatus))
-	{
-		SYSLOG_A("Init: critical error. Registry read success while metadata not found.");
-		SYSLOG_A("Please format KVDB and retry.");
-		assert(0);
-	}
-	else if((kStatus_Success == kvdbMetaStatus) && (kStatus_MENU_KVDB_KeyAbsence == kvdbRegStatus))
-	{
-		SYSLOG_A("Init: critical error. Metadata read success while registry not found.");
-		SYSLOG_A("Init: Please format KVDB and retry.");
-		assert(0);
-	}
-	else if((kStatus_Success == kvdbMetaStatus) && (kStatus_Success == kvdbRegStatus))
-	{
-		SYSLOG_I("Init: Metadata and registry read success.");
-		
-	}
-	else
-	{
-		SYSLOG_A("Init: Kvdb init failed.");
-		assert(0);
-	}
+//	SYSLOG_I("Init: kvdb init begin.");
+//
+//	menu_kvdb_metadata_t currMeta, kvdbMeta;
+//	MENU_KVDB_MetadataInit(&currMeta);
+//
+//	void *currReg = NULL, *kvdbReg = NULL;
+//	uint32_t currRegSize = 0U, kvdbRegSize = 0U;
+//
+//
+//	status_t kvdbMetaStatus = kStatus_Success;
+//	status_t kvdbRegStatus = kStatus_Success;
+//
+//	kvdbMetaStatus = MENU_KVDB_MetadataRead(&kvdbMeta);
+//
+//	kvdbRegStatus = MENU_KVDB_RegistryRead(kvdbReg, &kvdbRegSize);
+//
+//
+//	if((kStatus_MENU_KVDB_KeyAbsence == kvdbMetaStatus) && (kStatus_MENU_KVDB_KeyAbsence == kvdbRegStatus))
+//	{
+//		//SYSLOG_I("Init: kvdb registry read failed!");
+//
+//		SYSLOG_I("Init: kvdb metadata read failed!");
+//
+//		SYSLOG_I("Create new metadata in kvdb.");
+//		kvdbMetaStatus = MENU_KVDB_MetadataSave(&currMeta);
+//		if(kStatus_Success != kvdbMetaStatus)
+//		{
+//			assert(0);
+//		}
+//
+//		SYSLOG_I("Create new registry in kvdb.");
+//		kvdbRegStatus = MENU_KVDB_RegistryInit(currReg, &currRegSize);
+//		if(kStatus_Success != kvdbRegStatus)
+//		{
+//			assert(0);
+//		}
+//		kvdbRegStatus = MENU_KVDB_RegistrySave(currReg, currRegSize);
+//		if(kStatus_Success != kvdbRegStatus)
+//		{
+//			assert(0);
+//		}
+//	}
+//	else if((kStatus_MENU_KVDB_KeyAbsence == kvdbMetaStatus) && (kStatus_Success == kvdbRegStatus))
+//	{
+//		SYSLOG_A("Init: critical error. Registry read success while metadata not found.");
+//		SYSLOG_A("Please format KVDB and retry.");
+//		assert(0);
+//	}
+//	else if((kStatus_Success == kvdbMetaStatus) && (kStatus_MENU_KVDB_KeyAbsence == kvdbRegStatus))
+//	{
+//		SYSLOG_A("Init: critical error. Metadata read success while registry not found.");
+//		SYSLOG_A("Init: Please format KVDB and retry.");
+//		assert(0);
+//	}
+//	else if((kStatus_Success == kvdbMetaStatus) && (kStatus_Success == kvdbRegStatus))
+//	{
+//		SYSLOG_I("Init: Metadata and registry read success.");
+//
+//	}
+//	else
+//	{
+//		SYSLOG_A("Init: Kvdb init failed.");
+//		assert(0);
+//	}
 
 
 
@@ -174,9 +166,6 @@ void MENU_Init(void)
 
 	NVIC_SetPriority(TEXTMENU_SERVICE_IRQn, TEXTMENU_SERVICE_IRQPrio); // FIXME: move this outside
 	NVIC_EnableIRQ(TEXTMENU_SERVICE_IRQn); // FIXME: move this outside
-	extern pitmgr_t pitmgr_main; // FIXME: move this outside
-	bool b = PITMGR_HandleInsert(&pitmgr_main, &menu_pitHandle); // FIXME: move this outside
-	assert(kStatus_Success == b); // FIXME: move this outside
 	menu_suspendCnt = 0U;
 	SYSLOG_I("Init Complete");
 }
@@ -413,7 +402,7 @@ void MENU_Data_NvmReadRegionConfig_Boxed(menu_keyOp_t *const _op)
 
 #endif // ! TEXTMENU_USE_KVDB
 
-void MENU_PitIsr(void* userData)
+void MENU_PitIsr(void)
 {
 	MENU_StatusFlagSet(menu_message_printDisp);
 	TEXTMENU_SERVICE_SEM_GIVE();
@@ -437,8 +426,7 @@ void MENU_Suspend(void)
 	//assert(menu_pitHandle);
 	if (0U == menu_suspendCnt)
 	{
-		menu_pitHandle.pptFlag &= ~pitmgr_pptEnable;
-		NVIC_DisableIRQ(TEXTMENU_SERVICE_IRQn);
+	    MENU_PORT_LowLevelSuspend();
 		SYSLOG_I("Suspended.");
 	}
 	++menu_suspendCnt;
@@ -453,8 +441,7 @@ void MENU_Resume(void)
 	if (0U == menu_suspendCnt)
 	{
 		menu_statusFlag = 0;
-		menu_pitHandle.pptFlag |= pitmgr_pptEnable;
-		NVIC_EnableIRQ(TEXTMENU_SERVICE_IRQn);
+		MENU_PORT_LowLevelResume();
 		SYSLOG_I("Resumed.");
 	}
 }
