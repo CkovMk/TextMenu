@@ -1,3 +1,17 @@
+#ifndef TEXTMENU_ITER_H
+#define TEXTMENU_ITER_H
+
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+
+#include "textmenu_core.h"
+#include "textmenu_item.h"
+#include "textmenu_list.h"
+
+#include "item/menuType.h"
+
 /**
  * @brief 菜单项迭代器结构体
  */
@@ -54,3 +68,5 @@ menu_itemIfce_t* MENU_IteratorDerefItem(menu_iterator_t *_iter);
  * @return {status_t}               : 成功返回kStatus_Success，如果已到达菜单结尾，则返回kStauts_Fail。
  */
 status_t MENU_IteratorIncrease(menu_iterator_t *_iter);
+
+#endif // ! TEXTMENU_ITER_H

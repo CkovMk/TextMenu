@@ -1,5 +1,6 @@
 #include "textmenu_list.h"
 
+
 /**
  * ********** 菜单列表操作接口 **********
  */
@@ -21,8 +22,8 @@ menu_list_t *MENU_ListConstruct(const char *_nameStr, uint32_t _size, menu_list_
     list->menu = (menu_itemIfce_t**)calloc(_size, sizeof(menu_itemIfce_t *));
     assert(list->menu);
     strncpy(list->nameStr, _nameStr, MENU_NAME_STR_SIZE);
-    MENU_ListInsert(list, MENU_ItemConstruct(menuType, (void *)_prev, "Back", 0, 0));
-    list->menu[0]->handle.p_menuType->data = _prev;
+    MENU_ListInsert(list, MENU_ItemConstruct(&menu_itemAdapter_menuType, (void *)_prev, "Back", 0, 0));
+    ((menu_item_menuHandle_t*)(list->menu[0]->p_handle))->data = _prev;
     ++menu_listCnt;
     return list;
 }
@@ -84,7 +85,7 @@ void MENU_ListKeyOp(menu_list_t *_list, menu_keyOp_t *const _op)
         //return
         if (menu_currList != menu_menuRoot)
         {
-            menu_currList = _list->menu[0]->handle.p_menuType->data;
+            menu_currList = ((menu_item_menuHandle_t*)(_list->menu[0]->p_handle))->data;
         }
     case MENU_BUTTON_MAKE_OP(5wayStick_ok, lrpt):
         *_op = 0;

@@ -1,11 +1,12 @@
-#ifndef UTILITIES_APP_MENU_TYPE_HPP
-#define UTILITIES_APP_MENU_TYPE_HPP
-#include <hitsic_common.h>
+#ifndef TEXTMENU_ITEM_H
+#define TEXTMENU_ITEM_H
 
-#if defined(HITSIC_USE_APP_MENU) && (HITSIC_USE_APP_MENU > 0)
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
 
-#include <app_menu_def.h>
-//#include <app_menu_button.h>
+#include "textmenu_core.h"
 
 /*!
  * @addtogroup menu_type
@@ -34,30 +35,30 @@
  * 			MENU_ITEM_SWITCH_CASE(MENU_ItemKeyOp, _item, _op);
  * 		}
  */
-#define MENU_ITEM_SWITCH_CASE(funcName, p_Item, ...)                        \
-    switch (p_Item->type)                                                   \
-    {                                                                       \
-    case nullType:                                                          \
-        MENU_ITEM_CALL_FUNCTION(funcName, nullType, p_Item, ##__VA_ARGS__); \
-        break;                                                              \
-    case variType:                                                          \
-        MENU_ITEM_CALL_FUNCTION(funcName, variType, p_Item, ##__VA_ARGS__); \
-        break;                                                              \
-    case varfType:                                                          \
-        MENU_ITEM_CALL_FUNCTION(funcName, varfType, p_Item, ##__VA_ARGS__); \
-        break;                                                              \
-    case boolType:                                                          \
-        MENU_ITEM_CALL_FUNCTION(funcName, boolType, p_Item, ##__VA_ARGS__); \
-        break;                                                              \
-    case procType:                                                          \
-        MENU_ITEM_CALL_FUNCTION(funcName, procType, p_Item, ##__VA_ARGS__); \
-        break;                                                              \
-    case menuType:                                                          \
-        MENU_ITEM_CALL_FUNCTION(funcName, menuType, p_Item, ##__VA_ARGS__); \
-        break;                                                              \
-    default:                                                                \
-        break;                                                              \
-    }
+//#define MENU_ITEM_SWITCH_CASE(funcName, p_Item, ...)                        \
+//    switch (p_Item->type)                                                   \
+//    {                                                                       \
+//    case nullType:                                                          \
+//        MENU_ITEM_CALL_FUNCTION(funcName, nullType, p_Item, ##__VA_ARGS__); \
+//        break;                                                              \
+//    case variType:                                                          \
+//        MENU_ITEM_CALL_FUNCTION(funcName, variType, p_Item, ##__VA_ARGS__); \
+//        break;                                                              \
+//    case varfType:                                                          \
+//        MENU_ITEM_CALL_FUNCTION(funcName, varfType, p_Item, ##__VA_ARGS__); \
+//        break;                                                              \
+//    case boolType:                                                          \
+//        MENU_ITEM_CALL_FUNCTION(funcName, boolType, p_Item, ##__VA_ARGS__); \
+//        break;                                                              \
+//    case procType:                                                          \
+//        MENU_ITEM_CALL_FUNCTION(funcName, procType, p_Item, ##__VA_ARGS__); \
+//        break;                                                              \
+//    case menuType:                                                          \
+//        MENU_ITEM_CALL_FUNCTION(funcName, menuType, p_Item, ##__VA_ARGS__); \
+//        break;                                                              \
+//    default:                                                                \
+//        break;                                                              \
+//    }
 
 //test marco :
 //MENU_ITEM_MAKE_FUNCTION(item, nullType, KeyOp);
@@ -96,34 +97,40 @@ typedef enum
 /**
  * @brief : 菜单项所支持的内容类型。
  */
-typedef enum
-{
-    nullType, // null type
-    variType, // watch or set integer varibles
-    varfType, // watch or set float-point varibles
-    boolType,
-    procType, // run certain process
-    menuType, // jump to another menu
-} menu_itemType_t;
+//typedef enum
+//{
+//    nullType, // null type
+//    variType, // watch or set integer varibles
+//    varfType, // watch or set float-point varibles
+//    boolType,
+//    procType, // run certain process
+//    menuType, // jump to another menu
+//} menu_itemType_t;
+
+
+
+/** 前置定义 */
+typedef struct _menu_itemAdapter menu_itemAdapter_t;
 
 /** @brief : 菜单项接口结构体。 */
 typedef struct _menu_itemIfce
 {
-    menu_itemType_t type;               ///< 此菜单项的类型。
+    //menu_itemType_t type;               ///< 此菜单项的类型。
     uint32_t pptFlag;                   ///< 此菜单项的属性标志位。
     uint16_t list_id, unique_id;        ///< 此菜单项在本列表内的序号（从0开始）、全局唯一序号（从0开始）
     uint16_t saveAddr;                  ///< 此菜单在本区域内的偏移地址。从0开始，以1步进。注意，全局数据区和局部数据区的地址分开来算。
     char nameStr[MENU_NAME_STR_SIZE];     ///< 此菜单项的名称字符串。最大长度为MENU_NAME_STR_SIZE - 1 字节。
-    union menu_itemIfce_handle_t        ///< 菜单项操作句柄的共用体。使用时根据此菜单项的类型调取对应项访问。
-    {
-        void *p_void;
-        menu_item_nullHandle_t *p_nullType;
-        menu_item_variHandle_t *p_variType;
-        menu_item_varfHandle_t *p_varfType;
-        menu_item_boolHandle_t *p_boolType;
-        menu_item_procHandle_t *p_procType;
-        menu_item_menuHandle_t *p_menuType;
-    } handle;
+//    union menu_itemIfce_handle_t        ///< 菜单项操作句柄的共用体。使用时根据此菜单项的类型调取对应项访问。
+//    {
+//        void *p_void;
+//        menu_item_nullHandle_t *p_nullType;
+//        menu_item_variHandle_t *p_variType;
+//        menu_item_varfHandle_t *p_varfType;
+//        menu_item_boolHandle_t *p_boolType;
+//        menu_item_procHandle_t *p_procType;
+//        menu_item_menuHandle_t *p_menuType;
+//    } handle;
+    void *p_handle;
     menu_itemAdapter_t const *adapter;  ///< 指向存放菜单项命令函数指针的结构体。参考C++虚表
 } menu_itemIfce_t;
 
@@ -138,10 +145,11 @@ struct _menu_itemAdapter
     void (*ItemKeyOp)(menu_itemIfce_t *_item, menu_keyOp_t *const _op);
 };
 
-
-
-
-
+typedef struct _menu_nvmData_t
+{
+    char nameStr[MENU_NAME_STR_SIZE];
+    uint32_t data[4];
+} menu_nvmData_t;
 
 
 
@@ -162,7 +170,7 @@ struct _menu_itemAdapter
  *
  * @return {menu_itemIfce_t *}     : 返回所产生的菜单项结构体指针。
  */
-menu_itemIfce_t* MENU_ItemConstruct(menu_itemType_t _type, void *_data,
+menu_itemIfce_t* MENU_ItemConstruct(menu_itemAdapter_t const *_type, void *_data,
         const char *_nameStr, uint32_t _saveAddr, uint32_t _pptFlag);
 
 /**
@@ -232,6 +240,4 @@ void MENU_ItemKeyOp(menu_itemIfce_t *_item, menu_keyOp_t *const _op);
 
 /* @} */
 
-#endif // ! HITSIC_USE_APP_MENU
-
-#endif // ! UTILITIES_APP_MENU_TYPE_HPP
+#endif // ! TEXTMENU_ITEM_H

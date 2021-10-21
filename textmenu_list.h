@@ -1,3 +1,16 @@
+#ifndef TEXTMENU_LIST_H
+#define TEXTMENU_LIST_H
+
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+
+#include "textmenu_core.h"
+#include "textmenu_item.h"
+
+//#include "item/menuType.h"
+
 /*************************************
  ************ 菜单列表结构体 **********
  *************************************/
@@ -8,6 +21,9 @@ struct _menu_list
     uint32_t disp_p, slct_p; /// 显示数组下标和选择数组下标。
     char nameStr[MENU_NAME_STR_SIZE]; /// 菜单列表名称字符串。
 };
+
+/** 菜单列表结构体 前置定义 */
+typedef struct _menu_list menu_list_t;
 
 /**************************************
  ************ 菜单列表操作接口 **********
@@ -55,3 +71,5 @@ void MENU_ListPrintDisp(menu_list_t *_list);
  * @param  {menu_keyOp_t*} _op  : 按键操作指针。按键响应后会被清除为空操作。
  */
 void MENU_ListKeyOp(menu_list_t *_list, menu_keyOp_t *const _op);
+
+#endif // ! TEXTMENU_LIST_H

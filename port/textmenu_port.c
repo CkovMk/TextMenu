@@ -6,7 +6,7 @@
 #include <lib_graphic.h>
 
 extern disp_ssd1306_fb_t dispBuffer;
-void MENU_DisplayOutput(menu_strBuf_t *_buf)
+void MENU_PORT_DisplayOutput(menu_strBuf_t *_buf)
 {
     DISP_SSD1306_FB_Clear(&dispBuffer);
 	for (uint8_t i = 0; i < TEXTMENU_DISPLAY_STRBUF_ROW; ++i)
@@ -35,7 +35,7 @@ void TEXTMENU_SERVICE_IRQHandler(void)
 
 #include "easyflash.h"
 
-status_t MENU_KVDB_GetSize(char const *_key, uint32_t *_size)
+status_t MENU_PORT_KVDB_GetSize(char const *_key, uint32_t *_size)
 {
     ef_get_env_blob(_key, NULL, 0, _size);
     if(0U == *_size)
@@ -48,7 +48,7 @@ status_t MENU_KVDB_GetSize(char const *_key, uint32_t *_size)
     }
 }
 
-status_t MENU_KVDB_ReadValue(char const *_key, void *_data , uint32_t _size)
+status_t MENU_PORT_KVDB_ReadValue(char const *_key, void *_data , uint32_t _size)
 {
     uint32_t dataLen = ef_get_env_blob(_key, _data, _size, NULL);
     if(0U == dataLen)
@@ -65,7 +65,7 @@ status_t MENU_KVDB_ReadValue(char const *_key, void *_data , uint32_t _size)
     }
 }
 
-status_t MENU_KVDB_SaveValue(char const *_key, void const *_data, uint32_t _size)
+status_t MENU_PORT_KVDB_SaveValue(char const *_key, void const *_data, uint32_t _size)
 {
     if(0U != ef_set_env_blob(_key, _data, _size))
     {
@@ -77,7 +77,7 @@ status_t MENU_KVDB_SaveValue(char const *_key, void const *_data, uint32_t _size
     }
 }
 
-status_t MENU_KVDB_DeltValue(char const *_key)
+status_t MENU_PORT_KVDB_DeltValue(char const *_key)
 {
     if(0U !=  ef_del_env(_key))
     {

@@ -1,3 +1,13 @@
+#ifndef TEXTMENU_STRBUF_H
+#define TEXTMENU_STRBUF_H
+
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+
+#include "textmenu_port.h"
+
 /** 字符缓存 */
 
 typedef struct _menu_strBuf
@@ -14,3 +24,13 @@ extern menu_strBuf_t menu_dispStrBuf;
 #if defined(TEXTMENU_USE_PALETTE) && (TEXTMENU_USE_PALETTE > 0)
 extern menu_dispColor_t palette[TEXTMENU_DISPLAY_PALETTE_SIZE];
 #endif // ! TEXTMENU_USE_PALETTE
+
+
+/**
+ * @brief
+ *
+ * @param _buf
+ */
+void MENU_PORT_DisplayOutput(menu_strBuf_t *_buf);
+
+#endif // ! TEXTMENU_STRBUF_H

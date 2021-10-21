@@ -116,7 +116,7 @@ typedef uint8_t menu_dispColor_t;
  *
  * @param _buf
  */
-void MENU_DisplayOutput(menu_strBuf_t *_buf);
+void MENU_PORT_DisplayOutput(menu_strBuf_t *_buf);
 
 /* @ } */
 
@@ -147,13 +147,13 @@ void MENU_DisplayOutput(menu_strBuf_t *_buf);
  */
 
 
-status_t MENU_KVDB_GetSize(char const *_key, uint32_t *_size);
+status_t MENU_PORT_KVDB_GetSize(char const *_key, uint32_t *_size);
 
-status_t MENU_KVDB_ReadValue(char const *_key, void *_data , uint32_t _size);
+status_t MENU_PORT_KVDB_ReadValue(char const *_key, void *_data , uint32_t _size);
 
-status_t MENU_KVDB_SaveValue(char const *_key, void const *_data, uint32_t _size);
+status_t MENU_PORT_KVDB_SaveValue(char const *_key, void const *_data, uint32_t _size);
 
-status_t MENU_KVDB_DeltValue(char const *_key);
+status_t MENU_PORT_KVDB_DeltValue(char const *_key);
 
 #endif // ! TEXTMENU_USE_KVDB
 
