@@ -60,6 +60,10 @@ extern uint32_t menu_listCnt;               ///< 菜单列表计数器
  * @ }
  */
 
+void MENU_PORT_LowLevelResume(void);
+
+void MENU_PORT_LowLevelSuspend(void);
+
 /**
  * @brief 设置MENU状态标志位
  */
