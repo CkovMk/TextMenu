@@ -33,7 +33,7 @@ status_t MENU_PORT_KVDB_DeltValue(char const *_key);
 /**
  * @brief 元数据键值。
  */
-#define MENU_KVDB_METADATA_KEY "MENU_METADATA"
+#define MENU_KVDB_METADATA_KEY ("MENU_METADATA")
 
 /**
  * @brief 元数据结构体。
@@ -78,7 +78,7 @@ status_t MENU_KVDB_MetadataSave(menu_kvdb_metadata_t *_data);
 /**
  * @brief 注册表键值。
  */
-#define MENU_KVDB_REGISTRY_KEY "MENU_REGISTRY"
+#define MENU_KVDB_REGISTRY_KEY ("MENU_REGISTRY")
 
 /**
  * @brief 注册表项的大小。即每个菜单项对应的注册表项所占大小。
