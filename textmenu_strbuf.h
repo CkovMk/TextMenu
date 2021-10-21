@@ -17,7 +17,7 @@ typedef struct _menu_strBuf
     uint8_t fcolor[TEXTMENU_DISPLAY_STRBUF_ROW][TEXTMENU_DISPLAY_STRBUF_COL];
     uint8_t bcolor[TEXTMENU_DISPLAY_STRBUF_ROW][TEXTMENU_DISPLAY_STRBUF_COL];
 #endif // ! TEXTMENU_USE_PALETTE
-}menu_strBuf_t; // FIXME: move this to elsewhere...
+}menu_strBuf_t;
 
 extern menu_strBuf_t menu_dispStrBuf;
 

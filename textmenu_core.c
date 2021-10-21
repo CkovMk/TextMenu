@@ -24,9 +24,9 @@ extern int32_t menu_statusFlag;                ///< 状态标志位
 void MENU_PrintDisp(void)
 {
     /** 清空缓存，准备打印 */
-    for(int r = 0; r < TEXTMENU_DISPLAY_STRBUF_ROW; ++r)
+    for(uint32_t r = 0U; r < TEXTMENU_DISPLAY_STRBUF_ROW; ++r)
 	{
-		for(int c = 0; c < TEXTMENU_DISPLAY_STRBUF_COL + 1; ++c)
+		for(uint32_t c = 0U; c < TEXTMENU_DISPLAY_STRBUF_COL + 1U; ++c)
 		{
 			menu_dispStrBuf.strbuf[r][c] = ' ';
 #if defined(TEXTMENU_USE_PALETTE) && (TEXTMENU_USE_PALETTE > 0)

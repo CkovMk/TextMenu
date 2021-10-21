@@ -208,6 +208,7 @@ status_t MENU_KVDB_RegistryInit(void *_data, uint32_t *_size)
     MENU_IteratorDestruct(iter);
 
     SYSLOG_I("Registry init success.");
+    return kStatus_Success;
 }
 
 status_t MENU_KVDB_RegistryRead(void *_data, uint32_t *_size)
