@@ -69,19 +69,20 @@ status_t MENU_IteratorIncrease(menu_iterator_t *_iter)
     SYSLOG_I("Iterator Increase:");
     SYSLOG_V("Current Position: List.Item : %4.4d.%4.4d", _iter->listNum, _iter->itemNum);
     menu_itemIfce_t *thisItem = MENU_IteratorDerefItem(_iter);
-    if (thisItem->type == menuType)
+    if (thisItem->adapter == &menu_itemAdapter_menuType)
     {
         SYSLOG_V("\"menuType\" item, Scan previous records");
+        menu_item_menuHandle_t *p_menuType = (menu_item_menuHandle_t*)(thisItem->p_handle);
         for (uint32_t j = 0U; j < _iter->listQueSize; ++j)
         {
-            if (_iter->listQue[j] == thisItem->handle.p_menuType->data)
+            if (_iter->listQue[j] == p_menuType->data)
             {
                 SYSLOG_V("Previous records found, Aborting");
                 break;
             }
             else if (_iter->listQue[j] == NULL)
             {
-                _iter->listQue[j] = thisItem->handle.p_menuType->data;
+                _iter->listQue[j] = p_menuType->data;
                 SYSLOG_V("No previous records found, New record added");
                 SYSLOG_D("Add itemList %4.4d : [%-16.16s].", j, _iter->listQue[j]->nameStr);
                 break;

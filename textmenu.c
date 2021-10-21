@@ -27,9 +27,7 @@
  * @note 	:	预发布版本，代码不完整，仅供学习。
  */
 
-#include <app_menu.h>
-
-#if defined(HITSIC_USE_APP_MENU) && (HITSIC_USE_APP_MENU > 0)
+#include "textmenu.h"
 
  /*!
   * @addtogroup menu
@@ -44,18 +42,7 @@
  * 菜单定义
  */
 
-//menu_t menuInst;
-menu_list_t *menu_currList;
-menu_itemIfce_t *menu_currItem;
-menu_list_t *menu_menuRoot;
-menu_list_t *menu_manageList;
-int32_t menu_currRegionNum[3] = { 0, 0, TEXTMENU_NVM_REGION_CNT - 1 };
-int32_t menu_statusFlag;
-uint32_t menu_nvm_statusFlagAddr;
 
-
-
-menu_keyOp_t menu_keyOpBuff;
 
 
  // FIXME: move this outside
@@ -92,17 +79,17 @@ void MENU_Init(void)
 
 	menu_manageList = MENU_ListConstruct("MenuManager", 21, menu_menuRoot);
 	assert(menu_manageList);
-	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(menuType, menu_manageList, "MenuManager", 0, 0));
+	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(&menu_itemAdapter_menuType, menu_manageList, "MenuManager", 0, 0));
 	{
 #if defined(TEXTMENU_USE_KVDB) && (TEXTMENU_USE_KVDB > 0)
 		menu_itemIfce_t *p = NULL;
-		MENU_ListInsert(menu_manageList, MENU_ItemConstruct(nullType, NULL, "SAVE", 0, 0));
-		MENU_ListInsert(menu_manageList, p = MENU_ItemConstruct(variType, menu_currRegionNum, menu_itemNameStr_RegnSel/*"RegnSel(0-N)"*/, 0, menuItem_data_global | menuItem_data_NoSave | menuItem_data_NoLoad | menuItem_dataExt_HasMinMax));
+		MENU_ListInsert(menu_manageList, MENU_ItemConstruct(&menu_itemAdapter_nullType, NULL, "SAVE", 0, 0));
+		MENU_ListInsert(menu_manageList, p = MENU_ItemConstruct(&menu_itemAdapter_variType, menu_currRegionNum, menu_itemNameStr_RegnSel/*"RegnSel(0-N)"*/, 0, menuItem_data_global | menuItem_data_NoSave | menuItem_data_NoLoad | menuItem_dataExt_HasMinMax));
 		//p->nameStr[10] = '0' + TEXTMENU_NVM_REGION_CNT - 1;
-		MENU_ListInsert(menu_manageList, MENU_ItemConstruct(procType, (void *)MENU_Data_NvmSave_Boxed, "Save Data", 0, menuItem_proc_runOnce));
-		MENU_ListInsert(menu_manageList, MENU_ItemConstruct(procType, (void *)MENU_Data_NvmRead_Boxed, "Load Data", 0, menuItem_proc_runOnce));
-		MENU_ListInsert(menu_manageList, MENU_ItemConstruct(procType, (void *)MENU_Data_NvmSaveRegionConfig_Boxed, "RegnSave", 0, menuItem_proc_runOnce));
-		MENU_ListInsert(menu_manageList, MENU_ItemConstruct(nullType, NULL, "INFO", 0, 0));
+		MENU_ListInsert(menu_manageList, MENU_ItemConstruct(&menu_itemAdapter_procType, (void *)MENU_Data_NvmSave_Boxed, "Save Data", 0, menuItem_proc_runOnce));
+		MENU_ListInsert(menu_manageList, MENU_ItemConstruct(&menu_itemAdapter_procType, (void *)MENU_Data_NvmRead_Boxed, "Load Data", 0, menuItem_proc_runOnce));
+		MENU_ListInsert(menu_manageList, MENU_ItemConstruct(&menu_itemAdapter_procType, (void *)MENU_Data_NvmSaveRegionConfig_Boxed, "RegnSave", 0, menuItem_proc_runOnce));
+		MENU_ListInsert(menu_manageList, MENU_ItemConstruct(&menu_itemAdapter_nullType, NULL, "INFO", 0, 0));
 #endif // ! TEXTMENU_USE_KVDB
 	}
 	MENU_DataSetUp();
@@ -191,7 +178,7 @@ void MENU_Init(void)
 __WEAK void MENU_DataSetUp(void)
 {
     SYSLOG_W("Using default menu structure (__WEAK). If not intended, define your own menu FIRST.");
-	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(nullType, NULL, "DATA", 0, 0));
+	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(&menu_itemAdapter_nullType, NULL, "DATA", 0, 0));
 
 	static int32_t region_i = 4096, global_i = 1024, readonly_i = 1998;
 	static float region_f = 32.768, global_f = 3.14, longname_f = 12.14;
@@ -199,71 +186,19 @@ __WEAK void MENU_DataSetUp(void)
 	static menu_list_t *testList;
 	testList = MENU_ListConstruct("TestList", 50, menu_menuRoot);
 	assert(testList);
-	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(variType, &readonly_i, "readonly", 0, menuItem_data_ROFlag | menuItem_data_NoSave | menuItem_data_NoLoad));
-	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(menuType, testList, "TestList", 0, 0));
+	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(&menu_itemAdapter_variType, &readonly_i, "readonly", 0, menuItem_data_ROFlag | menuItem_data_NoSave | menuItem_data_NoLoad));
+	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(&menu_itemAdapter_menuType, testList, "TestList", 0, 0));
 	{
-		MENU_ListInsert(testList, MENU_ItemConstruct(variType, &global_i, "global_i", 10, menuItem_data_global));
-		MENU_ListInsert(testList, MENU_ItemConstruct(varfType, &global_f, "global_f", 11, menuItem_data_global));
-		MENU_ListInsert(testList, MENU_ItemConstruct(variType, &region_i, "region_i", 1, menuItem_data_region));
-		MENU_ListInsert(testList, MENU_ItemConstruct(varfType, &region_f, "region_f", 2, menuItem_data_region));
+		MENU_ListInsert(testList, MENU_ItemConstruct(&menu_itemAdapter_variType, &global_i, "global_i", 10, menuItem_data_global));
+		MENU_ListInsert(testList, MENU_ItemConstruct(&menu_itemAdapter_varfType, &global_f, "global_f", 11, menuItem_data_global));
+		MENU_ListInsert(testList, MENU_ItemConstruct(&menu_itemAdapter_variType, &region_i, "region_i", 1, menuItem_data_region));
+		MENU_ListInsert(testList, MENU_ItemConstruct(&menu_itemAdapter_varfType, &region_f, "region_f", 2, menuItem_data_region));
 	}
-	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(varfType, &longname_f, "C.M.'s Birthday", 0, menuItem_data_ROFlag | menuItem_data_NoSave | menuItem_data_NoLoad | menuItem_disp_noPreview));
-	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(variType, &forceSciData, "forceSci", 0, menuItem_data_ROFlag | menuItem_data_NoSave | menuItem_data_NoLoad | menuItem_disp_forceSci));
+	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(&menu_itemAdapter_varfType, &longname_f, "C.M.'s Birthday", 0, menuItem_data_ROFlag | menuItem_data_NoSave | menuItem_data_NoLoad | menuItem_disp_noPreview));
+	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(&menu_itemAdapter_variType, &forceSciData, "forceSci", 0, menuItem_data_ROFlag | menuItem_data_NoSave | menuItem_data_NoLoad | menuItem_disp_forceSci));
 }
 
-void MENU_PrintDisp(void)
-{
-    /** 清空缓存，准备打印 */
-    for(int r = 0; r < TEXTMENU_DISPLAY_STRBUF_ROW; ++r)
-	{
-		for(int c = 0; c < TEXTMENU_DISPLAY_STRBUF_COL + 1; ++c)
-		{
-			menu_dispStrBuf.strbuf[r][c] = ' ';
-#if defined(TEXTMENU_USE_PALETTE) && (TEXTMENU_USE_PALETTE > 0)
-    		menu_dispStrBuf.fcolor[r][c] = TEXTMENU_DISPLAY_PAL_IDX_NORMAL_F;
-			menu_dispStrBuf.bcolor[r][c] = TEXTMENU_DISPLAY_PAL_IDX_NORMAL_B;
-#endif // ! TEXTMENU_USE_PALETTE
-		}
-		menu_dispStrBuf.strbuf[r][TEXTMENU_DISPLAY_STRBUF_COL + 1] = '\0';
-	}
-	/** 根据责任链打印缓存 */
-	if (menu_currItem == NULL)
-	{
-		MENU_ListPrintDisp(menu_currList);
-	}
-	else
-	{
-		MENU_ItemPrintDisp(menu_currItem);
-	}
-	for (uint8_t i = 0; i < TEXTMENU_DISPLAY_STRBUF_ROW; ++i)
-	{
-		if('\0' != menu_dispStrBuf.strbuf[i][TEXTMENU_DISPLAY_STRBUF_COL])
-		{
-			SYSLOG_W("Print display: row %d overflow!", i);
-	    	menu_dispStrBuf.strbuf[i][TEXTMENU_DISPLAY_STRBUF_COL] = '\0';
-		}
-	}
-	MENU_DisplayOutput(&menu_dispStrBuf);
-	MENU_StatusFlagClr(menu_message_printDisp);
-}
 
-void MENU_KeyOp(menu_keyOp_t *const _op)
-{
-	if (menu_currItem == NULL)
-	{
-		MENU_ListKeyOp(menu_currList, _op);
-	}
-	else 
-	{
-		MENU_ItemKeyOp(menu_currItem, _op);
-	}
-	if (*_op != 0)
-	{
-		SYSLOG_W("KeyOp remained unclear. OP = %d", *_op);
-	}
-	MENU_StatusFlagClr(menu_message_buttonOp);
-	MENU_StatusFlagSet(menu_message_printDisp); // FIXME: flag should only be set on display chang.
-}
 
 void MENU_KeypadSignal(menu_keyOp_t _op)
 {
@@ -301,10 +236,10 @@ menu_list_t *MENU_DirGetList(const char *str)
         for(uint32_t i = 0; i < currDirList->listNum; ++i)
         {
             menu_itemIfce_t *it = currDirList->menu[i];
-            if(it->type == menuType && 0 == strcmp(it->nameStr, pch))
+            if(it->adapter == &menu_itemAdapter_menuType && 0 == strcmp(it->nameStr, pch))
             {
                 isFound = true;
-                currDirList = it->handle.p_menuType->data;
+                currDirList = ((menu_item_menuHandle_t*)it->p_handle)->data;
                 break;
             }
         }
@@ -350,7 +285,7 @@ void MENU_Data_NvmSave(int32_t _region)
 	        MENU_ItemGetData(thisItem, &dataBuf);
 			SYSLOG_D("Get Data.  menu: %-16.16s addr: %-4.4d data: 0x%-8.8x .", dataBuf.nameStr, thisItem->saveAddr, dataBuf.data);
 			MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
-			MENU_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
+			MENU_PORT_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
 	    }
 	}while(kStatus_Success == MENU_IteratorIncrease(iter));
 	SYSLOG_I("Global Data End");
@@ -370,7 +305,7 @@ void MENU_Data_NvmSave(int32_t _region)
 	        SYSLOG_D("Get Data.  menu: %-16.16s addr: %-4.4d data: 0x%-8.8x .", dataBuf.nameStr, thisItem->saveAddr, dataBuf.data);
 			MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
 			MENU_KVDB_KeyAppendRegionNum(regKeyStr, _region);
-			MENU_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
+			MENU_PORT_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
 	    }
 	}while(kStatus_Success == MENU_IteratorIncrease(iter));
 	SYSLOG_I("Region %d Data End.", menu_currRegionNum[0]);
@@ -398,7 +333,7 @@ void MENU_Data_NvmRead(int32_t _region)
 	    if (thisItem->pptFlag & menuItem_data_global && !(thisItem->pptFlag & menuItem_data_NoLoad))
 	    {
 			MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
-			MENU_KVDB_ReadValue(regKeyStr, &dataBuf, sizeof(menu_nvmData_t));
+			MENU_PORT_KVDB_ReadValue(regKeyStr, &dataBuf, sizeof(menu_nvmData_t));
 	        SYSLOG_D("Get Flash. menu: %-16.16s addr: %-4.4d data: 0x%-8.8x .", dataBuf.nameStr, thisItem->saveAddr, dataBuf.data);
 	        MENU_ItemSetData(thisItem, &dataBuf);
 	        //SYSLOG_D("Set Data.  menu: %-16.16s addr: %-4.4d .", thisItem->nameStr, thisItem->saveAddr);
@@ -419,7 +354,7 @@ void MENU_Data_NvmRead(int32_t _region)
 	    {
 			MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
 			MENU_KVDB_KeyAppendRegionNum(regKeyStr, _region);
-			MENU_KVDB_ReadValue(regKeyStr, &dataBuf, sizeof(menu_nvmData_t));
+			MENU_PORT_KVDB_ReadValue(regKeyStr, &dataBuf, sizeof(menu_nvmData_t));
 	        SYSLOG_D("Get Flash. menu: %-16.16s addr: %-4.4d data: 0x%-8.8x .", dataBuf.nameStr, thisItem->saveAddr, dataBuf.data);
 	        MENU_ItemSetData(thisItem, &dataBuf);
 	        //SYSLOG_D("Set Data.  menu: %-16.16s addr: %-4.4d .", thisItem->nameStr, thisItem->saveAddr);
@@ -444,7 +379,7 @@ void MENU_Data_NvmSaveRegionConfig(void)
 	MENU_ItemGetData(thisItem, &dataBuf);
 	char regKeyStr[MENU_KVDB_REG_SIZE];
 	MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
-	MENU_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
+	MENU_PORT_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
 	SYSLOG_I("Save region config complete");
 }
 void MENU_Data_NvmSaveRegionConfig_Boxed(menu_keyOp_t *const _op)
@@ -460,7 +395,7 @@ void MENU_Data_NvmReadRegionConfig(void)
 	menu_itemIfce_t *thisItem = MENU_DirGetItem(MENU_DirGetList("/MenuManager"), menu_itemNameStr_RegnSel);
 	char regKeyStr[MENU_KVDB_REG_SIZE];
 	MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
-	MENU_KVDB_ReadValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
+	MENU_PORT_KVDB_ReadValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
 	MENU_ItemSetData(thisItem, &dataBuf);
 	SYSLOG_I("Read region config complete");
 }
@@ -524,4 +459,3 @@ void MENU_Resume(void)
 
 /* @} */
 
-#endif // ! HITSIC_USE_APP_MENU

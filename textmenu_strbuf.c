@@ -1,3 +1,5 @@
+#include "textmenu_strbuf.h"
+
 menu_strBuf_t menu_dispStrBuf;
 
 #if defined(TEXTMENU_USE_PALETTE) && (TEXTMENU_USE_PALETTE > 0)

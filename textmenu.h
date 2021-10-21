@@ -31,31 +31,32 @@
  * 
  */
 
-#pragma once
-#ifndef UTILITIES_APP_MENU_HPP
-#define UTILITIES_APP_MENU_HPP
+#ifndef TEXTMENU_H
+#define TEXTMENU_H
 //#include <hitsic_common.h>
 
 #include <textmenu_port.h>
+
+#include <sys_pitmgr.h>
+
+//#include "textmenu_def.h"
+
+#include "textmenu_core.h"
+#include "textmenu_list.h"
+#include "textmenu_iter.h"
+#include "textmenu_kvdb.h"
+
+#include "item/nullType.h"
+#include "item/variType.h"
+#include "item/varfType.h"
+#include "item/boolType.h"
+#include "item/procType.h"
+#include "item/menuType.h"
 
  /*!
   * @addtogroup menu
   * @{
   */
-
-#if defined(HITSIC_USE_APP_MENU) && (HITSIC_USE_APP_MENU > 0)
-
-#include "textmenu_def.h"
-
-#include "textmenu_item.h"
-#include "textmenu_list.h"
-
-#include "textmenu_list.h"
-
-#include "textmenu_iter.h"
-
-/** @brief : 软件版本 */
-#define APP_MENU_VERSION (HITSIC_MAKE_VERSION(1U, 0U, 0U))
 
 /**************************************
  ************ 菜单顶层操作接口 **********
@@ -77,22 +78,7 @@ void MENU_Init(void);
  */
 void MENU_DataSetUp(void);
 
-/**
- * @brief : 打印屏幕。
- * 该函数是整个菜单的屏幕打印入口，将自动根据菜单的状态打印屏幕。
- *
- * @param  {void} undefined :
- */
-void MENU_PrintDisp(void);
 
-/**
- * @brief : 响应按键操作。
- * 该函数是整个菜单的按键响应入口，将自动根据菜单的状态调用按键响应函数。
- * 该函数不会更新屏幕显示。
- *
- * @param  {void} undefined :
- */
-void MENU_KeyOp(menu_keyOp_t *const _op);
 
 /**
  * @brief 向菜单发送按键信号
@@ -206,9 +192,6 @@ void MENU_Suspend(void);
  */
 void MENU_Resume(void);
 
-
-#endif // ! HITSIC_USE_APP_MENU
-
 /*! @} */
 
-#endif // ! UTILITIES_APP_MENU_HPP
+#endif // ! TEXTMENU_H

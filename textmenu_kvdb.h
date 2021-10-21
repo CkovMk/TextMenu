@@ -1,23 +1,33 @@
-#ifndef UTILITIES_APP_MENU_NVM_HPP
-#define UTILITIES_APP_MENU_NVM_HPP
+#ifndef TEXTMENU_KVDB_H
+#define TEXTMENU_KVDB_H
+
 
 #include "textmenu_port.h"
 #if defined(TEXTMENU_USE_KVDB) && (TEXTMENU_USE_KVDB > 0)
-#include <textmenu_def.h>
+#include <stdint.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
+
+#include "textmenu_core.h"
+#include "textmenu_item.h"
+#include "textmenu_iter.h"
 /*!
  * @addtogroup menu_kvdb
  * @{
  */
 
-typedef struct _menu_nvmData_t
-{
-    uint32_t head;
-    char nameStr[MENU_NAME_STR_SIZE];
-    uint32_t type;
-    uint32_t data;
-    uint32_t tail;
-} menu_nvmData_t;
+/**
+ * @brief : 键值数据库接口前置定义
+ */
+
+status_t MENU_PORT_KVDB_GetSize(char const *_key, uint32_t *_size);
+
+status_t MENU_PORT_KVDB_ReadValue(char const *_key, void *_data , uint32_t _size);
+
+status_t MENU_PORT_KVDB_SaveValue(char const *_key, void const *_data, uint32_t _size);
+
+status_t MENU_PORT_KVDB_DeltValue(char const *_key);
 
 /**
  * @brief 元数据键值。
@@ -130,4 +140,4 @@ status_t MENU_KVDB_RegistrySave(void *_data, uint32_t _size);
 
 #endif // ! TEXTMENU_USE_KVDB
 
-#endif // ! UTILITIES_APP_MENU_NVM_HPP
+#endif // ! TEXTMENU_KVDB_H

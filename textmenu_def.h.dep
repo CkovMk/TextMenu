@@ -1,0 +1,52 @@
+#ifndef TEXTMENUMENU_DEF_H
+#define TEXTMENUMENU_DEF_H
+//#include <hitsic_common.h>
+
+#if defined(HITSIC_USE_APP_MENU) && (HITSIC_USE_APP_MENU > 0)
+
+/*!
+ * @addtogroup menu_def
+ * @{
+ */
+
+#include <inc_stdlib.h>
+#include <app_menu_port.h>
+#include <sys_pitmgr.h>
+
+
+
+
+
+
+
+
+
+/******************************************
+ ************菜单项类型及变量声明 **********
+ ******************************************/
+
+
+
+
+
+
+
+/**
+ * MENU
+ */
+
+
+
+
+
+
+
+
+
+
+
+/* @} */
+
+#endif // ! HITSIC_USE_APP_MENU
+
+#endif // ! TEXTMENUMENU_DEF_H

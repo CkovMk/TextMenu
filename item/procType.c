@@ -1,3 +1,9 @@
+#include "procType.h"
+
+#define SYSLOG_TAG  ("MENU.ITEM")
+#define SYSLOG_LVL  (TEXTMENU_ITEM_LOG_LVL)
+#include <inc_syslog.h>
+
 /**
  * @brief : 函数类型菜单项的操作句柄及操作函数。
  */
@@ -15,8 +21,9 @@ const menu_itemAdapter_t menu_itemAdapter_procType =
 void MENU_ItemConstruct_procType(menu_itemIfce_t *_item, void *_data)
 {
     _item->adapter = &menu_itemAdapter_procType;
-    _item->handle.p_procType = (menu_item_procHandle_t*)malloc(sizeof(menu_item_procHandle_t));
-    _item->handle.p_procType->data = (menu_itemProcHandler_t)_data;
+    _item->p_handle = malloc(sizeof(menu_item_procHandle_t));
+    menu_item_procHandle_t *p_procType = (menu_item_procHandle_t*)(_item->p_handle);
+    p_procType->data = (menu_itemProcHandler_t)_data;
 }
 void MENU_ItemGetData_procType(menu_itemIfce_t *_item, void *_data)
 {
@@ -31,7 +38,7 @@ void MENU_ItemPrintSlot_procType(menu_itemIfce_t *_item, uint32_t _slotNum)
 }
 void MENU_ItemDirectKeyOp_procType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 {
-    menu_item_procHandle_t *handle = _item->handle.p_procType;
+    menu_item_procHandle_t *p_procType = (menu_item_procHandle_t*)(_item->p_handle);
     switch (*_op)
     {
         case MENU_BUTTON_MAKE_OP(5wayStick_ok, shrt):
@@ -48,11 +55,11 @@ void MENU_ItemDirectKeyOp_procType(menu_itemIfce_t *_item, menu_keyOp_t *const _
 //used when in menuItem
 void MENU_ItemPrintDisp_procType(menu_itemIfce_t *_item)
 {
-    menu_item_procHandle_t *handle = _item->handle.p_procType;
+    menu_item_procHandle_t *p_procType = (menu_item_procHandle_t*)(_item->p_handle);
     if(_item->pptFlag & menuItem_proc_uiDisplay)    //FIXME: rework this logic
     {
         //menu_keyOp_t op_temp = MENU_BUTTON_MAKE_OP(5wayStick_nl, disp);
-        handle->data(NULL);
+        p_procType->data(NULL);
         return;
     }
     else
@@ -70,7 +77,7 @@ void MENU_ItemPrintDisp_procType(menu_itemIfce_t *_item)
 }
 void MENU_ItemKeyOp_procType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 {
-    menu_item_procHandle_t *handle = _item->handle.p_procType;
+    menu_item_procHandle_t *p_procType = (menu_item_procHandle_t*)(_item->p_handle);
     switch (*_op)
     {
     case MENU_BUTTON_MAKE_OP(5wayStick_ok, long):
@@ -78,7 +85,7 @@ void MENU_ItemKeyOp_procType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         *_op = 0U;
         break;
     default:
-        handle->data(_op);
+        p_procType->data(_op);
         if(_item->pptFlag & menuItem_proc_runOnce)
         {
             menu_currItem = NULL;

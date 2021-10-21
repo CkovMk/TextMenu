@@ -1,3 +1,9 @@
+#include "nullType.h"
+
+#define SYSLOG_TAG  ("MENU.ITEM")
+#define SYSLOG_LVL  (TEXTMENU_ITEM_LOG_LVL)
+#include <inc_syslog.h>
+
 /**
  * @brief : 占位类型菜单项的操作句柄及操作函数。
  */
@@ -14,8 +20,9 @@ const menu_itemAdapter_t menu_itemAdapter_nullType =
 void MENU_ItemConstruct_nullType(menu_itemIfce_t *_item, void *_data)
 {
     _item->adapter = &menu_itemAdapter_nullType;
-    _item->handle.p_nullType = (menu_item_nullHandle_t*)malloc(sizeof(menu_item_nullHandle_t));
-    _item->handle.p_nullType->data = _data;
+    _item->p_handle = malloc(sizeof(menu_item_nullHandle_t));
+    menu_item_nullHandle_t *p_nullType = (menu_item_nullHandle_t*)(_item->p_handle);
+    p_nullType->data = _data;
 }
 void MENU_ItemGetData_nullType(menu_itemIfce_t *_item, void *_data)
 {
