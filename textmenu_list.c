@@ -79,12 +79,13 @@ void MENU_ListPrintDisp(menu_list_t *_list)
 
 void MENU_ListKeyOp(menu_list_t *_list, menu_keyOp_t *const _op)
 {
+	extern menu_list_t *menu_currList;
+    extern menu_list_t *menu_menuRoot;
     switch (*_op)
     {
     case MENU_BUTTON_MAKE_OP(5wayStick_ok, long):
         //return
-        extern menu_list_t *menu_currList;
-        extern menu_list_t *menu_menuRoot;
+
         if (menu_currList != menu_menuRoot)
         {
             menu_currList = ((menu_item_menuHandle_t*)(_list->menu[0]->p_handle))->data;
@@ -134,13 +135,13 @@ menu_list_t *MENU_DirGetList(const char *str)
     /** 识别路径首字符 */
     if(str[0] != '/')
     {
-        return nullptr;
+        return NULL;
     }
     /** 字符串长度保护 */
     uint32_t str_length = strlen(str);
     if(str_length > 256)
     {
-        return nullptr;
+        return NULL;
     }
     /** 环境准备 */
     char *str_copy = (char*)malloc(str_length + 1U);
@@ -149,7 +150,7 @@ menu_list_t *MENU_DirGetList(const char *str)
     extern menu_list_t *menu_menuRoot;
     menu_list_t *currDirList = menu_menuRoot;
     /** 启动识别 */
-    while(pch != nullptr)
+    while(pch != NULL)
     {
         bool isFound = false;
         for(uint32_t i = 0; i < currDirList->listNum; ++i)
@@ -167,7 +168,7 @@ menu_list_t *MENU_DirGetList(const char *str)
             free(str_copy);
             return NULL;
         }
-        pch = strtok(nullptr, "/");
+        pch = strtok(NULL, "/");
     }
     free(str_copy);
     return currDirList;
@@ -185,5 +186,5 @@ menu_itemIfce_t *MENU_DirGetItem(const menu_list_t *dir, const char *str)
             return it;
         }
     }
-    return nullptr;
+    return NULL;
 }

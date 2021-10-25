@@ -18,7 +18,7 @@ const menu_itemAdapter_t menu_itemAdapter_variType =
     .ItemKeyOp = MENU_ItemKeyOp_variType,
 };
     
-const int32_t menu_itemAdjustLut[] =
+const int32_t variAdjustLut[6] =
 { 1, 10, 100, 1000, 10000, 100000 };
 
 extern menu_itemIfce_t *menu_currItem;
@@ -279,7 +279,7 @@ void MENU_ItemKeyOp_variType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         }
         else
         {
-            p_variType->v += menu_itemAdjustLut[p_variType->cur];
+            p_variType->v += variAdjustLut[p_variType->cur];
         }
         *_op = 0;
         break;
@@ -300,7 +300,7 @@ void MENU_ItemKeyOp_variType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         }
         else
         {
-            p_variType->v -= menu_itemAdjustLut[p_variType->cur];
+            p_variType->v -= variAdjustLut[p_variType->cur];
         }
         *_op = 0;
         break;

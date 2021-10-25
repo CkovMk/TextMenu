@@ -18,13 +18,13 @@ extern menu_list_t *menu_currList;             ///< 状态变量：指向当前�
 extern menu_itemIfce_t *menu_currItem;         ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
 extern menu_list_t *menu_menuRoot;             ///< 根菜单指针。
 extern menu_list_t *menu_manageList;           ///< 管理菜单指针。
-extern int32_t menu_currRegionNum[3];    ///< 当前局部存储区号
 extern int32_t menu_statusFlag;                ///< 状态标志位
 /**
  * @ }
  */
 
- const char menu_itemNameStr_RegnSel[MENU_NAME_STR_SIZE] = {'R','e','g','n','S','e','l','(','0','-',('0' + TEXTMENU_NVM_REGION_CNT - 1),')','\0'};
+const char menu_itemNameStr_RegnSel[MENU_NAME_STR_SIZE] = {'R','e','g','n','S','e','l','(','0','-',('0' + TEXTMENU_NVM_REGION_CNT - 1),')','\0'};
+int32_t menu_currRegionNum[3] = { 0, 0, TEXTMENU_NVM_REGION_CNT - 1 };    ///< 当前局部存储区号
 
 /*!
  * @addtogroup menu_kvdb
