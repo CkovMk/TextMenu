@@ -18,7 +18,7 @@ const menu_itemAdapter_t menu_itemAdapter_varfType =
     .ItemKeyOp = MENU_ItemKeyOp_varfType,
 };
 
-const int32_t menu_itemAdjustLut[] =
+const int32_t varfAdjustLut[6] =
 { 1, 10, 100, 1000, 10000, 100000 };
 
 extern menu_itemIfce_t *menu_currItem;
@@ -277,7 +277,7 @@ void MENU_ItemKeyOp_varfType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         }
         else
         {
-            p_varfType->v += menu_itemAdjustLut[p_varfType->cur];
+            p_varfType->v += varfAdjustLut[p_varfType->cur];
         }
         *_op = 0;
         break;
@@ -298,7 +298,7 @@ void MENU_ItemKeyOp_varfType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         }
         else
         {
-            p_varfType->v -= menu_itemAdjustLut[p_varfType->cur];
+            p_varfType->v -= varfAdjustLut[p_varfType->cur];
         }
         *_op = 0;
         break;

@@ -46,13 +46,7 @@ menu_list_t *menu_currList;             ///< 状态变量：指向当前所在�
 menu_itemIfce_t *menu_currItem;         ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
 menu_list_t *menu_menuRoot;             ///< 根菜单指针。
 menu_list_t *menu_manageList;           ///< 管理菜单指针。
-int32_t menu_currRegionNum[3] = { 0, 0, TEXTMENU_NVM_REGION_CNT - 1 };    ///< 当前局部存储区号
 int32_t menu_statusFlag;                ///< 状态标志位
-
-
-
-
-
 
 volatile uint32_t menu_suspendCnt = 0U;
 
