@@ -32,17 +32,64 @@ void MENU_ItemConstruct_boolType(menu_itemIfce_t *_item, void *_data)
 }
 void MENU_ItemGetData_boolType(menu_itemIfce_t *_item, void *_data)
 {
+	menu_item_boolHandle_t *p_boolType = (menu_item_boolHandle_t*)(_item->p_handle);
+	*(bool *)_data = *(p_boolType->data);
 }
 void MENU_ItemSetData_boolType(menu_itemIfce_t *_item, void *_data)
 {
+	menu_item_boolHandle_t *p_boolType = (menu_item_boolHandle_t*)(_item->p_handle);
+	*(p_boolType->data) = *(bool *)_data;
+	SYSLOG_V("boolType Data Updated %12.12d", *(p_boolType->data));
 }
 //used when in menuList
 void MENU_ItemPrintSlot_boolType(menu_itemIfce_t *_item, uint32_t _slotNum)
 {
-    snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " bool Type - - - - ");
+	menu_item_boolHandle_t *p_boolType = (menu_item_boolHandle_t*)(_item->p_handle);
+	if(*(p_boolType->data))
+	{
+		menu_dispStrBuf.strbuf[_slotNum][snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " %-12.12s      T", _item->nameStr)] = ' ';
+	}
+	else
+	{
+		menu_dispStrBuf.strbuf[_slotNum][snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " %-12.12s      F", _item->nameStr)] = ' ';
+	}
 }
 void MENU_ItemDirectKeyOp_boolType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 {
+	menu_item_boolHandle_t *p_boolType = (menu_item_boolHandle_t*)(_item->p_handle);
+	switch (*_op)
+	{
+		case MENU_BUTTON_MAKE_OP(5wayStick_ok, shrt):
+		{
+			*_op = 0;
+			break;
+		}
+		case MENU_BUTTON_MAKE_OP(5wayStick_lf, shrt):
+		case MENU_BUTTON_MAKE_OP(5wayStick_lf, long):
+		case MENU_BUTTON_MAKE_OP(5wayStick_lf, lrpt):
+		{
+			if (!(_item->pptFlag & (menuItem_data_ROFlag | menuItem_disp_noPreview)))
+			{
+				*(p_boolType->data) = !(*p_boolType->data);
+			}
+			*_op = 0;
+			break;
+		}
+		case MENU_BUTTON_MAKE_OP(5wayStick_rt, shrt):
+		case MENU_BUTTON_MAKE_OP(5wayStick_rt, long):
+		case MENU_BUTTON_MAKE_OP(5wayStick_rt, lrpt):
+		{
+			if (!(_item->pptFlag & (menuItem_data_ROFlag | menuItem_disp_noPreview)))
+			{
+				*(p_boolType->data) = !(*p_boolType->data);
+			}
+			*_op = 0;
+			break;
+		}
+		default:
+		//appui_menu_t::getInstance().currItem = bool;
+		break;
+	}
 }
 //used when in menuItem
 void MENU_ItemPrintDisp_boolType(menu_itemIfce_t *_item)
