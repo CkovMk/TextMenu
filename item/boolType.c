@@ -45,14 +45,45 @@ void MENU_ItemSetData_boolType(menu_itemIfce_t *_item, void *_data)
 void MENU_ItemPrintSlot_boolType(menu_itemIfce_t *_item, uint32_t _slotNum)
 {
 	menu_item_boolHandle_t *p_boolType = (menu_item_boolHandle_t*)(_item->p_handle);
-	if(*(p_boolType->data))
+	char dataStr[5] = "(=O)";
+
+
+	if (!(_item->pptFlag & (menuItem_data_ROFlag)))
 	{
-		menu_dispStrBuf.strbuf[_slotNum][snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " %-12.12s      T", _item->nameStr)] = ' ';
+		if(*(p_boolType->data))
+		{
+			dataStr[0] = '(';
+			dataStr[1] = '=';
+			dataStr[2] = 'O';
+			dataStr[3] = ')';
+		}
+		else
+		{
+			dataStr[0] = '(';
+			dataStr[1] = 'X';
+			dataStr[2] = '=';
+			dataStr[3] = ')';
+		}
 	}
 	else
 	{
-		menu_dispStrBuf.strbuf[_slotNum][snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " %-12.12s      F", _item->nameStr)] = ' ';
+		if(*(p_boolType->data))
+		{
+			dataStr[0] = ' ';
+			dataStr[1] = '>';
+			dataStr[2] = 'O';
+			dataStr[3] = ' ';
+		}
+		else
+		{
+			dataStr[0] = ' ';
+			dataStr[1] = 'X';
+			dataStr[2] = '<';
+			dataStr[3] = ' ';
+		}
 	}
+
+	menu_dispStrBuf.strbuf[_slotNum][snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " %-12.12s   %4.4s", _item->nameStr, dataStr)] = ' ';
 }
 void MENU_ItemDirectKeyOp_boolType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 {
@@ -68,9 +99,9 @@ void MENU_ItemDirectKeyOp_boolType(menu_itemIfce_t *_item, menu_keyOp_t *const _
 		case MENU_BUTTON_MAKE_OP(5wayStick_lf, long):
 		case MENU_BUTTON_MAKE_OP(5wayStick_lf, lrpt):
 		{
-			if (!(_item->pptFlag & (menuItem_data_ROFlag | menuItem_disp_noPreview)))
+			if (!(_item->pptFlag & (menuItem_data_ROFlag)))
 			{
-				*(p_boolType->data) = !(*p_boolType->data);
+				*(p_boolType->data) = false;
 			}
 			*_op = 0;
 			break;
@@ -79,9 +110,9 @@ void MENU_ItemDirectKeyOp_boolType(menu_itemIfce_t *_item, menu_keyOp_t *const _
 		case MENU_BUTTON_MAKE_OP(5wayStick_rt, long):
 		case MENU_BUTTON_MAKE_OP(5wayStick_rt, lrpt):
 		{
-			if (!(_item->pptFlag & (menuItem_data_ROFlag | menuItem_disp_noPreview)))
+			if (!(_item->pptFlag & (menuItem_data_ROFlag)))
 			{
-				*(p_boolType->data) = !(*p_boolType->data);
+				*(p_boolType->data) = true;
 			}
 			*_op = 0;
 			break;
