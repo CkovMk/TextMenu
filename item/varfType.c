@@ -18,8 +18,7 @@ const menu_itemAdapter_t menu_itemAdapter_varfType =
     .ItemKeyOp = MENU_ItemKeyOp_varfType,
 };
 
-const int32_t menu_itemAdjustLut[] =
-{ 1, 10, 100, 1000, 10000, 100000 };
+extern const int32_t menu_itemAdjustLut[];
 
 extern menu_itemIfce_t *menu_currItem;
 extern menu_list_t *menu_currList;
