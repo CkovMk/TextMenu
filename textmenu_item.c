@@ -15,7 +15,8 @@
 uint32_t menu_itemCnt = 0;
 uint32_t menu_listCnt = 0;
 
-
+const int32_t menu_itemAdjustLut[] =
+{ 1, 10, 100, 1000, 10000, 100000 };
 
 
 /**

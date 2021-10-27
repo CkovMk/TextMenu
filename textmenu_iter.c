@@ -14,10 +14,10 @@ void MENU_IteratorSetup(menu_iterator_t *_iter)
 {
     SYSLOG_I("Iterator Reset.");
 
-    if(_iter->listQue != nullptr)
+    if(_iter->listQue != NULL)
     {
         free(_iter->listQue);
-        _iter->listQue = nullptr;
+        _iter->listQue = NULL;
     }
     _iter->listQue = (menu_list_t**)calloc(menu_listCnt, sizeof(menu_list_t *));
     memset(_iter->listQue, 0U, menu_listCnt * sizeof(menu_list_t *));
@@ -49,7 +49,7 @@ void MENU_IteratorDestruct(menu_iterator_t *_iter)
 {
     free(_iter->listQue);
     free(_iter);
-    _iter = nullptr;
+    _iter = NULL;
     SYSLOG_I("Iterator Destruction");
 }
 
@@ -94,7 +94,7 @@ status_t MENU_IteratorIncrease(menu_iterator_t *_iter)
     {
         ++(_iter->listNum);
         _iter->itemNum = 0U;
-        if(_iter->listNum == _iter->listQueSize ||_iter->listQue[_iter->listNum] == nullptr)
+        if(_iter->listNum == _iter->listQueSize ||_iter->listQue[_iter->listNum] == NULL)
         {
             SYSLOG_I("Iteration Ended.");
             return kStatus_Fail;

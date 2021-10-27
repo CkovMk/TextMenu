@@ -191,6 +191,8 @@ __WEAK void MENU_DataSetUp(void)
 	}
 	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(&menu_itemAdapter_varfType, &longname_f, "C.M.'s Birthday", 0, menuItem_data_ROFlag | menuItem_data_NoSave | menuItem_data_NoLoad | menuItem_disp_noPreview));
 	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(&menu_itemAdapter_variType, &forceSciData, "forceSci", 0, menuItem_data_ROFlag | menuItem_data_NoSave | menuItem_data_NoLoad | menuItem_disp_forceSci));
+	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(&menu_itemAdapter_varfType, &longname_f, "123", 0, menuItem_data_ROFlag | menuItem_data_NoSave | menuItem_data_NoLoad | menuItem_disp_noPreview));
+	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(&menu_itemAdapter_variType, &forceSciData, "fci", 0, menuItem_data_ROFlag | menuItem_data_NoSave | menuItem_data_NoLoad | menuItem_disp_forceSci));
 }
 
 
@@ -208,13 +210,13 @@ menu_list_t *MENU_DirGetList(const char *str)
     /** 识别路径首字符 */
     if(str[0] != '/')
     {
-        return nullptr;
+        return NULL;
     }
     /** 字符串长度保护 */
     uint32_t str_length = strlen(str);
     if(str_length > 256)
     {
-        return nullptr;
+        return NULL;
     }
     /** 环境准备 */
     char *str_copy = (char*)malloc(str_length + 1U);
@@ -222,7 +224,7 @@ menu_list_t *MENU_DirGetList(const char *str)
     char *pch = strtok(str_copy, "/");
     menu_list_t *currDirList = menu_menuRoot;
     /** 启动识别 */
-    while(pch != nullptr)
+    while(pch != NULL)
     {
         bool isFound = false;
         for(uint32_t i = 0; i < currDirList->listNum; ++i)
@@ -240,7 +242,7 @@ menu_list_t *MENU_DirGetList(const char *str)
             free(str_copy);
             return NULL;
         }
-        pch = strtok(nullptr, "/");
+        pch = strtok(NULL, "/");
     }
     free(str_copy);
     return currDirList;
@@ -258,7 +260,7 @@ menu_itemIfce_t *MENU_DirGetItem(const menu_list_t *dir, const char *str)
             return it;
         }
     }
-    return nullptr;
+    return NULL;
 }
 
 #if defined(TEXTMENU_USE_KVDB) && (TEXTMENU_USE_KVDB > 0)
