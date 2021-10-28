@@ -114,7 +114,7 @@ void MENU_ListKeyOp(menu_list_t *_list, menu_keyOp_t *const _op)
         {
             ++_list->slct_p;
         }
-        while (_list->slct_p >= 6 && _list->disp_p < _list->slct_p - 6) //TODO: fix this. 6 is a magic number.
+        while (_list->slct_p > (TEXTMENU_DISPLAY_STRBUF_ROW - 1) && _list->disp_p <= _list->slct_p - (TEXTMENU_DISPLAY_STRBUF_ROW - 1))
         {
             ++_list->disp_p;
         }
