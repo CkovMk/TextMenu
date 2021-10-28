@@ -17,9 +17,9 @@
 /**
  * @brief : 菜单项类别函数命名宏定义
  */
-#define MENU_ITEM_MAKE_FUNCTION(funcName, type) (funcName##_##type)
-#define MENU_ITEM_MAKE_HANDLE(p_Item, type) ((p_Item->handle).p_##type##)
-#define MENU_ITEM_CALL_FUNCTION(funcName, type, p_Item, ...) (MENU_ITEM_MAKE_FUNCTION(funcName, type)(p_Item, ##__VA_ARGS__))
+// #define MENU_ITEM_MAKE_FUNCTION(funcName, type) (funcName##_##type)
+// #define MENU_ITEM_MAKE_HANDLE(p_Item, type) ((p_Item->handle).p_##type##)
+// #define MENU_ITEM_CALL_FUNCTION(funcName, type, p_Item, ...) (MENU_ITEM_MAKE_FUNCTION(funcName, type)(p_Item, ##__VA_ARGS__))
 
 /**
  * @brief : 菜单项分类调用switch-case语句的宏定义。

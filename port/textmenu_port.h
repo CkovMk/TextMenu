@@ -15,13 +15,10 @@
  * limitations under the License.
  */
 
-#ifndef D_MK66F18_APP_MENU_PORT_H
-#define D_MK66F18_APP_MENU_PORT_H
+#ifndef TEXTMENU_PORT_H
+#define TEXTMENU_PORT_H
 
 #include <inc_stdlib.h>
-#include "hitsic_common.h"
-
-#if defined(HITSIC_USE_APP_MENU) && (HITSIC_USE_APP_MENU > 0)
 
 #define kStatusGroup_MENU (205U)
 
@@ -29,6 +26,10 @@
  * @name 调试输出
  * @ {
  */
+
+#define TEXTMENU_USE_SYSLOG (1U)
+
+#if defined(TEXTMENU_USE_SYSLOG) && (TEXTMENU_USE_SYSLOG > 0)
 
 /*! 核心逻辑 LOG级别定义 */
 #define TEXTMENU_MAIN_LOG_LVL    (3U)
@@ -48,6 +49,12 @@
 /*! 菜单迭代 LOG级别定义 */
 #define TEXTMENU_ITER_LOG_LVL    (2U)
 
+#else
+
+#error Log output without SYSLOG is not supported yet!
+ // TODO
+#endif // ! TEXTMENU_USE_SYSLOG
+
 /* @ } */
 
 /** @brief : 根菜单最大容量 */
@@ -55,9 +62,10 @@
 
 /**
  * @name 事件任务接口
- * @brief : 菜单消息调用所使用的中断信息。
- * 可以使用任何当前工程中未使用的中断。注意中断号和中断服务函数
- * 必须对应。优先级不可过高。
+ * @brief : 菜单消息调用事件处理线程。
+ *
+ * 对于裸机，可以使用一个空闲的中断向量来模拟线程，但需要注意优先级不可过高。
+ * 对于RTOS，可以直接使用一个线程。
  * @ {
  */
 #include <MK66F18.h>
@@ -110,14 +118,6 @@ typedef uint8_t menu_dispColor_t;
 #endif // ! TEXTMENU_USE_PALETTE
 
 
-
-/**
- * @brief
- *
- * @param _buf
- */
-void MENU_PORT_DisplayOutput(menu_strBuf_t *_buf);
-
 /* @ } */
 
 /**
@@ -130,37 +130,14 @@ void MENU_PORT_DisplayOutput(menu_strBuf_t *_buf);
 #if defined(TEXTMENU_USE_KVDB) && (TEXTMENU_USE_KVDB > 0)
 
 /**
- * ********** NVM存储变量定义 **********
- */
-
-//gl = global
-//rg = region
-//addr = address
-
-/**
  * @brief : 局部存储 Region Storage
  */
 #define TEXTMENU_NVM_REGION_CNT (3) 					///< 局部存储区的数量
-
-/**
- * @brief : 键值数据库接口
- */
-
-
-status_t MENU_PORT_KVDB_GetSize(char const *_key, uint32_t *_size);
-
-status_t MENU_PORT_KVDB_ReadValue(char const *_key, void *_data , uint32_t _size);
-
-status_t MENU_PORT_KVDB_SaveValue(char const *_key, void const *_data, uint32_t _size);
-
-status_t MENU_PORT_KVDB_DeltValue(char const *_key);
 
 #endif // ! TEXTMENU_USE_KVDB
 
 /* @ } */
 
-#endif // ! HITSIC_USE_APP_MENU
 
-
-#endif // ! D_MK66F18_APP_MENU_PORT_H
+#endif // ! TEXTMENU_PORT_H
 

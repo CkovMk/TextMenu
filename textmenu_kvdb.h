@@ -135,7 +135,68 @@ status_t MENU_KVDB_RegistryRead(void *_data, uint32_t *_size);
  */
 status_t MENU_KVDB_RegistrySave(void *_data, uint32_t _size);
 
+/**
+ * @brief : 保存整个菜单到NVM。
+ *
+ * @param  {int32_t} _region :  所选择的局部存储区。
+ */
+void MENU_KVDB_DataSave(int32_t _region);
 
+/**
+ * @brief : 保存整个菜单到NVM。
+ * 该函数将使用全局变量 menu_currRegionNum[0] 中保存的局部存储区号。
+ * 
+ * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
+ */
+void MENU_KVDB_DataSave_Boxed(menu_keyOp_t *const _op);
+
+/**
+ * @brief : 从NVM读取整个菜单。
+ *
+ * @param  {int32_t} _region : 所选择的局部存储区。
+ */
+void MENU_KVDB_DataRead(int32_t _region);
+
+/**
+ * @brief : 从NVM读取整个菜单。
+ * 该函数将使用全局变量 menu_currRegionNum[0] 中保存的局部存储区号。
+ *
+ * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
+ */
+void MENU_KVDB_DataRead_Boxed(menu_keyOp_t *const _op);
+
+/**
+ * @brief : 保存当前局部存储区号到NVM。
+ * 该数值设置为不自动保存。
+ *
+ */
+void MENU_KVDB_DataSaveRegionConfig(void);
+
+/**
+ * @brief : 保存当前局部存储区号到NVM。
+ * 该数值设置为不自动保存。
+ *
+ * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
+ */
+void MENU_KVDB_DataSaveRegionConfig_Boxed(menu_keyOp_t *const _op);
+
+/**
+ * @brief : 从NVM中读取当前局部存储区号。
+ * 该数值设置为不自动保存。
+ *
+ */
+void MENU_KVDB_DataReadRegionConfig(void);
+
+/**
+ * @brief : 从NVM中读取当前局部存储区号。
+ * 该数值设置为不自动保存。
+ * 
+ * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
+ */
+void MENU_KVDB_DataReadRegionConfig_Boxed(menu_keyOp_t *const _op);
+
+
+void MENU_KVDB_MenuDataSetup(menu_list_t *_list);
 
 /* @} */
 
