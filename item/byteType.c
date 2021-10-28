@@ -30,6 +30,7 @@ void MENU_ItemGetContent_byteType(bool *const bits, uint8_t data)
 }
 void MENU_ItemSetContent_byteType(uint8_t *const data, bool const *bits)
 {
+    (*data) = 0U;
     for(uint32_t i = 0U; i < 8U; ++i)
     {
     	(*data) |= (bits[i] << i);
@@ -41,7 +42,7 @@ void MENU_ItemConstruct_byteType(menu_itemIfce_t *_item, void *_data)
     _item->adapter = &menu_itemAdapter_byteType;
     _item->p_handle = malloc(sizeof(menu_item_byteHandle_t));
     menu_item_byteHandle_t *p_byteType = (menu_item_byteHandle_t*)(_item->p_handle);
-    p_byteType->data = (int32_t*)_data;
+    p_byteType->data = (uint8_t*)_data;
     p_byteType->cur = 0;
     MENU_ItemGetContent_byteType(p_byteType->bits, *p_byteType->data);
 }
@@ -114,7 +115,6 @@ void MENU_ItemDirectKeyOp_byteType(menu_itemIfce_t *_item, menu_keyOp_t *const _
 void MENU_ItemPrintDisp_byteType(menu_itemIfce_t *_item)
 {
     menu_item_byteHandle_t *p_byteType = (menu_item_byteHandle_t*)(_item->p_handle);
-    MENU_ItemSetContent_byteType(&p_byteType->bData, p_byteType->bits);
 
     menu_dispStrBuf.strbuf[0][snprintf(menu_dispStrBuf.strbuf[0], TEXTMENU_DISPLAY_STRBUF_COL + 1, "##%-15.15s *", _item->nameStr)] = ' ';
     if (_item->pptFlag & menuItem_data_global)
@@ -150,7 +150,7 @@ void MENU_ItemPrintDisp_byteType(menu_itemIfce_t *_item)
         menu_dispStrBuf.strbuf[3][snprintf(menu_dispStrBuf.strbuf[3], TEXTMENU_DISPLAY_STRBUF_COL + 1, "  Adj: B-0x%2.2x (%3.3d)", p_byteType->bData, p_byteType->bData)] = ' ';
         menu_dispStrBuf.strbuf[4][snprintf(menu_dispStrBuf.strbuf[4], TEXTMENU_DISPLAY_STRBUF_COL + 1, "  Mod: %1.1d%1.1d%1.1d%1.1d%1.1d%1.1d%1.1d%1.1d",
         		p_byteType->bits[7],p_byteType->bits[6],p_byteType->bits[5],p_byteType->bits[4],p_byteType->bits[3],p_byteType->bits[2],p_byteType->bits[1],p_byteType->bits[0])] = ' ';
-        int32_t pos = 15 - p_byteType->cur;
+        int32_t pos = 14 - p_byteType->cur;
 #if defined(TEXTMENU_USE_PALETTE) && (TEXTMENU_USE_PALETTE > 0)
         menu_dispStrBuf.fcolor[4][pos] = TEXTMENU_DISPLAY_PAL_IDX_HLIGHT_F;
 	    menu_dispStrBuf.bcolor[4][pos] = TEXTMENU_DISPLAY_PAL_IDX_HLIGHT_B;
@@ -167,7 +167,7 @@ void MENU_ItemKeyOp_byteType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         case MENU_BUTTON_MAKE_OP(5wayStick_ok, shrt):
         if (!(_item->pptFlag & menuItem_data_ROFlag))
         {
-        	MENU_ItemSetContent_byteType(p_byteType->data, p_byteType->bits);
+            (*p_byteType->data) = (p_byteType->bData);
         }
         case MENU_BUTTON_MAKE_OP(5wayStick_ok, long):
         menu_currItem = NULL;
@@ -199,12 +199,14 @@ void MENU_ItemKeyOp_byteType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         case MENU_BUTTON_MAKE_OP(5wayStick_up, long):
         case MENU_BUTTON_MAKE_OP(5wayStick_up, lrpt):
         p_byteType->bits[p_byteType->cur] = true;
+        MENU_ItemSetContent_byteType(&p_byteType->bData, p_byteType->bits);
         *_op = 0;
         break;
         case MENU_BUTTON_MAKE_OP(5wayStick_dn, shrt):
         case MENU_BUTTON_MAKE_OP(5wayStick_dn, long):
         case MENU_BUTTON_MAKE_OP(5wayStick_dn, lrpt):
 		p_byteType->bits[p_byteType->cur] = false;
+        MENU_ItemSetContent_byteType(&p_byteType->bData, p_byteType->bits);
         *_op = 0;
         break;
         default:
