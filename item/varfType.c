@@ -175,7 +175,6 @@ void MENU_ItemDirectKeyOp_varfType(menu_itemIfce_t *_item, menu_keyOp_t *const _
 void MENU_ItemPrintDisp_varfType(menu_itemIfce_t *_item)
 {
     menu_item_varfHandle_t *p_varfType = (menu_item_varfHandle_t*)(_item->p_handle);
-    MENU_ItemSetContent_varfType(&p_varfType->bData, p_varfType->v, p_varfType->e);
 
     menu_dispStrBuf.strbuf[0][snprintf(menu_dispStrBuf.strbuf[0], TEXTMENU_DISPLAY_STRBUF_COL + 1, "##%-15.15s *", _item->nameStr)] = ' ';
     if (_item->pptFlag & menuItem_data_global)
@@ -227,7 +226,7 @@ void MENU_ItemKeyOp_varfType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         case MENU_BUTTON_MAKE_OP(5wayStick_ok, shrt):
         if (!(_item->pptFlag & menuItem_data_ROFlag))
         {
-            MENU_ItemSetContent_varfType(p_varfType->data, p_varfType->v, p_varfType->e);
+            (*p_varfType->data) = (p_varfType->bData);
             if (_item->pptFlag & menuItem_dataExt_HasMinMax)
             {
                 *p_varfType->data = (*(p_varfType->data) > *(p_varfType->data + 1)) ? (*p_varfType->data) : *(p_varfType->data + 1);
@@ -279,6 +278,7 @@ void MENU_ItemKeyOp_varfType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         {
             p_varfType->v += varfAdjustLut[p_varfType->cur];
         }
+        MENU_ItemSetContent_varfType(&p_varfType->bData, p_varfType->v, p_varfType->e);
         *_op = 0;
         break;
         case MENU_BUTTON_MAKE_OP(5wayStick_dn, shrt):
@@ -300,6 +300,7 @@ void MENU_ItemKeyOp_varfType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         {
             p_varfType->v -= varfAdjustLut[p_varfType->cur];
         }
+        MENU_ItemSetContent_varfType(&p_varfType->bData, p_varfType->v, p_varfType->e);
         *_op = 0;
         break;
         default:

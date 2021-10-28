@@ -17,7 +17,7 @@ const menu_itemAdapter_t menu_itemAdapter_variType =
     .ItemPrintDisp = MENU_ItemPrintDisp_variType,
     .ItemKeyOp = MENU_ItemKeyOp_variType,
 };
-    
+
 const int32_t variAdjustLut[6] =
 { 1, 10, 100, 1000, 10000, 100000 };
 
@@ -177,7 +177,6 @@ void MENU_ItemDirectKeyOp_variType(menu_itemIfce_t *_item, menu_keyOp_t *const _
 void MENU_ItemPrintDisp_variType(menu_itemIfce_t *_item)
 {
     menu_item_variHandle_t *p_variType = (menu_item_variHandle_t*)(_item->p_handle);
-    MENU_ItemSetContent_variType(&p_variType->bData, p_variType->v, p_variType->e);
 
     menu_dispStrBuf.strbuf[0][snprintf(menu_dispStrBuf.strbuf[0], TEXTMENU_DISPLAY_STRBUF_COL + 1, "##%-15.15s *", _item->nameStr)] = ' ';
     if (_item->pptFlag & menuItem_data_global)
@@ -229,7 +228,7 @@ void MENU_ItemKeyOp_variType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         case MENU_BUTTON_MAKE_OP(5wayStick_ok, shrt):
         if (!(_item->pptFlag & menuItem_data_ROFlag))
         {
-            MENU_ItemSetContent_variType(p_variType->data, p_variType->v, p_variType->e);
+            (*p_variType->data) = (p_variType->bData);
             if (_item->pptFlag & menuItem_dataExt_HasMinMax)
             {
                 *p_variType->data = (*(p_variType->data) > *(p_variType->data + 1)) ? (*p_variType->data) : *(p_variType->data + 1);
@@ -281,6 +280,7 @@ void MENU_ItemKeyOp_variType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         {
             p_variType->v += variAdjustLut[p_variType->cur];
         }
+        MENU_ItemSetContent_variType(&p_variType->bData, p_variType->v, p_variType->e);
         *_op = 0;
         break;
         case MENU_BUTTON_MAKE_OP(5wayStick_dn, shrt):
@@ -302,6 +302,7 @@ void MENU_ItemKeyOp_variType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         {
             p_variType->v -= variAdjustLut[p_variType->cur];
         }
+        MENU_ItemSetContent_variType(&p_variType->bData, p_variType->v, p_variType->e);
         *_op = 0;
         break;
         default:
