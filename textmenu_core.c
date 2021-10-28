@@ -49,7 +49,7 @@ void MENU_PrintDisp(void)
 	{
 		if('\0' != menu_dispStrBuf.strbuf[i][TEXTMENU_DISPLAY_STRBUF_COL])
 		{
-			SYSLOG_W("Print display: row %d overflow!", i);
+//			SYSLOG_W("Print display: row %d overflow!", i);
 	    	menu_dispStrBuf.strbuf[i][TEXTMENU_DISPLAY_STRBUF_COL] = '\0';
 		}
 	}
