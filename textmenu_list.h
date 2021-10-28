@@ -72,4 +72,23 @@ void MENU_ListPrintDisp(menu_list_t *_list);
  */
 void MENU_ListKeyOp(menu_list_t *_list, menu_keyOp_t *const _op);
 
+/**
+ * @brief : 根据字符串路径查找菜单列表。
+ *
+ * @param str : 字符串路径，以"/"分隔。注意：路径名应与跳转类型的菜单项
+ *              名称一致，而不是与菜单列表名称一致。事实上，建议将菜单列表
+ *              的名称与跳转类型菜单项的名称设为相同。
+ * @retval 返回找到的菜单列表的指针。如果未找到则返回nullptr。
+ */
+menu_list_t *MENU_DirGetList(const char *str);
+
+/**
+ * @brief : 在菜单列表中搜索给定名称的菜单项。
+ *
+ * @param dir : 菜单项所在的菜单列表指针。
+ * @param str : 菜单项名称字符串。
+ * @retval 返回找到的菜单列表的指针。如果未找到则返回nullptr。
+ */
+menu_itemIfce_t *MENU_DirGetItem(const menu_list_t *dir, const char *str);
+
 #endif // ! TEXTMENU_LIST_H
