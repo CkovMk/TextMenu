@@ -164,6 +164,8 @@ __WEAK void MENU_DataSetUp(void)
 	static float region_f = 32.768, global_f = 3.14, longname_f = 12.14;
 	static int32_t forceSciData = 202000;
 	static menu_list_t *testList;
+	static bool global_bool = true;
+	static uint8_t global_byte = 0x68U;
 	testList = MENU_ListConstruct("TestList", 50, menu_menuRoot);
 	assert(testList);
 	MENU_ListInsert(menu_menuRoot, MENU_ItemConstruct(&menu_itemAdapter_variType, &readonly_i, "readonly", 0, menuItem_data_ROFlag | menuItem_data_NoSave | menuItem_data_NoLoad));
@@ -171,6 +173,9 @@ __WEAK void MENU_DataSetUp(void)
 	{
 		MENU_ListInsert(testList, MENU_ItemConstruct(&menu_itemAdapter_variType, &global_i, "global_i", 10, menuItem_data_global));
 		MENU_ListInsert(testList, MENU_ItemConstruct(&menu_itemAdapter_varfType, &global_f, "global_f", 11, menuItem_data_global));
+		MENU_ListInsert(testList, MENU_ItemConstruct(&menu_itemAdapter_boolType, &global_bool, "gl_bool", 12, menuItem_data_global));
+		MENU_ListInsert(testList, MENU_ItemConstruct(&menu_itemAdapter_boolType, &global_bool, "glro_bool", 12, menuItem_data_global | menuItem_data_ROFlag));
+		MENU_ListInsert(testList, MENU_ItemConstruct(&menu_itemAdapter_byteType, &global_byte, "gl_byte", 13, menuItem_data_global));
 		MENU_ListInsert(testList, MENU_ItemConstruct(&menu_itemAdapter_variType, &region_i, "region_i", 1, menuItem_data_region));
 		MENU_ListInsert(testList, MENU_ItemConstruct(&menu_itemAdapter_varfType, &region_f, "region_f", 2, menuItem_data_region));
 	}
