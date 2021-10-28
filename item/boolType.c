@@ -45,7 +45,7 @@ void MENU_ItemSetData_boolType(menu_itemIfce_t *_item, void *_data)
 void MENU_ItemPrintSlot_boolType(menu_itemIfce_t *_item, uint32_t _slotNum)
 {
 	menu_item_boolHandle_t *p_boolType = (menu_item_boolHandle_t*)(_item->p_handle);
-	char dataStr[5] = "(=O)";
+	char dataStr[6] = "(==O)";
 
 
 	if (!(_item->pptFlag & (menuItem_data_ROFlag)))
@@ -54,15 +54,17 @@ void MENU_ItemPrintSlot_boolType(menu_itemIfce_t *_item, uint32_t _slotNum)
 		{
 			dataStr[0] = '(';
 			dataStr[1] = '=';
-			dataStr[2] = 'O';
-			dataStr[3] = ')';
+			dataStr[2] = '=';
+			dataStr[3] = 'O';
+			dataStr[4] = ')';
 		}
 		else
 		{
 			dataStr[0] = '(';
 			dataStr[1] = 'X';
-			dataStr[2] = '=';
-			dataStr[3] = ')';
+			dataStr[2] = '-';
+			dataStr[3] = '-';
+			dataStr[4] = ')';
 		}
 	}
 	else
@@ -70,9 +72,10 @@ void MENU_ItemPrintSlot_boolType(menu_itemIfce_t *_item, uint32_t _slotNum)
 		if(*(p_boolType->data))
 		{
 			dataStr[0] = ' ';
-			dataStr[1] = '>';
-			dataStr[2] = 'O';
-			dataStr[3] = ' ';
+			dataStr[1] = ' ';
+			dataStr[2] = '>';
+			dataStr[3] = 'O';
+			dataStr[4] = ' ';
 		}
 		else
 		{
@@ -80,10 +83,11 @@ void MENU_ItemPrintSlot_boolType(menu_itemIfce_t *_item, uint32_t _slotNum)
 			dataStr[1] = 'X';
 			dataStr[2] = '<';
 			dataStr[3] = ' ';
+			dataStr[4] = ' ';
 		}
 	}
 
-	menu_dispStrBuf.strbuf[_slotNum][snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " %-12.12s   %4.4s", _item->nameStr, dataStr)] = ' ';
+	menu_dispStrBuf.strbuf[_slotNum][snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " %-12.12s  %5.5s", _item->nameStr, dataStr)] = ' ';
 }
 void MENU_ItemDirectKeyOp_boolType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 {
