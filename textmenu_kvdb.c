@@ -6,6 +6,7 @@
 #include "item/variType.h"
 #include "item/varfType.h"
 #include "item/boolType.h"
+#include "item/byteType.h"
 #include "item/procType.h"
 #include "item/menuType.h"
 
