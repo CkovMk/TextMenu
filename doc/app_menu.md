@@ -6,39 +6,47 @@
 
 ## 简介
 
-APP_MENU隶属于HITSIC_MODULE的应用层，主要实现一个轻量级的调参菜单。该菜单可以支持32位有符号整数型、32位有符号浮点型变量的监视与调节，具有子菜单管理，且可以插入函数。每个菜单项的属性可以单独设置，数据可以在Flash等NVM中保存。该菜单还将成为数据日志和调试上位机访问各种数据的接口。
+TEXTMENU原隶属于HITSIC_MODULE的应用层，是一个轻量级的字符菜单。该菜单可以支持32位有符号整数型、32位有符号浮点型、布尔类型、uint8_t字节类型变量的监视与调节，具有子菜单功能，且可以插入可调用的函数。每个菜单项的属性可以单独设置。
 
 ### 组件
 
 #### 本体组件
 
-菜单通用类型定义（MENU_DEF），保存菜单公用的定义。
+TEXTMENU_ITEM：菜单项接口。
 
-菜单顶层逻辑（MENU），使用时只需包含此模块的头文件。其他头文件均被此文件包含。
+TEXTMENU_LIST：菜单列表。
 
-菜单按键处理逻辑（MENU_BUTTON）。
+TEXTMENU_CORE：菜单核心逻辑
 
-菜单非易失性存储（MENU_NVM），在K66平台指内部Flash。
+TEXTMENU_ITER：菜单项迭代器。封装对于整个菜单的宽度优先遍历。
 
-菜单类型逻辑（MENU_TYPE），包含各种类型的菜单项的处理逻辑、菜单项接口的处理逻辑、菜单列表的处理逻辑等。
+TEXTMENU_KEYOP：按键操作定义。
+
+TEXTMENU_STRBUF：字符缓存定义。
+
+TEXTMENU_KVDB：键值数据库接口。
 
 #### 环境依赖
 
-**此菜单依赖于：**
+**此菜单运行所需的资源：**
 
-PIT任务管理器（PITMGR），用于计时、延时和按键PIT管理；
-
-I/O中断管理器（EXTINT），用于管理按键外部中断；
-
-Flash读写驱动（FTFX_FLASH），可选，用于保存和读取菜单；
-
-屏幕驱动（DISP_SSD1306），用于屏幕显示输出；
-
-按键驱动（BUTTON），可选，用于管理按键功能；
-
-
+FIXME：补全这一部分
 
 ## 版本说明
+
+### v2.0.0
+
+by CkovMk 2021.12.01
+
+**改动说明**
+
+- 作为独立组件发布的第一个版本。
+- FIXME
+
+**开发计划**
+
+**已知问题**
+
 
 ### v1.0.0
 
@@ -244,7 +252,7 @@ by：CkovMk @hitsic 2019.11.02
 
 ## API文档
 
-### 顶层API（`MENU`）
+### 顶层API（`TEXTMENU`和`TEXTMENU_CORE`）
 
 - 菜单初始化
   
@@ -332,121 +340,6 @@ by：CkovMk @hitsic 2019.11.02
   menu_itemIfce_t *MENU_DirGetItem(const menu_list_t *dir, const char *str);
   ```
 
-  
-
-- 保存数据
-
-  ```C
-  /**
-   * @brief : 保存整个菜单到NVM。
-   *
-   * @param  {int32_t} _region :  所选择的局部存储区。
-   */
-  void MENU_Data_NvmSave(int32_t _region);
-  
-  /**
-   * @brief : 保存整个菜单到NVM。
-   * 该函数将使用全局变量 menu_currRegionNum 中保存的局部存储区号。
-   * 
-   * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
-   */
-  void MENU_Data_NvmSave_Boxed(menu_keyOp_t *const _op);
-  ```
-
-  保存菜单内的数据到NVM（非易失性存储）。仅在启用NVM功能时有效。本模组不会自动保存参数到NVM。在程序中，您应该调用`void MENU_Data_NvmSave(int32_t _region);`来执行保存操作。`int32_t menu_currRegionNum;`是当前菜单选中的局部存储区。您也可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `HITSIC_MENU_NVM_REGION_CNT`。`void MENU_Data_NvmSave_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据保存操作。
-
-  
-
-- 读取数据
-
-  ```C
-  /**
-   * @brief : 从NVM读取整个菜单。
-   *
-   * @param  {int32_t} _region : 所选择的局部存储区。
-   */
-  void MENU_Data_NvmRead(int32_t _region);
-  
-  /**
-   * @brief : 从NVM读取整个菜单。
-   * 该函数将使用全局变量 menu_currRegionNum 中保存的局部存储区号。
-   *
-   * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
-   */
-  void MENU_Data_NvmRead_Boxed(menu_keyOp_t *const _op);
-  ```
-
-  从NVM（非易失性存储）中读取数据到当前菜单。仅在启用NVM功能时有效。本模组不会自动读取参数到NVM。在程序中，您可以在初始化后立即调用`void MENU_Data_NvmSave(int32_t _region);`来执行读取操作。您可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `HITSIC_MENU_NVM_REGION_CNT`，或先读取NVM中保存的分区号，再执行读取操作。`void MENU_Data_NvmRead_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据读取操作。
-
-  **注意：菜单内的数据在NVM中按地址存储，且设置了校验机制。如果修改了菜单结构或菜单名称，可能会导致数据丢失。请在修改菜单结构前备份数据。**
-
-  
-
-- 读写局部存储区设置
-
-  ```c
-  /**
-   * @brief : 保存当前局部存储区号到NVM。
-   * 该数值设置为不自动保存。
-   * 
-   */
-  void MENU_Data_NvmSaveRegionConfig(void);
-  
-  /**
-   * @brief : 保存当前局部存储区号到NVM。
-   * 该数值设置为不自动保存。
-   *
-   * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
-   */
-  void MENU_Data_NvmSaveRegionConfig_Boxed(menu_keyOp_t *const _op);
-  ```
-
-  用于保存局部存储区编号到NVM（非易失性存储）。该变量不会随其他变量一起保存。`void MENU_Data_NvmSaveRegionConfig_Boxed(menu_keyOp_t *const _op);`函数用于通过菜单保存该编号。
-
-  
-
-- 在数据区之间拷贝数据（不可用）
-
-  ```C
-  /**
-   * @brief : 将一个局部存储区的数据拷贝到另一个局部存储区。
-   *
-   * @param  {int32_t} _srcRegion : 源存储序号。
-   * @param  {int32_t} _dstRegion : 目的存储区序号。
-   */
-  void MENU_Data_NvmCopy(int32_t _srcRegion, int32_t _dstRegion);
-  
-  /**
-   * @brief : 将一个局部存储区的数据拷贝到另一个局部存储区。
-   * 该函数将使用全局变量 menu_nvmCopySrc 和 menu_nvmCopyDst 中存储的值。
-   * 
-   * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
-   */
-  void MENU_Data_NvmCopy_Boxed(menu_keyOp_t *const _op);
-  ```
-
-- 读取NVM状态标志（不可用）
-
-  ```C
-  /**
-   * @brief : 读取NVM状态标志。
-   *
-   * @return {int32_t}        : 返回读取到的状态标志。
-   */
-  int32_t MENU_GetNvmStatus(void);
-  ```
-
-- 设置NVM状态标志（不可用）
-
-  ```C
-  /**
-   * @brief : 设置NVM状态标志。
-   *
-   * @param  {int32_t} _status : 要设置的状态标志。
-   */
-  void MENU_SetNvmStatus(int32_t _status);
-  ```
-
 - 菜单挂起与恢复
 
 	```c++
@@ -485,7 +378,7 @@ by：CkovMk @hitsic 2019.11.02
 
 
 
-### 菜单项（`MENU_ITEM`）
+### 菜单项（`TEXTMENU_ITEM`）
 
 菜单项是菜单管理的最小单元。
 
@@ -495,7 +388,7 @@ by：CkovMk @hitsic 2019.11.02
 	 * @brief : 菜单项结构体的构造函数。
 	 * 该函数分配一块内存，根据传入的参数填入内容，然后返回所产生的菜单项结构体指针。
 	 *
-	 * @param  {menu_itemType_t} _type : 要生成的菜单项类型。
+	 * @param  {menu_itemAdapter_t} _type : 通过菜单项类型的适配器，确定要生成的菜单项类型。
 	 * @param  {void*} _data           : 指向要操作的数据的指针。
 	 * @param  {char*} _nameStr        : 菜单项名称字符串，不超过最大长度，以'\0'结尾。
 	 * @param  {uint32_t} _saveAddr    : 变量要保存到的地址。对非数据类型及属性设置中只读的菜单项无效。
@@ -507,11 +400,11 @@ by：CkovMk @hitsic 2019.11.02
 	        const char *_nameStr, uint32_t _saveAddr, uint32_t _pptFlag);
 	```
 	
-	目前支持的菜单项类型有：分隔线/空类型（`nullType`）、`int32_t`参数型（`variType`）、`float`参数型（`varfType`）、菜单跳转型（`menuType`）、运行程序型（`procType`）。
+	目前支持的菜单项类型有：分隔线/空类型（`nullType`）、`int32_t`参数型（`variType`）、`float`参数型（`varfType`）、`bool`布尔类型、`uint8_t`按位字节型、菜单跳转型（`menuType`）、运行程序型（`procType`）。
 	
 	- `nullType`
 	
-	​	_type：menu_nulllType
+	​	_type：&menu_itemAdapter_nulllType
 	
 	​	_data：空指针。
 	
@@ -523,7 +416,7 @@ by：CkovMk @hitsic 2019.11.02
 	
 	- `variType`
 	
-	  _type：menu_variType
+	  _type：&menu_itemAdapter_variType
 	
 	  _data：指向要操作的int32_t型变量的指针。
 	
@@ -553,7 +446,7 @@ by：CkovMk @hitsic 2019.11.02
 	
 	- `varfType`
 	
-	  _type：varfType
+	  _type：&menu_itemAdapter_varfType
 	
 	  _data：指向要操作的float型变量的指针。
 	
@@ -563,9 +456,48 @@ by：CkovMk @hitsic 2019.11.02
 	
 	  _pptFlag：属性标志。多个互不冲突标志位用按位或`|`连接。支持的属性标志位与`variType`相同。
 	
+	- `boolType`
+	  
+      _type：&menu_itemAdapter_boolType
+	
+	  _data：指向要操作的bool型变量的指针。
+	
+	  _nameStr：显示在菜单列表和二级页面的名称。
+	
+	  _saveAddr：数据保存的地址号。同一数据区内的编号不能重复。
+	
+	  _pptFlag：属性标志。多个互不冲突标志位用按位或`|`连接。支持的属性标志位有
+	
+	  - `menuItem_data_global`：同`variType`。
+	
+	  - `menuItem_data_region`：同`variType`。
+	
+	  - `menuItem_data_ROFlag`：同`variType`。
+	  
+	    > 读写的布尔类型菜单项，在菜单内将显示为一个开关，真值时显示为`(==O)`，假值时显示为`(X==)`。
+	    > 只读的布尔类型菜单项，在菜单内将显示为一个符号，真值时显示为`  >O `，假值时显示为` X<  `。
+	
+	  - `menuItem_data_NoSave`：同`variType`。
+	
+	  - `menuItem_data_NoLoad`：同`variType`。
+	  
+	  > 注意：boolType目前没有二级页面，无法在菜单内查看存储区设置，也无法使用`menuItem_disp_noPreview`标志禁用菜单列表页面的数据显示。
+	  
+	- `byteType`
+	  
+	  _type：&menu_itemAdapter_byteType
+	
+	  _data：指向要操作的uint8_t型变量的指针。
+	
+	  _nameStr：显示在菜单列表和二级页面的名称。
+	
+	  _saveAddr：数据保存的地址号。同一数据区内的编号不能重复。
+	
+	  _pptFlag：属性标志。多个互不冲突标志位用按位或`|`连接。支持的属性标志位与`variType`相同。
+	
 	- `menuType`
 	
-	  _type：menuType
+	  _type：&menu_itemAdapter_menuType
 	
 	  _data：指向要跳转到的菜单列表的指针。
 	
@@ -577,7 +509,7 @@ by：CkovMk @hitsic 2019.11.02
 	
 	- `procType`
 	
-	  _type：procType
+	  _type：&menu_itemAdapter_procType
 	
 	  _data：指向要运行的程序的函数指针。该函数必须是`void (*)(menu_keyOp_t* cosnt)`类型。
 	
@@ -743,7 +675,7 @@ by：CkovMk @hitsic 2019.11.02
 
 菜单项迭代器封装了对菜单数据结构的宽度优先搜索，提供了一种简单快捷的遍历菜单中所有菜单项的方式。
 
-菜单项迭代器位于`APP_MENU_TYPE`中，包含以下API：
+菜单项迭代器位于`TEXTMENU_ITER`中，包含以下API：
 
 -  **初始化菜单迭代器。**
 	
@@ -1041,42 +973,123 @@ char menu_dispStrBuf[HITSIC_MENU_DISPLAY_STRBUF_ROW][HITSIC_MENU_DISPLAY_STRBUF_
 
 
 
-#### NVM存储
+#### KVDB键值数据库接口
 
-- NVM变量
+FIXME
 
-  - NVM存储结构体
 
-    ```c
-    typedef struct _menu_nvmData_t
-    {
-        uint32_t head;
-        char nameStr[MENU_NAME_STR_SIZE];
-        uint32_t type;
-        uint32_t data;
-        uint32_t tail;
-    }menu_nvmData_t;
-    ```
+- 保存数据
 
-  - NVM缓存管理
+  ```C
+  /**
+   * @brief : 保存整个菜单到NVM。
+   *
+   * @param  {int32_t} _region :  所选择的局部存储区。
+   */
+  void MENU_Data_NvmSave(int32_t _region);
+  
+  /**
+   * @brief : 保存整个菜单到NVM。
+   * 该函数将使用全局变量 menu_currRegionNum 中保存的局部存储区号。
+   * 
+   * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
+   */
+  void MENU_Data_NvmSave_Boxed(menu_keyOp_t *const _op);
+  ```
 
-		```c
-		/**
-		 * @brief : 菜单项写入缓存。
-		 * 当改写第N个扇区时，menu_nvm_cachedSector = N, menu_nvm_cache分配4KB缓存
-		 * 并读入第N扇区的所有内容。此时能且仅能修改第N扇区的内容。对第N扇区内容的修改
-		 * 将缓存至上述内存。
-		 */
-		extern uint8_t *menu_nvm_cache;
-		extern uint32_t menu_nvm_cachedSector;
-		```
+  保存菜单内的数据到NVM（非易失性存储）。仅在启用NVM功能时有效。本模组不会自动保存参数到NVM。在程序中，您应该调用`void MENU_Data_NvmSave(int32_t _region);`来执行保存操作。`int32_t menu_currRegionNum;`是当前菜单选中的局部存储区。您也可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `HITSIC_MENU_NVM_REGION_CNT`。`void MENU_Data_NvmSave_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据保存操作。
 
-    
+  
 
-- NVM存储接口（惰性缓存）
+- 读取数据
 
-  每个保存的菜单项都占用32个字节的Flash空间。在保存菜单数据时，为了节约NVM（一般是Flash存储器）的寿命，采用惰性缓存的方法：开辟一块与扇区大小相同的内存作为缓存，并开辟一个整型变量用于存储所缓存的扇区号。如要将数据写入地址 `Addr`，分三种情况：1. 如果 `Addr` 所在扇区已被缓存，则直接修改缓存区中对应位置的值。 2. 若 `Addr` 所在扇区未被缓存，且当前未缓存任何扇区，则缓存 `Addr` 所在扇区，执行情况1。 3. 若 `Addr` 所在扇区未被缓存，且当前已缓存其他扇区，则擦除已缓存扇区后将缓存写回该扇区，执行情况2。**注意：最后一次写NVM操作结束后，需要手动将已缓存扇区写回NVM。**
+  ```C
+  /**
+   * @brief : 从NVM读取整个菜单。
+   *
+   * @param  {int32_t} _region : 所选择的局部存储区。
+   */
+  void MENU_Data_NvmRead(int32_t _region);
+  
+  /**
+   * @brief : 从NVM读取整个菜单。
+   * 该函数将使用全局变量 menu_currRegionNum 中保存的局部存储区号。
+   *
+   * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
+   */
+  void MENU_Data_NvmRead_Boxed(menu_keyOp_t *const _op);
+  ```
 
+  从NVM（非易失性存储）中读取数据到当前菜单。仅在启用NVM功能时有效。本模组不会自动读取参数到NVM。在程序中，您可以在初始化后立即调用`void MENU_Data_NvmSave(int32_t _region);`来执行读取操作。您可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `HITSIC_MENU_NVM_REGION_CNT`，或先读取NVM中保存的分区号，再执行读取操作。`void MENU_Data_NvmRead_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据读取操作。
+
+  **注意：菜单内的数据在NVM中按地址存储，且设置了校验机制。如果修改了菜单结构或菜单名称，可能会导致数据丢失。请在修改菜单结构前备份数据。**
+
+  
+
+- 读写局部存储区设置
+
+  ```c
+  /**
+   * @brief : 保存当前局部存储区号到NVM。
+   * 该数值设置为不自动保存。
+   * 
+   */
+  void MENU_Data_NvmSaveRegionConfig(void);
+  
+  /**
+   * @brief : 保存当前局部存储区号到NVM。
+   * 该数值设置为不自动保存。
+   *
+   * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
+   */
+  void MENU_Data_NvmSaveRegionConfig_Boxed(menu_keyOp_t *const _op);
+  ```
+
+  用于保存局部存储区编号到NVM（非易失性存储）。该变量不会随其他变量一起保存。`void MENU_Data_NvmSaveRegionConfig_Boxed(menu_keyOp_t *const _op);`函数用于通过菜单保存该编号。
+
+  
+
+- 在数据区之间拷贝数据（不可用）
+
+  ```C
+  /**
+   * @brief : 将一个局部存储区的数据拷贝到另一个局部存储区。
+   *
+   * @param  {int32_t} _srcRegion : 源存储序号。
+   * @param  {int32_t} _dstRegion : 目的存储区序号。
+   */
+  void MENU_Data_NvmCopy(int32_t _srcRegion, int32_t _dstRegion);
+  
+  /**
+   * @brief : 将一个局部存储区的数据拷贝到另一个局部存储区。
+   * 该函数将使用全局变量 menu_nvmCopySrc 和 menu_nvmCopyDst 中存储的值。
+   * 
+   * @param {menu_keyOp_t* const} _op : 按键操作接口传入的按键操作
+   */
+  void MENU_Data_NvmCopy_Boxed(menu_keyOp_t *const _op);
+  ```
+
+- 读取NVM状态标志（不可用）
+
+  ```C
+  /**
+   * @brief : 读取NVM状态标志。
+   *
+   * @return {int32_t}        : 返回读取到的状态标志。
+   */
+  int32_t MENU_GetNvmStatus(void);
+  ```
+
+- 设置NVM状态标志（不可用）
+
+  ```C
+  /**
+   * @brief : 设置NVM状态标志。
+   *
+   * @param  {int32_t} _status : 要设置的状态标志。
+   */
+  void MENU_SetNvmStatus(int32_t _status);
+  ```
 
 
 ## 应用指南
