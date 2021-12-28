@@ -16,7 +16,7 @@
  */
 /**
  * @file 	:	app_menu.h
- * @author  :	Chekhov Mark/马奇科(qq:905497173)
+ * @author  :	Chekhov Mark<maqikemsft@outlook.com>
  * @version :	v0.1.4
  * 
  * @date 	:	v0.1-beta.0 2019.10.28
@@ -91,8 +91,6 @@ void MENU_Init(void);
  * @param  {void} undefined :
  */
 void MENU_DataSetUp(void);
-
-
 
 /**
  * @brief 向菜单发送按键信号
