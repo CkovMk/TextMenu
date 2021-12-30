@@ -78,7 +78,16 @@
 #define TEXTMENU_SERVICE_SEM_TAKE() NVIC_ClearPendingIRQ(TEXTMENU_SERVICE_IRQn)
 /* @ } */
 
+/**
+ * @name Feature flags
+ * @ {
+ */
 
+#ifndef TEXTMENU_FEATURE_EVENTCB
+#define TEXTMENU_FEATURE_EVENTCB (0U)
+#endif // ! TEXTMENU_FEATURE_EVENTCB
+
+/* @ } */
 
 /**
  * @name 屏幕打印接口

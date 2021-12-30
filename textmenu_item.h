@@ -95,9 +95,9 @@ typedef enum
     /** error mask */
 } menu_itemPropety_t;
 
-/**
- * @brief : 菜单项所支持的内容类型。
- */
+// /**
+//  * @brief : 菜单项所支持的内容类型。
+//  */
 //typedef enum
 //{
 //    nullType, // null type
@@ -109,6 +109,31 @@ typedef enum
 //} menu_itemType_t;
 
 
+#if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
+
+#define MENU_MAKE_ITEMEVENT(eventGroup, eventId) (eventGroup * 100 + eventId)
+
+typedef enum
+{
+    menu_itemEventGroup_Generic = 0U,
+    menu_itemEventGroup_listEvent = 1U,
+    menu_itemEventGroup_itemEvent = 2U,
+    menu_itemEventGroup_dataEvent = 3U,
+};
+typedef enum _menu_itemEvent
+{
+    menu_itemEvent_onListSelect = MENU_MAKE_ITEMEVENT(menu_itemEventGroup_listEvent, 0U),
+    menu_itemEvent_onListDeselect = MENU_MAKE_ITEMEVENT(menu_itemEventGroup_listEvent, 1U),
+
+    menu_itemEvent_onCmdEnter = MENU_MAKE_ITEMEVENT(menu_itemEventGroup_itemEvent, 0U),
+    menu_itemEvent_onCmdExit = MENU_MAKE_ITEMEVENT(menu_itemEventGroup_itemEvent, 1U),
+    
+    menu_itemEvent_onDataChange = MENU_MAKE_ITEMEVENT(menu_itemEventGroup_dataEvent, 0U),
+}menu_itemEvent_t;
+
+typedef (void)(*menu_itemEventHandler_t)(uint32_t _eventFlag, void *_userData);
+
+#endif // ! TEXTMENU_FEATURE_EVENTCB
 
 /** 前置定义 */
 typedef struct _menu_itemAdapter menu_itemAdapter_t;
@@ -133,6 +158,11 @@ typedef struct _menu_itemIfce
 //    } handle;
     void *p_handle;
     menu_itemAdapter_t const *adapter;  ///< 指向存放菜单项命令函数指针的结构体。参考C++虚表
+#if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
+    uint32_t eventFlag;
+    void *eventUserData;
+    menu_itemEventHandler_t eventHandler;
+#endif // ! TEXTMENU_FEATURE_EVENTCB
 } menu_itemIfce_t;
 
 struct _menu_itemAdapter
