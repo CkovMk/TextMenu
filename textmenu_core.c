@@ -15,8 +15,12 @@ extern menu_list_t *menu_currList;             ///< 状态变量：指向当前�
 extern menu_itemIfce_t *menu_currItem;         ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
 extern menu_list_t *menu_menuRoot;             ///< 根菜单指针。
 extern menu_list_t *menu_manageList;           ///< 管理菜单指针。
-extern int32_t menu_currRegionNum[3];    ///< 当前局部存储区号
+extern int32_t menu_currRegionNum[3];          ///< 当前局部存储区号
 extern int32_t menu_statusFlag;                ///< 状态标志位
+#if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
+extern menu_itemIfce_t *menu_eventCbItem[TEXTMENU_CONFIG_EVENTQ_LEN];      ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
+extern uint8_t menu_eventCbItemCnt;
+#endif // ! TEXTMENU_FEATURE_EVENTCB
 /**
  * @ }
  */
@@ -54,7 +58,6 @@ void MENU_PrintDisp(void)
 		}
 	}
 	MENU_PORT_DisplayOutput(&menu_dispStrBuf);
-	MENU_StatusFlagClr(menu_message_printDisp);
 }
 
 void MENU_KeyOp(menu_keyOp_t *const _op)
@@ -71,6 +74,5 @@ void MENU_KeyOp(menu_keyOp_t *const _op)
 	{
 		SYSLOG_W("KeyOp remained unclear. OP = %d", *_op);
 	}
-	MENU_StatusFlagClr(menu_message_buttonOp);
 	MENU_StatusFlagSet(menu_message_printDisp); // FIXME: flag should only be set on display chang.
 }

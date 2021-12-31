@@ -47,7 +47,10 @@ menu_itemIfce_t *menu_currItem;         ///< 状态变量：指向当前所在�
 menu_list_t *menu_menuRoot;             ///< 根菜单指针。
 menu_list_t *menu_manageList;           ///< 管理菜单指针。
 int32_t menu_statusFlag;                ///< 状态标志位
-
+#if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
+menu_itemIfce_t *menu_eventCbItem[TEXTMENU_CONFIG_EVENTQ_LEN];         ///< 状态变量：指向请求回调的菜单项。
+uint8_t menu_eventCbItemCnt;
+#endif // ! TEXTMENU_FEATURE_EVENTCB
 volatile uint32_t menu_suspendCnt = 0U;
 
 /**
@@ -66,6 +69,10 @@ void MENU_Init(void)
 	menu_currList = menu_menuRoot;
 	menu_currItem = NULL;
 	menu_statusFlag = 0;
+
+#if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
+	menu_eventCbItemCnt = 0U;
+#endif // ! TEXTMENU_FEATURE_EVENTCB
 
 	menu_manageList = MENU_ListConstruct("MenuManager", 21, menu_menuRoot);
 	assert(menu_manageList);
@@ -202,14 +209,26 @@ void MENU_PitIsr(void)
 
 void MENU_EventService(void)
 {
-	if (menu_statusFlag & menu_message_buttonOp)
+	if (MENU_StatusFlagCheck(menu_message_buttonOp))
 	{
 		//TEXTMENU_PRINTF("Verbose: MENU: Key %d pressed.\n", menu_keyOpBuff);
 		MENU_KeyOp(&menu_keyOpBuff);
+		MENU_StatusFlagClr(menu_message_buttonOp);
 	}
-	if (menu_statusFlag & menu_message_printDisp)
+#if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
+	for(int i = 0; i < menu_eventCbItemCnt, ++i)
+	{
+		uint32_t eventFlagClearMask = 0U;
+		(*menu_eventCbItem[i]->eventHandler)(menu_eventCbItem[i]->eventFlag, &eventFlagClearMask, menu_eventCbItem[i]->eventUserData);
+		menu_eventCbItem[i]->eventFlag &= (~eventFlagClearMask);
+		menu_eventCbItem[i] = NULL;
+	}
+	menu_eventCbItemCnt = 0U;
+#endif // ! TEXTMENU_FEATURE_EVENTCB
+	if (MENU_StatusFlagCheck(menu_message_printDisp))
 	{
 		MENU_PrintDisp();
+		MENU_StatusFlagClr(menu_message_printDisp);
 	}
 }
 

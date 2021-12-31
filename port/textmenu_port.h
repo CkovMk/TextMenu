@@ -89,6 +89,9 @@
 
 /* @ } */
 
+// FIXME
+#define TEXTMENU_CONFIG_EVENTQ_LEN (16U)
+
 /**
  * @name 屏幕打印接口
  * @ {
