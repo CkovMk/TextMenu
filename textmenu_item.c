@@ -24,7 +24,6 @@ uint32_t menu_listCnt = 0;
 
 menu_itemIfce_t *MENU_ItemConstruct(menu_itemAdapter_t const *_type, void *_data, const char *_nameStr, uint32_t _saveAddr, uint32_t _pptFlag)
 {
-
     menu_itemIfce_t *item;
     item = (menu_itemIfce_t*)calloc(1, sizeof(menu_itemIfce_t));
     assert(item);
@@ -34,6 +33,12 @@ menu_itemIfce_t *MENU_ItemConstruct(menu_itemAdapter_t const *_type, void *_data
     strncpy(item->nameStr, _nameStr, MENU_NAME_STR_SIZE);
     item->nameStr[MENU_NAME_STR_SIZE - 1] = '\0';
 
+#if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
+    item->eventEnable = 0U;
+    item->eventFlag = 0U;
+    item->eventUserData = NULL;
+    item->eventHandler = NULL;
+#endif // ! TEXTMENU_FEATURE_EVENTCB
 
     _type->ItemConstruct(item, _data);
     //MENU_ITEM_SWITCH_CASE(MENU_ItemConstruct, item, _data);
@@ -93,5 +98,22 @@ void MENU_ItemKeyOp(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
     _item->adapter->ItemKeyOp(_item, _op);
 }
 
+#if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
+
+
+bool MENU_ItemEventCbIsRequested(void)
+{
+	return 0U != menu_eventCbItemCnt;
+}
+
+void MENU_ItemRequestEventCb(menu_itemIfce_t *const _item, uint32_t const _event)
+{
+    assert(menu_eventCbItemCnt < TEXTMENU_CONFIG_EVENTQ_LEN);
+    _item->eventFlag |= _event;
+    menu_eventCbItem[menu_eventCbItemCnt++] = _item;
+    //FIXME: Atomic operation! should disable event thread.
+}
+
+#endif // ! TEXTMENU_FEATURE_EVENTCB
 
 /* @} */

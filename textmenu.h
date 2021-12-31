@@ -68,6 +68,10 @@ extern menu_itemIfce_t *menu_currItem;         ///< 状态变量：指向当前�
 extern menu_list_t *menu_menuRoot;             ///< 根菜单指针。
 extern menu_list_t *menu_manageList;           ///< 管理菜单指针。
 extern int32_t menu_statusFlag;                ///< 状态标志位
+#if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
+extern menu_itemIfce_t *menu_eventCbItem;      ///< 状态变量：指向请求回调的菜单项。
+extern uint8_t menu_eventCbItemCnt;
+#endif // ! TEXTMENU_FEATURE_EVENTCB
 /**
  * @ }
  */

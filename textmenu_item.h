@@ -14,57 +14,57 @@
  * @{
  */
 
-/**
- * @brief : 菜单项类别函数命名宏定义
- */
+// /**
+//  * @brief : 菜单项类别函数命名宏定义
+//  */
 // #define MENU_ITEM_MAKE_FUNCTION(funcName, type) (funcName##_##type)
 // #define MENU_ITEM_MAKE_HANDLE(p_Item, type) ((p_Item->handle).p_##type##)
 // #define MENU_ITEM_CALL_FUNCTION(funcName, type, p_Item, ...) (MENU_ITEM_MAKE_FUNCTION(funcName, type)(p_Item, ##__VA_ARGS__))
 
-/**
- * @brief : 菜单项分类调用switch-case语句的宏定义。
- * 使用此语句简化menu_itemIfce操作函数内的switch-case调用。
- *
- * @param funcName 	: 要分类切换的函数名称。
- * @param p_Item 	: 指向menu_itemIfce_t结构体的指针。
- * @param ... 		: 除上述指针以外的其他参数。没有其他参数则不写。
- *
- * @example :
- *
- * 		void MENU_ItemKeyOp(menu_itemIfce_t *_item, menu_keyOp_t * const _op)
- * 		{
- * 			MENU_ITEM_SWITCH_CASE(MENU_ItemKeyOp, _item, _op);
- * 		}
- */
-//#define MENU_ITEM_SWITCH_CASE(funcName, p_Item, ...)                        \
-//    switch (p_Item->type)                                                   \
-//    {                                                                       \
-//    case nullType:                                                          \
-//        MENU_ITEM_CALL_FUNCTION(funcName, nullType, p_Item, ##__VA_ARGS__); \
-//        break;                                                              \
-//    case variType:                                                          \
-//        MENU_ITEM_CALL_FUNCTION(funcName, variType, p_Item, ##__VA_ARGS__); \
-//        break;                                                              \
-//    case varfType:                                                          \
-//        MENU_ITEM_CALL_FUNCTION(funcName, varfType, p_Item, ##__VA_ARGS__); \
-//        break;                                                              \
-//    case boolType:                                                          \
-//        MENU_ITEM_CALL_FUNCTION(funcName, boolType, p_Item, ##__VA_ARGS__); \
-//        break;                                                              \
-//    case procType:                                                          \
-//        MENU_ITEM_CALL_FUNCTION(funcName, procType, p_Item, ##__VA_ARGS__); \
-//        break;                                                              \
-//    case menuType:                                                          \
-//        MENU_ITEM_CALL_FUNCTION(funcName, menuType, p_Item, ##__VA_ARGS__); \
-//        break;                                                              \
-//    default:                                                                \
-//        break;                                                              \
-//    }
+// /**
+//  * @brief : 菜单项分类调用switch-case语句的宏定义。
+//  * 使用此语句简化menu_itemIfce操作函数内的switch-case调用。
+//  *
+//  * @param funcName 	: 要分类切换的函数名称。
+//  * @param p_Item 	: 指向menu_itemIfce_t结构体的指针。
+//  * @param ... 		: 除上述指针以外的其他参数。没有其他参数则不写。
+//  *
+//  * @example :
+//  *
+//  * 		void MENU_ItemKeyOp(menu_itemIfce_t *_item, menu_keyOp_t * const _op)
+//  * 		{
+//  * 			MENU_ITEM_SWITCH_CASE(MENU_ItemKeyOp, _item, _op);
+//  * 		}
+//  */
+// #define MENU_ITEM_SWITCH_CASE(funcName, p_Item, ...)                        \
+//     switch (p_Item->type)                                                   \
+//     {                                                                       \
+//     case nullType:                                                          \
+//         MENU_ITEM_CALL_FUNCTION(funcName, nullType, p_Item, ##__VA_ARGS__); \
+//         break;                                                              \
+//     case variType:                                                          \
+//         MENU_ITEM_CALL_FUNCTION(funcName, variType, p_Item, ##__VA_ARGS__); \
+//         break;                                                              \
+//     case varfType:                                                          \
+//         MENU_ITEM_CALL_FUNCTION(funcName, varfType, p_Item, ##__VA_ARGS__); \
+//         break;                                                              \
+//     case boolType:                                                          \
+//         MENU_ITEM_CALL_FUNCTION(funcName, boolType, p_Item, ##__VA_ARGS__); \
+//         break;                                                              \
+//     case procType:                                                          \
+//         MENU_ITEM_CALL_FUNCTION(funcName, procType, p_Item, ##__VA_ARGS__); \
+//         break;                                                              \
+//     case menuType:                                                          \
+//         MENU_ITEM_CALL_FUNCTION(funcName, menuType, p_Item, ##__VA_ARGS__); \
+//         break;                                                              \
+//     default:                                                                \
+//         break;                                                              \
+//     }
 
-//test marco :
-//MENU_ITEM_MAKE_FUNCTION(item, nullType, KeyOp);
-//MENU_ITEM_CALL_FUNCTION(MENU_ItemConstruct, item, variType, &data);
-//MENU_ITEM_SWITCH_CASE(MENU_ItemKeyOp, item, &op);
+// test marco :
+// MENU_ITEM_MAKE_FUNCTION(item, nullType, KeyOp);
+// MENU_ITEM_CALL_FUNCTION(MENU_ItemConstruct, item, variType, &data);
+// MENU_ITEM_SWITCH_CASE(MENU_ItemKeyOp, item, &op);
 
 
 /**
@@ -95,43 +95,45 @@ typedef enum
     /** error mask */
 } menu_itemPropety_t;
 
-// /**
-//  * @brief : 菜单项所支持的内容类型。
-//  */
-//typedef enum
-//{
-//    nullType, // null type
-//    variType, // watch or set integer varibles
-//    varfType, // watch or set float-point varibles
-//    boolType,
-//    procType, // run certain process
-//    menuType, // jump to another menu
-//} menu_itemType_t;
+//  /**
+//   * @brief : 菜单项所支持的内容类型。
+//   */
+// typedef enum
+// {
+//     nullType, // null type
+//     variType, // watch or set integer varibles
+//     varfType, // watch or set float-point varibles
+//     boolType,
+//     procType, // run certain process
+//     menuType, // jump to another menu
+// } menu_itemType_t;
 
 
 #if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
 
-#define MENU_MAKE_ITEMEVENT(eventGroup, eventId) (eventGroup * 100 + eventId)
-
-typedef enum
-{
-    menu_itemEventGroup_Generic = 0U,
-    menu_itemEventGroup_listEvent = 1U,
-    menu_itemEventGroup_itemEvent = 2U,
-    menu_itemEventGroup_dataEvent = 3U,
-};
+/**
+ * @brief Basic event type supported by default.
+ * 
+ */
 typedef enum _menu_itemEvent
 {
-    menu_itemEvent_onListSelect = MENU_MAKE_ITEMEVENT(menu_itemEventGroup_listEvent, 0U),
-    menu_itemEvent_onListDeselect = MENU_MAKE_ITEMEVENT(menu_itemEventGroup_listEvent, 1U),
+    menu_itemEvent_onListSelect = 1U << 16U;
+    menu_itemEvent_onListDeselect = 1U << 17U,
 
-    menu_itemEvent_onCmdEnter = MENU_MAKE_ITEMEVENT(menu_itemEventGroup_itemEvent, 0U),
-    menu_itemEvent_onCmdExit = MENU_MAKE_ITEMEVENT(menu_itemEventGroup_itemEvent, 1U),
-    
-    menu_itemEvent_onDataChange = MENU_MAKE_ITEMEVENT(menu_itemEventGroup_dataEvent, 0U),
+    menu_itemEvent_onCmdEnter = 1U << 20U,
+    menu_itemEvent_onCmdExit = 1U << 21U,
+
+    menu_itemEvent_onDataChange = 1U << 24U,
 }menu_itemEvent_t;
 
-typedef (void)(*menu_itemEventHandler_t)(uint32_t _eventFlag, void *_userData);
+/** 
+ * @brief Event callback function prototype.
+ * 
+ * @param _eventFlag Event flag set by menu internal logic.
+ * @param _clearMask Event flag to clear after callback execution.
+ * @param _userData  User pre-defined value, used as coockies.
+ */
+typedef (void)(*menu_itemEventHandler_t)(uint32_t const _eventFlag, uint32_t *const _clearMask, void *_userData);
 
 #endif // ! TEXTMENU_FEATURE_EVENTCB
 
@@ -159,12 +161,14 @@ typedef struct _menu_itemIfce
     void *p_handle;
     menu_itemAdapter_t const *adapter;  ///< 指向存放菜单项命令函数指针的结构体。参考C++虚表
 #if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
+    uint32_t eventEnable;                   /*! Or-ed bits of all enabled flags. */
     uint32_t eventFlag;
-    void *eventUserData;
-    menu_itemEventHandler_t eventHandler;
+    void *eventUserData;                    /*! User data. */
+    menu_itemEventHandler_t eventHandler;   /*! Callback handler function. */
 #endif // ! TEXTMENU_FEATURE_EVENTCB
 } menu_itemIfce_t;
 
+/** @brief : Adapter struct for various item types. */
 struct _menu_itemAdapter
 {
     void (*ItemConstruct)(menu_itemIfce_t *_item, void *_data);
@@ -180,7 +184,7 @@ typedef struct _menu_nvmData_t
 {
     char nameStr[MENU_NAME_STR_SIZE];
     uint32_t data[4];
-} menu_nvmData_t;
+} menu_nvmData_t; // TODO: Deprecate this!
 
 /*************************************
  ************ 菜单项操作接口 **********
@@ -262,7 +266,14 @@ void MENU_ItemKeyOp(menu_itemIfce_t *_item, menu_keyOp_t *const _op);
 
 
 
+#if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
 
+
+bool MENU_ItemEventCbIsRequested(void);
+
+void MENU_ItemRequestEventCb(menu_itemIfce_t *const _item, uint32_t const _event);
+
+#endif // ! TEXTMENU_FEATURE_EVENTCB
 
 
 

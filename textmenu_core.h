@@ -82,6 +82,11 @@ static inline void MENU_StatusFlagClr(uint32_t _mask)
     menu_statusFlag &= (~_mask);
 }
 
+static inline bool MENU_StatusFlagCheck(uint32_t _mask)
+{
+    return (_mask == (menu_statusFlag & _mask));
+}
+
 /**
  * @brief : 打印屏幕。
  * 该函数是整个菜单的屏幕打印入口，将自动根据菜单的状态打印屏幕。
