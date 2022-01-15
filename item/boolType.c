@@ -20,8 +20,7 @@ const menu_itemAdapter_t menu_itemAdapter_boolType =
     .ItemKeyOp = MENU_ItemKeyOp_boolType,
 };
 
-extern menu_itemIfce_t *menu_currItem;
-extern menu_list_t *menu_currList;
+extern menu_t menu;
 
 void MENU_ItemConstruct_boolType(menu_itemIfce_t *_item, void *_data)
 {
@@ -87,7 +86,7 @@ void MENU_ItemPrintSlot_boolType(menu_itemIfce_t *_item, uint32_t _slotNum)
 		}
 	}
 
-	menu_dispStrBuf.strbuf[_slotNum][snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " %-12.12s  %5.5s", _item->nameStr, dataStr)] = ' ';
+	menu.dispStrBuf.strbuf[_slotNum][snprintf(menu.dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " %-12.12s  %5.5s", _item->nameStr, dataStr)] = ' ';
 }
 void MENU_ItemDirectKeyOp_boolType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 {

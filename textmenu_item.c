@@ -12,11 +12,7 @@
 /**
  * @brief : 菜单项和菜单列表的计数器。
  */
-uint32_t menu_itemCnt = 0;
-uint32_t menu_listCnt = 0;
-
-
-
+extern menu_t menu;
 
 /**
  * ********** 菜单项操作接口 **********
@@ -28,7 +24,7 @@ menu_itemIfce_t *MENU_ItemConstruct(menu_itemAdapter_t const *_type, void *_data
     item = (menu_itemIfce_t*)calloc(1, sizeof(menu_itemIfce_t));
     assert(item);
     item->pptFlag = _pptFlag;
-    item->unique_id = menu_itemCnt++;
+    item->unique_id = menu.status.itemCnt++;
     item->saveAddr = _saveAddr;
     strncpy(item->nameStr, _nameStr, MENU_NAME_STR_SIZE);
     item->nameStr[MENU_NAME_STR_SIZE - 1] = '\0';
@@ -50,7 +46,7 @@ void MENU_ItemDestruct(menu_itemIfce_t *_item)
     free(_item->p_handle);
     free(_item);
     _item = NULL;
-    --menu_itemCnt;
+    --menu.status.itemCnt;
 }
 
 void MENU_ItemGetData(menu_itemIfce_t *_item, menu_nvmData_t *_data)
@@ -103,14 +99,14 @@ void MENU_ItemKeyOp(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 
 bool MENU_ItemEventCbIsRequested(void)
 {
-	return 0U != menu_eventCbItemCnt;
+	return 0U != menu.status.eventCbItemCnt;
 }
 
 void MENU_ItemRequestEventCb(menu_itemIfce_t *const _item, uint32_t const _event)
 {
-    assert(menu_eventCbItemCnt < TEXTMENU_CONFIG_EVENTQ_LEN);
+    assert(menu.status.eventCbItemCnt < TEXTMENU_CONFIG_EVENTQ_LEN);
     _item->eventFlag |= _event;
-    menu_eventCbItem[menu_eventCbItemCnt++] = _item;
+    menu.status.eventCbItem[menu.status.eventCbItemCnt++] = _item;
     //FIXME: Atomic operation! should disable event thread.
 }
 

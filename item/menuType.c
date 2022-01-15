@@ -18,8 +18,7 @@ const menu_itemAdapter_t menu_itemAdapter_menuType =
     .ItemKeyOp = MENU_ItemKeyOp_menuType,
 };
 
-extern menu_itemIfce_t *menu_currItem;
-extern menu_list_t *menu_currList;
+extern menu_t menu;
 
 void MENU_ItemConstruct_menuType(menu_itemIfce_t *_item, void *_data)
 {
@@ -37,7 +36,7 @@ void MENU_ItemSetData_menuType(menu_itemIfce_t *_item, void *_data)
 //used when in menuList
 void MENU_ItemPrintSlot_menuType(menu_itemIfce_t *_item, uint32_t _slotNum)
 {
-    menu_dispStrBuf.strbuf[_slotNum][snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " [%s]", _item->nameStr)] = ' ';
+    menu.dispStrBuf.strbuf[_slotNum][snprintf(menu.dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " [%s]", _item->nameStr)] = ' ';
 }
 void MENU_ItemDirectKeyOp_menuType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 {
@@ -45,7 +44,7 @@ void MENU_ItemDirectKeyOp_menuType(menu_itemIfce_t *_item, menu_keyOp_t *const _
     switch (*_op)
     {
         case MENU_BUTTON_MAKE_OP(5wayStick_ok, shrt):
-        menu_currList = p_menuType->data;
+        menu.status.currList = p_menuType->data;
         *_op = 0;
         break;
 

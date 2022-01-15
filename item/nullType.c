@@ -18,8 +18,7 @@ const menu_itemAdapter_t menu_itemAdapter_nullType =
     .ItemKeyOp = MENU_ItemKeyOp_nullType,
 };
 
-extern menu_itemIfce_t *menu_currItem;
-extern menu_list_t *menu_currList;
+extern menu_t menu;
 
 void MENU_ItemConstruct_nullType(menu_itemIfce_t *_item, void *_data)
 {
@@ -39,8 +38,8 @@ void MENU_ItemSetData_nullType(menu_itemIfce_t *_item, void *_data)
 //used when in menuList
 void MENU_ItemPrintSlot_nullType(menu_itemIfce_t *_item, uint32_t _slotNum)
 {
-    snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " ------------------- ");
-    menu_dispStrBuf.strbuf[_slotNum][snprintf(menu_dispStrBuf.strbuf[_slotNum] + 3, TEXTMENU_DISPLAY_STRBUF_COL - 3, "%s", _item->nameStr) + 3] = '-';
+    snprintf(menu.dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " ------------------- ");
+    menu.dispStrBuf.strbuf[_slotNum][snprintf(menu.dispStrBuf.strbuf[_slotNum] + 3, TEXTMENU_DISPLAY_STRBUF_COL - 3, "%s", _item->nameStr) + 3] = '-';
 }
 void MENU_ItemDirectKeyOp_nullType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 {

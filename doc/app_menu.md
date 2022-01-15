@@ -949,14 +949,14 @@ by：CkovMk @hitsic 2019.11.02
   
   typedef uint32_t menu_keyOp_t;
   
-  extern menu_keyOp_t menu_keyOpBuff;
+  extern menu_keyOp_t menu.keyOpBuff;
   ```
 
   
 
 - 按键消息处理
 
-  根据上述枚举定义，每条按键消息都由两部分组成：位于低八位的按键码和位于高八位的操作码。一旦有按键消息从按键处理模块产生，该按键消息将被写入缓存区 `menu_keyOpBuff`，然后置位菜单中断标志位中的按键消息位，最后置位NVIC中对应的中断有效标志。
+  根据上述枚举定义，每条按键消息都由两部分组成：位于低八位的按键码和位于高八位的操作码。一旦有按键消息从按键处理模块产生，该按键消息将被写入缓存区 `menu.keyOpBuff`，然后置位菜单中断标志位中的按键消息位，最后置位NVIC中对应的中断有效标志。
 
 
 
@@ -967,7 +967,7 @@ by：CkovMk @hitsic 2019.11.02
 ##### 字符缓存
 
 ```c++
-char menu_dispStrBuf[HITSIC_MENU_DISPLAY_STRBUF_ROW][HITSIC_MENU_DISPLAY_STRBUF_COL];
+char menu.dispStrBuf[HITSIC_MENU_DISPLAY_STRBUF_ROW][HITSIC_MENU_DISPLAY_STRBUF_COL];
 ```
 
 

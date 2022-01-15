@@ -18,8 +18,7 @@ const menu_itemAdapter_t menu_itemAdapter_procType =
     .ItemKeyOp = MENU_ItemKeyOp_procType,
 };
 
-extern menu_itemIfce_t *menu_currItem;
-extern menu_list_t *menu_currList;
+extern menu_t menu;
 
 void MENU_ItemConstruct_procType(menu_itemIfce_t *_item, void *_data)
 {
@@ -37,7 +36,7 @@ void MENU_ItemSetData_procType(menu_itemIfce_t *_item, void *_data)
 //used when in menuList
 void MENU_ItemPrintSlot_procType(menu_itemIfce_t *_item, uint32_t _slotNum)
 {
-    menu_dispStrBuf.strbuf[_slotNum][snprintf(menu_dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " :%-16.16s", _item->nameStr)] = ' ';
+    menu.dispStrBuf.strbuf[_slotNum][snprintf(menu.dispStrBuf.strbuf[_slotNum], TEXTMENU_DISPLAY_STRBUF_COL + 1, " :%-16.16s", _item->nameStr)] = ' ';
 }
 void MENU_ItemDirectKeyOp_procType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 {
@@ -46,7 +45,7 @@ void MENU_ItemDirectKeyOp_procType(menu_itemIfce_t *_item, menu_keyOp_t *const _
     {
         case MENU_BUTTON_MAKE_OP(5wayStick_ok, shrt):
         {
-            menu_currItem = _item;
+            menu.status.currItem = _item;
             *_op = 0;
             break;
         }
@@ -67,15 +66,15 @@ void MENU_ItemPrintDisp_procType(menu_itemIfce_t *_item)
     }
     else
     {
-        menu_dispStrBuf.strbuf[0][snprintf(menu_dispStrBuf.strbuf[0], TEXTMENU_DISPLAY_STRBUF_COL + 1, "##%-15.15s *", _item->nameStr)] = ' ';
+        menu.dispStrBuf.strbuf[0][snprintf(menu.dispStrBuf.strbuf[0], TEXTMENU_DISPLAY_STRBUF_COL + 1, "##%-15.15s *", _item->nameStr)] = ' ';
 #if defined(TEXTMENU_USE_PALETTE) && (TEXTMENU_USE_PALETTE > 0)
         for(int c = 0; c < TEXTMENU_DISPLAY_STRBUF_COL + 1; ++c)
         {
-            menu_dispStrBuf.fcolor[0][c] = TEXTMENU_DISPLAY_PAL_IDX_TITBAR_F;
-	        menu_dispStrBuf.bcolor[0][c] = TEXTMENU_DISPLAY_PAL_IDX_TITBAR_B;
+            menu.dispStrBuf.fcolor[0][c] = TEXTMENU_DISPLAY_PAL_IDX_TITBAR_F;
+	        menu.dispStrBuf.bcolor[0][c] = TEXTMENU_DISPLAY_PAL_IDX_TITBAR_B;
         }
 #endif // ! TEXTMENU_USE_PALETTE
-        menu_dispStrBuf.strbuf[7][snprintf(menu_dispStrBuf.strbuf[7], TEXTMENU_DISPLAY_STRBUF_COL + 1, "    SOK>AC LOK>WA    ")] = ' ';
+        menu.dispStrBuf.strbuf[7][snprintf(menu.dispStrBuf.strbuf[7], TEXTMENU_DISPLAY_STRBUF_COL + 1, "    SOK>AC LOK>WA    ")] = ' ';
     }
 }
 void MENU_ItemKeyOp_procType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
@@ -84,14 +83,14 @@ void MENU_ItemKeyOp_procType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
     switch (*_op)
     {
     case MENU_BUTTON_MAKE_OP(5wayStick_ok, long):
-        menu_currItem = NULL;
+        menu.status.currItem = NULL;
         *_op = 0U;
         break;
     default:
         p_procType->data(_op);
         if(_item->pptFlag & menuItem_proc_runOnce)
         {
-            menu_currItem = NULL;
+            menu.status.currItem = NULL;
         }
         break;
     }
