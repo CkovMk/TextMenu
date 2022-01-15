@@ -10,6 +10,8 @@
 #define SYSLOG_LVL  (TEXTMENU_ITER_LOG_LVL)
 #include <inc_syslog.h>
 
+extern menu_t menu;
+
 void MENU_IteratorSetup(menu_iterator_t *_iter)
 {
     SYSLOG_I("Iterator Reset.");
@@ -19,17 +21,14 @@ void MENU_IteratorSetup(menu_iterator_t *_iter)
         free(_iter->listQue);
         _iter->listQue = NULL;
     }
-    _iter->listQue = (menu_list_t**)calloc(menu_listCnt, sizeof(menu_list_t *));
-    memset(_iter->listQue, 0U, menu_listCnt * sizeof(menu_list_t *));
+    _iter->listQue = (menu_list_t**)calloc(menu.status.listCnt, sizeof(menu_list_t *));
+    memset(_iter->listQue, 0U, menu.status.listCnt * sizeof(menu_list_t *));
     assert(_iter->listQue);
 
-    _iter->listQueSize = menu_listCnt;
+    _iter->listQueSize = menu.status.listCnt;
 
-    extern menu_list_t *menu_menuRoot;
-    extern menu_list_t *menu_manageList;
-
-    _iter->listQue[0] = menu_manageList;
-    _iter->listQue[1] = menu_menuRoot;
+    _iter->listQue[0] = menu.manageList;
+    _iter->listQue[1] = menu.menuRoot;
 
     _iter->listNum = 0U;
     _iter->itemNum = 0U;

@@ -11,6 +11,8 @@
 #define SYSLOG_LVL  (TEXTMENU_LIST_LOG_LVL)
 #include <inc_syslog.h>
 
+extern menu_t menu;
+
 menu_list_t *MENU_ListConstruct(const char *_nameStr, uint32_t _size, menu_list_t *_prev)
 {
     assert(_prev);
@@ -24,7 +26,7 @@ menu_list_t *MENU_ListConstruct(const char *_nameStr, uint32_t _size, menu_list_
     strncpy(list->nameStr, _nameStr, MENU_NAME_STR_SIZE);
     MENU_ListInsert(list, MENU_ItemConstruct(&menu_itemAdapter_menuType, (void *)_prev, "Back", 0, 0));
     ((menu_item_menuHandle_t*)(list->menu[0]->p_handle))->data = _prev;
-    ++menu_listCnt;
+    ++menu.status.listCnt;
     return list;
 }
 
@@ -32,7 +34,7 @@ void MENU_ListDestruct(menu_list_t *_list)
 {
     free(_list->menu);
     free(_list);
-    --menu_listCnt;
+    --menu.status.listCnt;
 }
 
 status_t MENU_ListInsert(menu_list_t *_list, menu_itemIfce_t *_item)
@@ -52,12 +54,12 @@ status_t MENU_ListInsert(menu_list_t *_list, menu_itemIfce_t *_item)
 
 void MENU_ListPrintDisp(menu_list_t *_list)
 {
-    menu_dispStrBuf.strbuf[0][snprintf(menu_dispStrBuf.strbuf[0], TEXTMENU_DISPLAY_STRBUF_COL + 1, "##%-13.13s*%2.2ld/%2.2ld", _list->nameStr, _list->slct_p + 1, _list->listNum)] = ' ';
+    menu.dispStrBuf.strbuf[0][snprintf(menu.dispStrBuf.strbuf[0], TEXTMENU_DISPLAY_STRBUF_COL + 1, "##%-13.13s*%2.2ld/%2.2ld", _list->nameStr, _list->slct_p + 1, _list->listNum)] = ' ';
 #if defined(TEXTMENU_USE_PALETTE) && (TEXTMENU_USE_PALETTE > 0)
     for(int c = 0; c < TEXTMENU_DISPLAY_STRBUF_COL + 1; ++c)
     {
-        menu_dispStrBuf.fcolor[0][c] = TEXTMENU_DISPLAY_PAL_IDX_TITBAR_F;
-	    menu_dispStrBuf.bcolor[0][c] = TEXTMENU_DISPLAY_PAL_IDX_TITBAR_B;
+        menu.dispStrBuf.fcolor[0][c] = TEXTMENU_DISPLAY_PAL_IDX_TITBAR_F;
+	    menu.dispStrBuf.bcolor[0][c] = TEXTMENU_DISPLAY_PAL_IDX_TITBAR_B;
     }
 #endif // ! TEXTMENU_USE_PALETTE
     uint32_t printCnt = _list->listNum < TEXTMENU_DISPLAY_STRBUF_ROW - 1 ? _list->listNum : TEXTMENU_DISPLAY_STRBUF_ROW - 1;
@@ -67,28 +69,26 @@ void MENU_ListPrintDisp(menu_list_t *_list)
     }
 
     uint8_t selectRow = _list->slct_p - _list->disp_p + 1;
-    menu_dispStrBuf.strbuf[selectRow][0] = '>';
+    menu.dispStrBuf.strbuf[selectRow][0] = '>';
 #if defined(TEXTMENU_USE_PALETTE) && (TEXTMENU_USE_PALETTE > 0)
     for(int c = 0; c < TEXTMENU_DISPLAY_STRBUF_COL + 1; ++c)
     {
-        menu_dispStrBuf.fcolor[selectRow][c] = TEXTMENU_DISPLAY_PAL_IDX_HLIGHT_F;
-	    menu_dispStrBuf.bcolor[selectRow][c] = TEXTMENU_DISPLAY_PAL_IDX_HLIGHT_B;
+        menu.dispStrBuf.fcolor[selectRow][c] = TEXTMENU_DISPLAY_PAL_IDX_HLIGHT_F;
+	    menu.dispStrBuf.bcolor[selectRow][c] = TEXTMENU_DISPLAY_PAL_IDX_HLIGHT_B;
     }
 #endif // ! TEXTMENU_USE_PALETTE
 }
 
 void MENU_ListKeyOp(menu_list_t *_list, menu_keyOp_t *const _op)
 {
-	extern menu_list_t *menu_currList;
-    extern menu_list_t *menu_menuRoot;
     switch (*_op)
     {
     case MENU_BUTTON_MAKE_OP(5wayStick_ok, long):
         //return
 
-        if (menu_currList != menu_menuRoot)
+        if (menu.status.currList != menu.menuRoot)
         {
-            menu_currList = ((menu_item_menuHandle_t*)(_list->menu[0]->p_handle))->data;
+            menu.status.currList = ((menu_item_menuHandle_t*)(_list->menu[0]->p_handle))->data;
         }
     case MENU_BUTTON_MAKE_OP(5wayStick_ok, lrpt):
         *_op = 0;
@@ -147,8 +147,7 @@ menu_list_t *MENU_DirGetList(const char *str)
     char *str_copy = (char*)malloc(str_length + 1U);
     strncpy(str_copy, str, str_length + 1U);
     char *pch = strtok(str_copy, "/");
-    extern menu_list_t *menu_menuRoot;
-    menu_list_t *currDirList = menu_menuRoot;
+    menu_list_t *currDirList = menu.menuRoot;
     /** 启动识别 */
     while(pch != NULL)
     {

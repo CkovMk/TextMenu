@@ -43,7 +43,7 @@ inline void MENU_ExampleProcHandler1(menu_keyOp_t *const _op)
         }
     }
 
-    //MENU_StatusFlagSet(menu_message_strBufOverride);//FIXME: deprecate this procType menuItem !
+    //menu.status.flagSet(menu_message_strBufOverride);//FIXME: deprecate this procType menuItem !
     for(uint16_t i = c; i < c + 10; ++i)
     {
         for(uint16_t j = r; j < r + 10; ++j)

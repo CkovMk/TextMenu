@@ -19,7 +19,12 @@ typedef struct _menu_strBuf
 #endif // ! TEXTMENU_USE_PALETTE
 }menu_strBuf_t;
 
-extern menu_strBuf_t menu_dispStrBuf;
+typedef union _menu_strBufPrintSlotCfg
+{
+    uint16_t title_row, title_col, title_len;
+    uint16_t value_row, value_col, value_len;
+    uint16_t flags_row, flags_col, flags_len;
+}menu_strBufPrintSlotCfg_t;
 
 
 /**

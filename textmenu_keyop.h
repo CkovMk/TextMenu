@@ -70,6 +70,4 @@ typedef uint32_t menu_keyOp_t;
  */
 #define MENU_BUTTON_MAKE_OP(code, type) (menuOpCode_##code | menuOpType_##type)
 
-extern menu_keyOp_t menu_keyOpBuff;
-
 #endif // ! TEXTMENU_KEYOP_H

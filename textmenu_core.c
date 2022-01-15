@@ -8,19 +8,21 @@
 #include <inc_syslog.h>
 
 /**
- * @brief : 菜单状态机。
+ * @brief : 菜单实例。
  * @ {
  */
-extern menu_list_t *menu_currList;             ///< 状态变量：指向当前所在的菜单列表。
-extern menu_itemIfce_t *menu_currItem;         ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
-extern menu_list_t *menu_menuRoot;             ///< 根菜单指针。
-extern menu_list_t *menu_manageList;           ///< 管理菜单指针。
-extern int32_t menu_currRegionNum[3];          ///< 当前局部存储区号
-extern int32_t menu_statusFlag;                ///< 状态标志位
-#if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
-extern menu_itemIfce_t *menu_eventCbItem[TEXTMENU_CONFIG_EVENTQ_LEN];      ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
-extern uint8_t menu_eventCbItemCnt;
-#endif // ! TEXTMENU_FEATURE_EVENTCB
+// extern menu_list_t *menu.status.currList;             ///< 状态变量：指向当前所在的菜单列表。
+// extern menu_itemIfce_t *menu.status.currItem;         ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
+// extern menu_list_t *menu.menuRoot;             ///< 根菜单指针。
+// extern menu_list_t *menu.manageList;           ///< 管理菜单指针。
+// extern int32_t menu_currRegionNum[3];          ///< 当前局部存储区号
+// extern int32_t menu.status.flag;                ///< 状态标志位
+// #if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
+// extern menu_itemIfce_t *menu.status.eventCbItem[TEXTMENU_CONFIG_EVENTQ_LEN];      ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
+// extern uint8_t menu.status.eventCbItemCnt;
+// #endif // ! TEXTMENU_FEATURE_EVENTCB
+
+menu_t menu;
 /**
  * @ }
  */
@@ -32,43 +34,43 @@ void MENU_PrintDisp(void)
 	{
 		for(uint32_t c = 0U; c < TEXTMENU_DISPLAY_STRBUF_COL + 1U; ++c)
 		{
-			menu_dispStrBuf.strbuf[r][c] = ' ';
+			menu.dispStrBuf.strbuf[r][c] = ' ';
 #if defined(TEXTMENU_USE_PALETTE) && (TEXTMENU_USE_PALETTE > 0)
-    		menu_dispStrBuf.fcolor[r][c] = TEXTMENU_DISPLAY_PAL_IDX_NORMAL_F;
-			menu_dispStrBuf.bcolor[r][c] = TEXTMENU_DISPLAY_PAL_IDX_NORMAL_B;
+    		menu.dispStrBuf.fcolor[r][c] = TEXTMENU_DISPLAY_PAL_IDX_NORMAL_F;
+			menu.dispStrBuf.bcolor[r][c] = TEXTMENU_DISPLAY_PAL_IDX_NORMAL_B;
 #endif // ! TEXTMENU_USE_PALETTE
 		}
-		menu_dispStrBuf.strbuf[r][TEXTMENU_DISPLAY_STRBUF_COL + 1] = '\0';
+		menu.dispStrBuf.strbuf[r][TEXTMENU_DISPLAY_STRBUF_COL + 1] = '\0';
 	}
 	/** 根据责任链打印缓存 */
-	if (menu_currItem == NULL)
+	if (menu.status.currItem == NULL)
 	{
-		MENU_ListPrintDisp(menu_currList);
+		MENU_ListPrintDisp(menu.status.currList);
 	}
 	else
 	{
-		MENU_ItemPrintDisp(menu_currItem);
+		MENU_ItemPrintDisp(menu.status.currItem);
 	}
 	for (uint8_t i = 0; i < TEXTMENU_DISPLAY_STRBUF_ROW; ++i)
 	{
-		if('\0' != menu_dispStrBuf.strbuf[i][TEXTMENU_DISPLAY_STRBUF_COL])
+		if('\0' != menu.dispStrBuf.strbuf[i][TEXTMENU_DISPLAY_STRBUF_COL])
 		{
 //			SYSLOG_W("Print display: row %d overflow!", i);
-	    	menu_dispStrBuf.strbuf[i][TEXTMENU_DISPLAY_STRBUF_COL] = '\0';
+	    	menu.dispStrBuf.strbuf[i][TEXTMENU_DISPLAY_STRBUF_COL] = '\0';
 		}
 	}
-	MENU_PORT_DisplayOutput(&menu_dispStrBuf);
+	MENU_PORT_DisplayOutput(&menu.dispStrBuf);
 }
 
 void MENU_KeyOp(menu_keyOp_t *const _op)
 {
-	if (menu_currItem == NULL)
+	if (menu.status.currItem == NULL)
 	{
-		MENU_ListKeyOp(menu_currList, _op);
+		MENU_ListKeyOp(menu.status.currList, _op);
 	}
 	else 
 	{
-		MENU_ItemKeyOp(menu_currItem, _op);
+		MENU_ItemKeyOp(menu.status.currItem, _op);
 	}
 	if (*_op != 0)
 	{
