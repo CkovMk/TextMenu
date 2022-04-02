@@ -27,11 +27,11 @@ void MENU_ItemConstruct_nullType(menu_itemIfce_t *_item, void *_data)
     menu_item_nullHandle_t *p_nullType = (menu_item_nullHandle_t*)(_item->p_handle);
     p_nullType->data = _data;
 }
-void MENU_ItemGetData_nullType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemGetData_nullType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
-    //blank
+    _data->size = 0U;
 }
-void MENU_ItemSetData_nullType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemSetData_nullType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
     //blank
 }

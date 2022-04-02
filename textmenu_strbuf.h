@@ -21,11 +21,12 @@ typedef struct _menu_strBuf
 
 typedef union _menu_strBufPrintSlotCfg
 {
-    uint16_t title_row, title_col, title_len;
-    uint16_t value_row, value_col, value_len;
-    uint16_t flags_row, flags_col, flags_len;
+    uint16_t titleIndex, titlePadding;
+    uint16_t flagsIndex, flagsPadding;
+    uint16_t valueIndex, valuePadding;
 }menu_strBufPrintSlotCfg_t;
 
+// index = 65535 means disable this item
 
 /**
  * @brief

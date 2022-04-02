@@ -49,14 +49,14 @@ void MENU_ItemDestruct(menu_itemIfce_t *_item)
     --menu.status.itemCnt;
 }
 
-void MENU_ItemGetData(menu_itemIfce_t *_item, menu_nvmData_t *_data)
+void MENU_ItemGetData(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
     memcpy(_data->nameStr, _item->nameStr, MENU_NAME_STR_SIZE);
     //MENU_ITEM_SWITCH_CASE(MENU_ItemGetData, _item, &_data->data);
     _item->adapter->ItemGetData(_item, &_data->data);
 }
 
-void MENU_ItemSetData(menu_itemIfce_t *_item, menu_nvmData_t *_data)
+void MENU_ItemSetData(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
     if (0 == strncmp(_data->nameStr, _item->nameStr, MENU_NAME_STR_SIZE))
     {

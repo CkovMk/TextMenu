@@ -27,10 +27,11 @@ void MENU_ItemConstruct_menuType(menu_itemIfce_t *_item, void *_data)
     menu_item_menuHandle_t *p_menuType = (menu_item_menuHandle_t*)(_item->p_handle);
     p_menuType->data = (menu_list_t*)_data;
 }
-void MENU_ItemGetData_menuType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemGetData_menuType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
+    _data->size = 0U;
 }
-void MENU_ItemSetData_menuType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemSetData_menuType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
 }
 //used when in menuList

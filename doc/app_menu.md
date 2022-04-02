@@ -541,7 +541,7 @@ by：CkovMk @hitsic 2019.11.02
      *
      * @return {void *}					: 返回数据指针。注意，无论何种类型，都会返回对应的数据指针。
      */
-    void MENU_ItemGetData(menu_itemIfce_t *_item, menu_nvmData_t *_data);
+    void MENU_ItemGetData(menu_itemIfce_t *_item, menu_itemData_t *_data);
     ```
 
 - 设置菜单项内指针指向的数据的值
@@ -553,7 +553,7 @@ by：CkovMk @hitsic 2019.11.02
      * @param  {menu_itemIfce_t*} _item : 要访问的菜单项的指针
      * @param  {void*} _data            :
      */
-    void MENU_ItemSetData(menu_itemIfce_t *_item, menu_nvmData_t *_data);
+    void MENU_ItemSetData(menu_itemIfce_t *_item, menu_itemData_t *_data);
     ```
 
 - 在菜单列表中打印一行菜单

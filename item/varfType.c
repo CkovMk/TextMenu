@@ -87,21 +87,33 @@ void MENU_ItemConstruct_varfType(menu_itemIfce_t *_item, void *_data)
     p_varfType->cur = 0;
     MENU_ItemGetContent_varfType(&p_varfType->v, &p_varfType->e, *p_varfType->data);
 }
-void MENU_ItemGetData_varfType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemGetData_varfType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
     menu_item_varfHandle_t *p_varfType = (menu_item_varfHandle_t*)(_item->p_handle);
-    *(float *)_data = *(p_varfType->data);
+    
+    _data->size = sizeof(float);
+    _data->pData = p_varfType->data;
+    SYSLOG_V("Get varfType data: %12.4f", *(p_varfType->data));
 }
-void MENU_ItemSetData_varfType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemSetData_varfType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
     menu_item_varfHandle_t *p_varfType = (menu_item_varfHandle_t*)(_item->p_handle);
-    if (_item->pptFlag & menuItem_dataExt_HasMinMax)
+    float *pData = p_varfType->data;
+    
+    if(4U == _data->size)
     {
-        *(float *)_data = (*(float *)_data > *(p_varfType->data + 1)) ? (*(float *)_data) : *(p_varfType->data + 1);
-        *(float *)_data = (*(float *)_data < *(p_varfType->data + 2)) ? (*(float *)_data) : *(p_varfType->data + 2);
+        *pData = *(float *)(_data->pData);
+        if (_item->pptFlag & menuItem_dataExt_HasMinMax)
+        {
+            *pData = (*pData > *(pData + 1)) ? (*pData) : *(pData + 1);
+            *pData = (*pData < *(pData + 2)) ? (*pData) : *(pData + 2);
+        }
+        SYSLOG_V("Set varfType data: %12.4f", *pData);
     }
-    *(p_varfType->data) = *(float *)_data;
-    SYSLOG_V("varfType Data Updated %12.4f", *(p_varfType->data));
+    else
+    {
+        SYSLOG_W("Set varfType data: Failed. -size-match");
+    }
 }
 //used when in menuList
 void MENU_ItemPrintSlot_varfType(menu_itemIfce_t *_item, uint32_t _slotNum)

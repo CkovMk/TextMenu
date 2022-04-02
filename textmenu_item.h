@@ -168,23 +168,24 @@ typedef struct _menu_itemIfce
 #endif // ! TEXTMENU_FEATURE_EVENTCB
 } menu_itemIfce_t;
 
+typedef struct _menu_itemData_t
+{
+    uint32_t size;
+    void *pData;
+} menu_itemData_t;
+
 /** @brief : Adapter struct for various item types. */
 struct _menu_itemAdapter
 {
     void (*ItemConstruct)(menu_itemIfce_t *_item, void *_data);
-    void (*ItemGetData)(menu_itemIfce_t *_item, void *_data);
-    void (*ItemSetData)(menu_itemIfce_t *_item, void *_data);
+    void (*ItemGetData)(menu_itemIfce_t *_item, menu_itemData_t *_data);
+    void (*ItemSetData)(menu_itemIfce_t *_item, menu_itemData_t *_data);
     void (*ItemPrintSlot)(menu_itemIfce_t *_item, uint32_t _slotNum);
     void (*ItemDirectKeyOp)(menu_itemIfce_t *_item, menu_keyOp_t *const _op);
     void (*ItemPrintDisp)(menu_itemIfce_t *_item);
     void (*ItemKeyOp)(menu_itemIfce_t *_item, menu_keyOp_t *const _op);
 };
 
-typedef struct _menu_nvmData_t
-{
-    char nameStr[MENU_NAME_STR_SIZE];
-    uint32_t data[4];
-} menu_nvmData_t; // TODO: Deprecate this!
 
 /*************************************
  ************ 菜单项操作接口 **********
@@ -219,7 +220,7 @@ void MENU_ItemDestruct(menu_itemIfce_t *_item);
  *
  * @return {void *}					: 返回数据指针。注意，无论何种类型，都会返回对应的数据指针。
  */
-void MENU_ItemGetData(menu_itemIfce_t *_item, menu_nvmData_t *_data);
+void MENU_ItemGetData(menu_itemIfce_t *_item, menu_itemData_t *_data);
 
 /**
  * @brief : 设置菜单项内指针指向的数据的值。
@@ -227,7 +228,7 @@ void MENU_ItemGetData(menu_itemIfce_t *_item, menu_nvmData_t *_data);
  * @param  {menu_itemIfce_t*} _item : 要访问的菜单项的指针
  * @param  {void*} _data            :
  */
-void MENU_ItemSetData(menu_itemIfce_t *_item, menu_nvmData_t *_data);
+void MENU_ItemSetData(menu_itemIfce_t *_item, menu_itemData_t *_data);
 
 //used when in menuList
 

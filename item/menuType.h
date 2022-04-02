@@ -18,8 +18,8 @@ extern menu_itemAdapter_t const menu_itemAdapter_menuType;
 
 /** @brief : 跳转类型菜单项操作函数。 */
 void MENU_ItemConstruct_menuType(menu_itemIfce_t *_item, void *_data);
-void MENU_ItemGetData_menuType(menu_itemIfce_t *_item, void *_data);
-void MENU_ItemSetData_menuType(menu_itemIfce_t *_item, void *_data);
+void MENU_ItemGetData_menuType(menu_itemIfce_t *_item, menu_itemData_t *_data);
+void MENU_ItemSetData_menuType(menu_itemIfce_t *_item, menu_itemData_t *_data);
 //used when in menuList
 void MENU_ItemPrintSlot_menuType(menu_itemIfce_t *_item, uint32_t _slotNum);
 void MENU_ItemDirectKeyOp_menuType(menu_itemIfce_t *_item,
