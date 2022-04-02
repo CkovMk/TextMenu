@@ -10,16 +10,11 @@
 #include "item/procType.h"
 #include "item/menuType.h"
 
-
 /**
- * @brief : 菜单状态机。
+ * @brief : 菜单实例全局变量。
  * @ {
  */
-extern menu_list_t *menu.status.currList;             ///< 状态变量：指向当前所在的菜单列表。
-extern menu_itemIfce_t *menu.status.currItem;         ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
-extern menu_list_t *menu.menuRoot;             ///< 根菜单指针。
-extern menu_list_t *menu.manageList;           ///< 管理菜单指针。
-extern int32_t menu.status.flag;                ///< 状态标志位
+extern menu_t menu;
 /**
  * @ }
  */
@@ -37,7 +32,7 @@ int32_t menu_currRegionNum[3] = { 0, 0, TEXTMENU_NVM_REGION_CNT - 1 };    ///< �
 
 status_t MENU_KVDB_MetadataInit(menu_kvdb_metadata_t *_data)
 {
-    _data->swVersion = APP_MENU_VERSION;
+    _data->swVersion = TEXTMENU_VERSION;
     _data->globalItemCnt = 0U;
     _data->regionItemCnt = 0U;
     _data->regionCnt = TEXTMENU_NVM_REGION_CNT;
@@ -270,7 +265,7 @@ void MENU_KVDB_DataSave(int32_t _region)
 	SYSLOG_I("Global Data");
 	menu_iterator_t *iter = MENU_IteratorConstruct();
 	char regKeyStr[MENU_KVDB_REG_SIZE];
-	menu_nvmData_t dataBuf;
+	menu_itemData_t dataBuf;
 	do{
 	    menu_itemIfce_t *thisItem = MENU_IteratorDerefItem(iter);
 	    if (thisItem->pptFlag & menuItem_data_global && !(thisItem->pptFlag & menuItem_data_NoSave))
@@ -278,7 +273,7 @@ void MENU_KVDB_DataSave(int32_t _region)
 	        MENU_ItemGetData(thisItem, &dataBuf);
 			SYSLOG_D("Get Data.  menu: %-16.16s addr: %-4.4d data: 0x%-8.8x .", dataBuf.nameStr, thisItem->saveAddr, dataBuf.data);
 			MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
-			MENU_PORT_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
+			MENU_PORT_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_itemData_t));
 	    }
 	}while(kStatus_Success == MENU_IteratorIncrease(iter));
 	SYSLOG_I("Global Data End");
@@ -298,7 +293,7 @@ void MENU_KVDB_DataSave(int32_t _region)
 	        SYSLOG_D("Get Data.  menu: %-16.16s addr: %-4.4d data: 0x%-8.8x .", dataBuf.nameStr, thisItem->saveAddr, dataBuf.data);
 			MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
 			MENU_KVDB_KeyAppendRegionNum(regKeyStr, _region);
-			MENU_PORT_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
+			MENU_PORT_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_itemData_t));
 	    }
 	}while(kStatus_Success == MENU_IteratorIncrease(iter));
 	SYSLOG_I("Region %d Data End.", menu_currRegionNum[0]);
@@ -314,19 +309,19 @@ void MENU_KVDB_DataSave_Boxed(menu_keyOp_t *const _op)
 
 void MENU_KVDB_DataRead(int32_t _region)
 {
-    static_assert(sizeof(menu_nvmData_t) == 32, "sizeof menu_nvmData_t error !");
+    static_assert(sizeof(menu_itemData_t) == 32, "sizeof menu_itemData_t error !");
 	if(_region < 0 || (uint32_t)_region >= TEXTMENU_NVM_REGION_CNT) { return; }
 	SYSLOG_I("Read Begin");
 	SYSLOG_I("Global Data");
 	menu_iterator_t *iter = MENU_IteratorConstruct();
 	char regKeyStr[MENU_KVDB_REG_SIZE];
-	menu_nvmData_t dataBuf;
+	menu_itemData_t dataBuf;
 	do{
 	    menu_itemIfce_t *thisItem = MENU_IteratorDerefItem(iter);
 	    if (thisItem->pptFlag & menuItem_data_global && !(thisItem->pptFlag & menuItem_data_NoLoad))
 	    {
 			MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
-			MENU_PORT_KVDB_ReadValue(regKeyStr, &dataBuf, sizeof(menu_nvmData_t));
+			MENU_PORT_KVDB_ReadValue(regKeyStr, &dataBuf, sizeof(menu_itemData_t));
 	        SYSLOG_D("Get Flash. menu: %-16.16s addr: %-4.4d data: 0x%-8.8x .", dataBuf.nameStr, thisItem->saveAddr, dataBuf.data);
 	        MENU_ItemSetData(thisItem, &dataBuf);
 	        //SYSLOG_D("Set Data.  menu: %-16.16s addr: %-4.4d .", thisItem->nameStr, thisItem->saveAddr);
@@ -347,7 +342,7 @@ void MENU_KVDB_DataRead(int32_t _region)
 	    {
 			MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
 			MENU_KVDB_KeyAppendRegionNum(regKeyStr, _region);
-			MENU_PORT_KVDB_ReadValue(regKeyStr, &dataBuf, sizeof(menu_nvmData_t));
+			MENU_PORT_KVDB_ReadValue(regKeyStr, &dataBuf, sizeof(menu_itemData_t));
 	        SYSLOG_D("Get Flash. menu: %-16.16s addr: %-4.4d data: 0x%-8.8x .", dataBuf.nameStr, thisItem->saveAddr, dataBuf.data);
 	        MENU_ItemSetData(thisItem, &dataBuf);
 	        //SYSLOG_D("Set Data.  menu: %-16.16s addr: %-4.4d .", thisItem->nameStr, thisItem->saveAddr);
@@ -367,12 +362,12 @@ void MENU_KVDB_DataRead_Boxed(menu_keyOp_t *const _op)
 void MENU_KVDB_DataSaveRegionConfig(void)
 {
 	SYSLOG_I("Saving region config ...");
-	menu_nvmData_t dataBuf;
+	menu_itemData_t dataBuf;
 	menu_itemIfce_t *thisItem = MENU_DirGetItem(MENU_DirGetList("/MenuManager"), menu_itemNameStr_RegnSel);
 	MENU_ItemGetData(thisItem, &dataBuf);
 	char regKeyStr[MENU_KVDB_REG_SIZE];
 	MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
-	MENU_PORT_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
+	MENU_PORT_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_itemData_t));
 	SYSLOG_I("Save region config complete");
 }
 void MENU_KVDB_DataSaveRegionConfig_Boxed(menu_keyOp_t *const _op)
@@ -384,11 +379,11 @@ void MENU_KVDB_DataSaveRegionConfig_Boxed(menu_keyOp_t *const _op)
 void MENU_KVDB_DataReadRegionConfig(void)
 {
     SYSLOG_I("Reading region config ...");
-	menu_nvmData_t dataBuf;
+	menu_itemData_t dataBuf;
 	menu_itemIfce_t *thisItem = MENU_DirGetItem(MENU_DirGetList("/MenuManager"), menu_itemNameStr_RegnSel);
 	char regKeyStr[MENU_KVDB_REG_SIZE];
 	MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
-	MENU_PORT_KVDB_ReadValue(regKeyStr, (void*)&dataBuf, sizeof(menu_nvmData_t));
+	MENU_PORT_KVDB_ReadValue(regKeyStr, (void*)&dataBuf, sizeof(menu_itemData_t));
 	MENU_ItemSetData(thisItem, &dataBuf);
 	SYSLOG_I("Read region config complete");
 }

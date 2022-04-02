@@ -75,21 +75,33 @@ void MENU_ItemConstruct_variType(menu_itemIfce_t *_item, void *_data)
     p_variType->cur = 0;
     MENU_ItemGetContent_variType(&p_variType->v, &p_variType->e, *p_variType->data);
 }
-void MENU_ItemGetData_variType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemGetData_variType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
     menu_item_variHandle_t *p_variType = (menu_item_variHandle_t*)(_item->p_handle);
-    *(int32_t *)_data = *(p_variType->data);
+    
+    _data->size = sizeof(int32_t);
+    _data->pData = p_variType->data;
+    SYSLOG_V("Get variType Data: %12.12d", *(p_variType->data));
 }
-void MENU_ItemSetData_variType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemSetData_variType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
     menu_item_variHandle_t *p_variType = (menu_item_variHandle_t*)(_item->p_handle);
-    if (_item->pptFlag & menuItem_dataExt_HasMinMax)
+    int32_t *pData = p_variType->data;
+    
+    if(4U == _data->size)
     {
-        *(int32_t *)_data = (*(int32_t *)_data > *(p_variType->data + 1)) ? (*(int32_t *)_data) : *(p_variType->data + 1);
-        *(int32_t *)_data = (*(int32_t *)_data < *(p_variType->data + 2)) ? (*(int32_t *)_data) : *(p_variType->data + 2);
+        *pData = *(int32_t *)(_data->pData);
+        if (_item->pptFlag & menuItem_dataExt_HasMinMax)
+        {
+            *pData = (*pData > *(pData + 1)) ? (*pData) : *(pData + 1);
+            *pData = (*pData < *(pData + 2)) ? (*pData) : *(pData + 2);
+        }
+        SYSLOG_V("Set variType data: %12.12d", *pData);
     }
-    *(p_variType->data) = *(int32_t *)_data;
-    SYSLOG_V("variType Data Updated %12.12d", *(p_variType->data));
+    else
+    {
+        SYSLOG_W("Set variType data: Failed. -size-match");
+    }
 }
 //used when in menuList
 void MENU_ItemPrintSlot_variType(menu_itemIfce_t *_item, uint32_t _slotNum)

@@ -18,8 +18,8 @@ extern menu_itemAdapter_t const menu_itemAdapter_variType;
 
 /** @brief : 整数类型菜单项操作函数。 */
 void MENU_ItemConstruct_variType(menu_itemIfce_t *_item, void *_data);
-void MENU_ItemGetData_variType(menu_itemIfce_t *_item, void *_data);
-void MENU_ItemSetData_variType(menu_itemIfce_t *_item, void *_data);
+void MENU_ItemGetData_variType(menu_itemIfce_t *_item, menu_itemData_t *_data);
+void MENU_ItemSetData_variType(menu_itemIfce_t *_item, menu_itemData_t *_data);
 //used when in menuList
 void MENU_ItemPrintSlot_variType(menu_itemIfce_t *_item, uint32_t _slotNum);
 void MENU_ItemDirectKeyOp_variType(menu_itemIfce_t *_item,

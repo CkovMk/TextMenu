@@ -45,16 +45,28 @@ void MENU_ItemConstruct_byteType(menu_itemIfce_t *_item, void *_data)
     p_byteType->cur = 0;
     MENU_ItemGetContent_byteType(p_byteType->bits, *p_byteType->data);
 }
-void MENU_ItemGetData_byteType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemGetData_byteType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
     menu_item_byteHandle_t *p_byteType = (menu_item_byteHandle_t*)(_item->p_handle);
-    *(int32_t *)_data = *(p_byteType->data);
+    
+    _data->size = sizeof(uint32_t);
+    _data->pData = p_byteType->data;
+    SYSLOG_V("Get byteType Data: %12.12d", *(p_byteType->data));
 }
-void MENU_ItemSetData_byteType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemSetData_byteType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
     menu_item_byteHandle_t *p_byteType = (menu_item_byteHandle_t*)(_item->p_handle);
-    *(p_byteType->data) = (uint8_t)(*(int32_t *)_data);
-    SYSLOG_V("byteType Data Updated %12.12d", *(p_byteType->data));
+    uint32_t *pData = p_byteType->data;
+
+    if(4U == _data->size)
+    {
+        *pData = (*(uint32_t *)(_data->pData)) & 0xffU;
+        SYSLOG_V("Set byteType data: %12.12d", *pData);
+    }
+    else
+    {
+        SYSLOG_W("Set byteType data: Failed. -size-match");
+    }
 }
 //used when in menuList
 void MENU_ItemPrintSlot_byteType(menu_itemIfce_t *_item, uint32_t _slotNum)

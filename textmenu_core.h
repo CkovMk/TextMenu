@@ -10,7 +10,7 @@
 #include "textmenu_strbuf.h"
 
 /** @brief : 软件版本 */
-#define APP_MENU_VERSION (HITSIC_MAKE_VERSION(1U, 0U, 0U))
+#define TEXTMENU_VERSION (HITSIC_MAKE_VERSION(1U, 0U, 0U))
 
 /**
  * @brief : 菜单项和菜单列表名称的最大长度为16个字符。用于定义缓存区大小。
@@ -50,16 +50,6 @@ enum menu_status_t
     menu_param_Mask8l = 0x00ff, ///> 低16位中高8位掩码标志位，用于读取16位参数中的低8位。同上。
 };
 
-// /**
-//  * @brief : 菜单项和菜单列表的计数器。
-//  * @ {
-//  */
-// extern uint32_t menu.status.itemCnt;               ///< 菜单项计数器
-// extern uint32_t menu.status.listCnt;               ///< 菜单列表计数器
-// /**
-//  * @ }
-//  */
-
 //TODO: Transistion in progress.
 
 typedef struct _menu_itemIfce menu_itemIfce_t;
@@ -74,14 +64,14 @@ typedef struct _menu_strBuf menu_strBuf_t;
  */
 typedef struct _menu
 {
-    menu_list_t *menuRoot;             ///< 根菜单指针。
-    menu_list_t *manageList;           ///< 管理菜单指针。
+    menu_list_t *menuRoot;              ///< 根菜单指针。
+    menu_list_t *manageList;            ///< 管理菜单指针。
     struct 
     {
-        uint32_t itemCnt, listCnt;
+        uint32_t itemCnt, listCnt;      ///< 菜单项和菜单列表的计数器。
         volatile uint32_t suspendCnt = 0U;
-        menu_list_t *currList;             ///< 状态变量：指向当前所在的菜单列表。
-        menu_itemIfce_t *currItem;         ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
+        menu_list_t *currList;          ///< 状态变量：指向当前所在的菜单列表。
+        menu_itemIfce_t *currItem;      ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。
         uint32_t flag;
 #if defined(TEXTMENU_FEATURE_EVENTCB) && (TEXTMENU_FEATURE_EVENTCB != 0U)
     menu_itemIfce_t *eventCbItem[TEXTMENU_CONFIG_EVENTQ_LEN];      ///< 状态变量：指向当前所在的菜单项，仅位于菜单项内时有效。

@@ -27,18 +27,29 @@ void MENU_ItemConstruct_boolType(menu_itemIfce_t *_item, void *_data)
     _item->adapter = &menu_itemAdapter_boolType;
     _item->p_handle = malloc(sizeof(menu_item_boolHandle_t));
     menu_item_boolHandle_t *p_boolType = (menu_item_boolHandle_t*)(_item->p_handle);
-    p_boolType->data = (bool*)_data;
+    p_boolType->data = (uint32_t*)_data;
 }
-void MENU_ItemGetData_boolType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemGetData_boolType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
 	menu_item_boolHandle_t *p_boolType = (menu_item_boolHandle_t*)(_item->p_handle);
-	*(bool *)_data = *(p_boolType->data);
+	_data->size = sizeof(uint32_t);
+    _data->pData = p_boolType->data;
+	SYSLOG_V("Get boolType Data: %12.12d", *(p_boolType->data));
 }
-void MENU_ItemSetData_boolType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemSetData_boolType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
 	menu_item_boolHandle_t *p_boolType = (menu_item_boolHandle_t*)(_item->p_handle);
-	*(p_boolType->data) = *(bool *)_data;
-	SYSLOG_V("boolType Data Updated %12.12d", *(p_boolType->data));
+	uint32_t *pData = p_boolType->data;
+
+    if(4U == _data->size)
+    {
+        *pData = (bool)(*(uint32_t *)(_data->pData));
+        SYSLOG_V("Set boolType data: %12.12d", *pData);
+    }
+    else
+    {
+        SYSLOG_W("Set boolType data: Failed. -size-match");
+    }
 }
 //used when in menuList
 void MENU_ItemPrintSlot_boolType(menu_itemIfce_t *_item, uint32_t _slotNum)

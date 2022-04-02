@@ -27,10 +27,11 @@ void MENU_ItemConstruct_procType(menu_itemIfce_t *_item, void *_data)
     menu_item_procHandle_t *p_procType = (menu_item_procHandle_t*)(_item->p_handle);
     p_procType->data = (menu_itemProcHandler_t)_data;
 }
-void MENU_ItemGetData_procType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemGetData_procType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
+    _data->size = 0U;
 }
-void MENU_ItemSetData_procType(menu_itemIfce_t *_item, void *_data)
+void MENU_ItemSetData_procType(menu_itemIfce_t *_item, menu_itemData_t *_data)
 {
 }
 //used when in menuList
