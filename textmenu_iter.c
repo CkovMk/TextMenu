@@ -63,7 +63,7 @@ menu_itemIfce_t* MENU_IteratorDerefItem(menu_iterator_t *_iter)
 }
 
 
-status_t MENU_IteratorIncrease(menu_iterator_t *_iter)
+mstatus_t MENU_IteratorIncrease(menu_iterator_t *_iter)
 {
     SYSLOG_I("Iterator Increase:");
     SYSLOG_V("Current Position: List.Item : %4.4d.%4.4d", _iter->listNum, _iter->itemNum);
@@ -96,12 +96,12 @@ status_t MENU_IteratorIncrease(menu_iterator_t *_iter)
         if(_iter->listNum == _iter->listQueSize ||_iter->listQue[_iter->listNum] == NULL)
         {
             SYSLOG_I("Iteration Ended.");
-            return kStatus_Fail;
+            return mstatus_Fail;
         }
         SYSLOG_D("Enter list [%s].", _iter->listQue[_iter->listNum]->nameStr);
     }
 
     SYSLOG_I("Iterator Increased");
     SYSLOG_D("Increased Position: List.Item : %4.4d.%4.4d", _iter->listNum, _iter->itemNum);
-    return kStatus_Success;
+    return mstatus_Success;
 }

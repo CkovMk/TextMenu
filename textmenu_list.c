@@ -37,19 +37,19 @@ void MENU_ListDestruct(menu_list_t *_list)
     --menu.status.listCnt;
 }
 
-status_t MENU_ListInsert(menu_list_t *_list, menu_itemIfce_t *_item)
+mstatus_t MENU_ListInsert(menu_list_t *_list, menu_itemIfce_t *_item)
 {
     assert(_list);
     assert(_item);
 
     if (_list->listNum == _list->listSize)
     {
-        return kStatus_Fail;
+        return mstatus_Fail;
     }
     _list->menu[_list->listNum] = _item;
     _item->list_id = _list->listNum++;
 
-    return kStatus_Success;
+    return mstatus_Success;
 }
 
 void MENU_ListPrintDisp(menu_list_t *_list)

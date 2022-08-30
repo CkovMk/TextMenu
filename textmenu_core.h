@@ -10,7 +10,7 @@
 #include "textmenu_strbuf.h"
 
 /** @brief : 软件版本 */
-#define TEXTMENU_VERSION (HITSIC_MAKE_VERSION(1U, 0U, 0U))
+#define TEXTMENU_VERSION (CMODULE_CMODULE_MAKE_VERSION(1U, 0U, 0U))
 
 /**
  * @brief : 菜单项和菜单列表名称的最大长度为16个字符。用于定义缓存区大小。
@@ -22,9 +22,9 @@
 /*! @brief Error codes for MENU. */
 enum
 {
-    kStatus_MENU_KVDB_KeyAbsence = MAKE_STATUS(kStatusGroup_MENU, 10), /*!< Key provided is absent in KVDB. */
-    kStatus_MENU_KVDB_ReadError  = MAKE_STATUS(kStatusGroup_MENU, 11), /*!< Value read from KVDB error. */
-    kStatus_MENU_KVDB_SaveError  = MAKE_STATUS(kStatusGroup_MENU, 12), /*!< Value save to KVDB error. */
+    mstatus_MENU_KVDB_KeyAbsence = CMODULE_MAKE_STATUS(mStatusGroup_MENU, 10), /*!< Key provided is absent in KVDB. */
+    mstatus_MENU_KVDB_ReadError  = CMODULE_MAKE_STATUS(mStatusGroup_MENU, 11), /*!< Value read from KVDB error. */
+    mstatus_MENU_KVDB_SaveError  = CMODULE_MAKE_STATUS(mStatusGroup_MENU, 12), /*!< Value save to KVDB error. */
 };
 
 
@@ -32,7 +32,7 @@ enum
 /**
  * @brief 菜单状态标志位枚举变量。
  */
-enum menu_status_t
+enum menu_mstatus_t
 {
     //menu_data_valid = menu_dataValid_flag << menu_dataValid_mask, /// 菜单状态标志
 
