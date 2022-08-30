@@ -33,7 +33,7 @@
 
 #ifndef TEXTMENU_H
 #define TEXTMENU_H
-//#include <hitsic_common.h>
+//#include <cmodule_common.h>
 
 #include <textmenu_port.h>
 

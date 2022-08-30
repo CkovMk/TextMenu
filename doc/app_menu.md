@@ -6,7 +6,7 @@
 
 ## 简介
 
-TEXTMENU原隶属于HITSIC_MODULE的应用层，是一个轻量级的字符菜单。该菜单可以支持32位有符号整数型、32位有符号浮点型、布尔类型、uint8_t字节类型变量的监视与调节，具有子菜单功能，且可以插入可调用的函数。每个菜单项的属性可以单独设置。
+TEXTMENU原隶属于CMODULE_MODULE的应用层，是一个轻量级的字符菜单。该菜单可以支持32位有符号整数型、32位有符号浮点型、布尔类型、uint8_t字节类型变量的监视与调节，具有子菜单功能，且可以插入可调用的函数。每个菜单项的属性可以单独设置。
 
 ### 组件
 
@@ -173,11 +173,11 @@ by：CkovMk @hitsic 2020.07.31
 
 **改动说明**
 
-- 增加了`HITSIC_USE_APP_MENU`宏，用于启用或禁用整个APP_MENU模块。
-- 增加了`HITSIC_MENU_USE_BUTTON`宏，用于启用或禁用菜单依赖的DRV_BUTTON模块和自带的MENU_BUTTON按键事件模块。禁用该宏后，您需要手动向菜单发送按键消息。
-- 增加了`HITSIC_MENU_USE_NVM`宏，用于启用或禁用自带的MENU_NVM非易失性存储模块。禁用该宏后，菜单将无法以任何形式保存参数。
-- 在启用`HITSIC_MENU_USE_NVM`宏时，您现在可以自定义数据的存储方式。在`app_menu_port.h`内提供了对各存储区大小、位置的快速设置。您还可以自定义NVM后端驱动。例如，通过适配，您现在可以将数据存在外部EEPROM或SPI Flash上。目前，MENU_NVM仅支持块级存储，不支持文件存储。
-- 由于HITSIC_Modules上层结构调整，删除掉了`hitsic_def.h`，APP_MENU不再依赖该头文件。
+- 增加了`CMODULE_USE_APP_MENU`宏，用于启用或禁用整个APP_MENU模块。
+- 增加了`CMODULE_MENU_USE_BUTTON`宏，用于启用或禁用菜单依赖的DRV_BUTTON模块和自带的MENU_BUTTON按键事件模块。禁用该宏后，您需要手动向菜单发送按键消息。
+- 增加了`CMODULE_MENU_USE_NVM`宏，用于启用或禁用自带的MENU_NVM非易失性存储模块。禁用该宏后，菜单将无法以任何形式保存参数。
+- 在启用`CMODULE_MENU_USE_NVM`宏时，您现在可以自定义数据的存储方式。在`app_menu_port.h`内提供了对各存储区大小、位置的快速设置。您还可以自定义NVM后端驱动。例如，通过适配，您现在可以将数据存在外部EEPROM或SPI Flash上。目前，MENU_NVM仅支持块级存储，不支持文件存储。
+- 由于cModules上层结构调整，删除掉了`CMODULE_def.h`，APP_MENU不再依赖该头文件。
 
 **开发计划**
 
@@ -648,9 +648,9 @@ by：CkovMk @hitsic 2019.11.02
      *
      * @param  {menu_list_t*} _list     : 要访问的菜单列表的指针。
      * @param  {menu_itemIfce_t*} _item : 要插入的菜单项指针。该指针应为将亡值。
-     * @return {status_t}               : 返回操作的结果。正常应返回kStatus_Success。
+     * @return {mstatus_t}               : 返回操作的结果。正常应返回mstatus_Success。
      */
-    status_t MENU_ListInsert(menu_list_t *_list, menu_itemIfce_t *_item);
+    mstatus_t MENU_ListInsert(menu_list_t *_list, menu_itemIfce_t *_item);
     ```
 
 - 向显存中打印菜单列表
@@ -744,9 +744,9 @@ by：CkovMk @hitsic 2019.11.02
 	 * @brief : 迭代器递增。
 	 *
 	 * @param  {menu_iterator_t*} _iter : 迭代器指针。
-	 * @return {status_t}               : 成功返回kStatus_Success，如果已到达菜单结尾，则返回kStauts_Fail。
+	 * @return {mstatus_t}               : 成功返回mstatus_Success，如果已到达菜单结尾，则返回kStauts_Fail。
 	 */
-	status_t MENU_IteratorIncrease(menu_iterator_t *_iter);
+	mstatus_t MENU_IteratorIncrease(menu_iterator_t *_iter);
 	```
 
 
@@ -901,7 +901,7 @@ by：CkovMk @hitsic 2019.11.02
   - 菜单状态标志位定义
 
     ```c
-    enum menu_status_t
+    enum menu_mstatus_t
     {
         menu_data_valid = menu_dataValid_flag << menu_dataValid_mask, /// 菜单状态标志
     
@@ -967,7 +967,7 @@ by：CkovMk @hitsic 2019.11.02
 ##### 字符缓存
 
 ```c++
-char menu.dispStrBuf[HITSIC_MENU_DISPLAY_STRBUF_ROW][HITSIC_MENU_DISPLAY_STRBUF_COL];
+char menu.dispStrBuf[CMODULE_MENU_DISPLAY_STRBUF_ROW][CMODULE_MENU_DISPLAY_STRBUF_COL];
 ```
 
 
@@ -977,9 +977,9 @@ char menu.dispStrBuf[HITSIC_MENU_DISPLAY_STRBUF_ROW][HITSIC_MENU_DISPLAY_STRBUF_
 该缓存由移植文件提供。主要包括三个接口：
 
 ```c++
-#define HITSIC_MENU_DISPLAY_BUFFER_CLEAR()			///> 清除缓存
-#define HITSIC_MENU_DISPLAY_PRINT(row, col, str)	///> 打印字符
-#define HITSIC_MENU_DISPLAY_BUFFER_UPDATE()			///> 上传缓存
+#define CMODULE_MENU_DISPLAY_BUFFER_CLEAR()			///> 清除缓存
+#define CMODULE_MENU_DISPLAY_PRINT(row, col, str)	///> 打印字符
+#define CMODULE_MENU_DISPLAY_BUFFER_UPDATE()			///> 上传缓存
 ```
 
 
@@ -1008,7 +1008,7 @@ FIXME
   void MENU_Data_NvmSave_Boxed(menu_keyOp_t *const _op);
   ```
 
-  保存菜单内的数据到NVM（非易失性存储）。仅在启用NVM功能时有效。本模组不会自动保存参数到NVM。在程序中，您应该调用`void MENU_Data_NvmSave(int32_t _region);`来执行保存操作。`int32_t menu_currRegionNum;`是当前菜单选中的局部存储区。您也可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `HITSIC_MENU_NVM_REGION_CNT`。`void MENU_Data_NvmSave_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据保存操作。
+  保存菜单内的数据到NVM（非易失性存储）。仅在启用NVM功能时有效。本模组不会自动保存参数到NVM。在程序中，您应该调用`void MENU_Data_NvmSave(int32_t _region);`来执行保存操作。`int32_t menu_currRegionNum;`是当前菜单选中的局部存储区。您也可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `CMODULE_MENU_NVM_REGION_CNT`。`void MENU_Data_NvmSave_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据保存操作。
 
   
 
@@ -1031,7 +1031,7 @@ FIXME
   void MENU_Data_NvmRead_Boxed(menu_keyOp_t *const _op);
   ```
 
-  从NVM（非易失性存储）中读取数据到当前菜单。仅在启用NVM功能时有效。本模组不会自动读取参数到NVM。在程序中，您可以在初始化后立即调用`void MENU_Data_NvmSave(int32_t _region);`来执行读取操作。您可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `HITSIC_MENU_NVM_REGION_CNT`，或先读取NVM中保存的分区号，再执行读取操作。`void MENU_Data_NvmRead_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据读取操作。
+  从NVM（非易失性存储）中读取数据到当前菜单。仅在启用NVM功能时有效。本模组不会自动读取参数到NVM。在程序中，您可以在初始化后立即调用`void MENU_Data_NvmSave(int32_t _region);`来执行读取操作。您可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `CMODULE_MENU_NVM_REGION_CNT`，或先读取NVM中保存的分区号，再执行读取操作。`void MENU_Data_NvmRead_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据读取操作。
 
   **注意：菜单内的数据在NVM中按地址存储，且设置了校验机制。如果修改了菜单结构或菜单名称，可能会导致数据丢失。请在修改菜单结构前备份数据。**
 
@@ -1288,7 +1288,7 @@ by CkovMk @hitsic 2020.11.22
 
 - MENU组件
 
-  启用/禁用：由宏`HITSIC_USE_APP_MENU`控制。0为禁用。
+  启用/禁用：由宏`CMODULE_USE_APP_MENU`控制。0为禁用。
 
 - 调试输出
 
@@ -1299,19 +1299,19 @@ by CkovMk @hitsic 2020.11.22
    */
   
   /*! 核心逻辑 LOG级别定义 */
-  #define HITSIC_MENU_MAIN_LOG_LVL    (5U)
+  #define CMODULE_MENU_MAIN_LOG_LVL    (5U)
   
   /*! 数据存储 LOG级别定义 */
-  #define HITSIC_MENU_KVDB_LOG_LVL    (2U)
+  #define CMODULE_MENU_KVDB_LOG_LVL    (2U)
   
   /*! 按键处理 LOG级别定义 */
-  #define HITSIC_MENU_BUTN_LOG_LVL    (2U)
+  #define CMODULE_MENU_BUTN_LOG_LVL    (2U)
   
   /*! 菜单项目 LOG级别定义 */
-  #define HITSIC_MENU_ITEM_LOG_LVL    (3U)
+  #define CMODULE_MENU_ITEM_LOG_LVL    (3U)
   
   /*! 菜单列表 LOG级别定义 */
-  #define HITSIC_MENU_LIST_LOG_LVL    (3U)
+  #define CMODULE_MENU_LIST_LOG_LVL    (3U)
   
   /* @ } */
   ```
@@ -1320,7 +1320,7 @@ by CkovMk @hitsic 2020.11.22
 
 - 根菜单最大容量
 
-  由于本组件中的菜单列表需要在初始化时指定其大小，根菜单的大小由宏`HITSIC_MENU_ROOT_SIZE`决定。
+  由于本组件中的菜单列表需要在初始化时指定其大小，根菜单的大小由宏`CMODULE_MENU_ROOT_SIZE`决定。
 
 - 事件任务接口
 
@@ -1332,9 +1332,9 @@ by CkovMk @hitsic 2020.11.22
    * 可以使用任何当前工程中未使用的中断。注意中断号和中断服务函数
    * 必须对应。优先级不可过高。
    */
-  #define HITSIC_MENU_SERVICE_IRQHandler (Reserved85_IRQHandler)	///< 要使用的中断服务函数
-  #define HITSIC_MENU_SERVICE_IRQn (Reserved85_IRQn) 				///< 要使用的中断号
-  #define HITSIC_MENU_SERVICE_IRQPrio (12u) 						///< 中断优先级，需要设置一个较低的值，以免打断重要任务。
+  #define CMODULE_MENU_SERVICE_IRQHandler (Reserved85_IRQHandler)	///< 要使用的中断服务函数
+  #define CMODULE_MENU_SERVICE_IRQn (Reserved85_IRQn) 				///< 要使用的中断号
+  #define CMODULE_MENU_SERVICE_IRQPrio (12u) 						///< 中断优先级，需要设置一个较低的值，以免打断重要任务。
   ```
   
   随后在`app_menu_port.cpp`中实现此函数。只需在服务函数中清除中断标志位，并调用`void MENU_EventService(void);`即可。
@@ -1347,9 +1347,9 @@ by CkovMk @hitsic 2020.11.22
   {
   #endif
   
-  void HITSIC_MENU_SERVICE_IRQHandler(void)
+  void CMODULE_MENU_SERVICE_IRQHandler(void)
   {
-      NVIC_ClearPendingIRQ(HITSIC_MENU_SERVICE_IRQn);
+      NVIC_ClearPendingIRQ(CMODULE_MENU_SERVICE_IRQn);
       MENU_EventService();
   }
   
@@ -1364,11 +1364,11 @@ by CkovMk @hitsic 2020.11.22
 
 - 启用/禁用
 
-  由宏`HITSIC_MENU_USE_BUTTON`控制。如果不使用菜单自带的按键处理，您也可以调用顶层API`void MENU_KeyOp(menu_keyOp_t *const _op);`手动传入按键操作。**菜单自带的按键处理依赖于BUTTON组件。**
+  由宏`CMODULE_MENU_USE_BUTTON`控制。如果不使用菜单自带的按键处理，您也可以调用顶层API`void MENU_KeyOp(menu_keyOp_t *const _op);`手动传入按键操作。**菜单自带的按键处理依赖于BUTTON组件。**
 
 - GPIO配置
 
-  由宏`HITSIC_MENU_BUTTON_5DIR_BSP_INIT`配置。该宏定义了一个长度为5的`button_t`结构体数组，该结构体的定义详见BUTTON组件。
+  由宏`CMODULE_MENU_BUTTON_5DIR_BSP_INIT`配置。该宏定义了一个长度为5的`button_t`结构体数组，该结构体的定义详见BUTTON组件。
 
   在MENU的移植文件中，每一个结构体仅需修改前两项：第一项为按键所在的GPIO外设，第二项为按键所在的GPIO编号。其他项保持默认即可。
 
@@ -1378,7 +1378,7 @@ by CkovMk @hitsic 2020.11.22
   >
   > ```c++
   > /** @brief : 菜单使用的五向按键初始化。每组数据前两个是GPIO和Pin，其余数据为0。 */
-  > #define HITSIC_MENU_BUTTON_5DIR_BSP_INIT  \
+  > #define CMODULE_MENU_BUTTON_5DIR_BSP_INIT  \
   >     {                                     \
   >         {                                 \
   >             RTEPIN_DIGITAL_BUTTON_OK_GPIO, \
@@ -1429,7 +1429,7 @@ by CkovMk @hitsic 2020.11.22
 
 - 帧缓存
 
-  启用/禁用：由宏`HITSIC_MENU_USE_FRAME_BUFFER`控制。
+  启用/禁用：由宏`CMODULE_MENU_USE_FRAME_BUFFER`控制。
 
 ##### 帧缓存模式
 
@@ -1438,9 +1438,9 @@ by CkovMk @hitsic 2020.11.22
 ```c++
 #include "drv_disp_ssd1306.hpp"
 #include "lib_graphic.hpp"
-#define HITSIC_MENU_DISPLAY_BUFFER_CLEAR() (MENU_FrameBufferClear())
-#define HITSIC_MENU_DISPLAY_PRINT(row, col, str) (MENU_FrameBufferPrint(row, col, str))
-#define HITSIC_MENU_DISPLAY_BUFFER_UPDATE() (MENU_FrameBufferUpdate())
+#define CMODULE_MENU_DISPLAY_BUFFER_CLEAR() (MENU_FrameBufferClear())
+#define CMODULE_MENU_DISPLAY_PRINT(row, col, str) (MENU_FrameBufferPrint(row, col, str))
+#define CMODULE_MENU_DISPLAY_BUFFER_UPDATE() (MENU_FrameBufferUpdate())
 ```
 
 随后在`app_menu_port.hpp`内实现这三个函数。
@@ -1453,9 +1453,9 @@ by CkovMk @hitsic 2020.11.22
 
 ##### 无缓存模式
 
-只需要适配宏`HITSIC_MENU_DISPLAY_PRINT`。该接口用于将字符打印至屏幕。
+只需要适配宏`CMODULE_MENU_DISPLAY_PRINT`。该接口用于将字符打印至屏幕。
 
-其他两个宏定义`HITSIC_MENU_DISPLAY_BUFFER_CLEAR`和`HITSIC_MENU_DISPLAY_BUFFER_UPDATE`置为`(0)`即可。
+其他两个宏定义`CMODULE_MENU_DISPLAY_BUFFER_CLEAR`和`CMODULE_MENU_DISPLAY_BUFFER_UPDATE`置为`(0)`即可。
 
 
 
@@ -1463,6 +1463,6 @@ by CkovMk @hitsic 2020.11.22
 
 - NVM存储
 
-  启用/禁用：由宏`HITSIC_MENU_USE_NVM`控制。
+  启用/禁用：由宏`CMODULE_MENU_USE_NVM`控制。
 
 - NVM接口正在施工中，文档暂缓更新...

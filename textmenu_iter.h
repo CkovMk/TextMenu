@@ -65,8 +65,8 @@ menu_itemIfce_t* MENU_IteratorDerefItem(menu_iterator_t *_iter);
  * @brief : 迭代器递增。
  *
  * @param  {menu_iterator_t*} _iter : 迭代器指针。
- * @return {status_t}               : 成功返回kStatus_Success，如果已到达菜单结尾，则返回kStauts_Fail。
+ * @return {mstatus_t}               : 成功返回mstatus_Success，如果已到达菜单结尾，则返回kStauts_Fail。
  */
-status_t MENU_IteratorIncrease(menu_iterator_t *_iter);
+mstatus_t MENU_IteratorIncrease(menu_iterator_t *_iter);
 
 #endif // ! TEXTMENU_ITER_H

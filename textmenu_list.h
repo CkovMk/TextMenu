@@ -53,9 +53,9 @@ void MENU_ListDestruct(menu_list_t *_list);
  *
  * @param  {menu_list_t*} _list     : 要访问的菜单列表的指针。
  * @param  {menu_itemIfce_t*} _item : 要插入的菜单项指针。该指针应为将亡值。
- * @return {status_t}               : 返回操作的结果。正常应返回kStatus_Success。
+ * @return {mstatus_t}               : 返回操作的结果。正常应返回mstatus_Success。
  */
-status_t MENU_ListInsert(menu_list_t *_list, menu_itemIfce_t *_item);
+mstatus_t MENU_ListInsert(menu_list_t *_list, menu_itemIfce_t *_item);
 
 /**
  * @brief : 打印菜单列表。

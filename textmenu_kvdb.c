@@ -30,7 +30,7 @@ int32_t menu_currRegionNum[3] = { 0, 0, TEXTMENU_NVM_REGION_CNT - 1 };    ///< å
 #define SYSLOG_LVL  (TEXTMENU_KVDB_LOG_LVL)
 #include <inc_syslog.h>
 
-status_t MENU_KVDB_MetadataInit(menu_kvdb_metadata_t *_data)
+mstatus_t MENU_KVDB_MetadataInit(menu_kvdb_metadata_t *_data)
 {
     _data->swVersion = TEXTMENU_VERSION;
     _data->globalItemCnt = 0U;
@@ -41,7 +41,7 @@ status_t MENU_KVDB_MetadataInit(menu_kvdb_metadata_t *_data)
     if(NULL == iter)
     {
         SYSLOG_W("Metadata init failed! Iterator constructor failed.");
-        return kStatus_Fail;
+        return mstatus_Fail;
     }
 
     do
@@ -66,76 +66,76 @@ status_t MENU_KVDB_MetadataInit(menu_kvdb_metadata_t *_data)
             continue;
         }
 
-    }while(kStatus_Success == MENU_IteratorIncrease(iter));
+    }while(mstatus_Success == MENU_IteratorIncrease(iter));
 
     MENU_IteratorDestruct(iter);
 
     SYSLOG_I("Metadata init success.");
-    return kStatus_Success;
+    return mstatus_Success;
 }
 
-status_t MENU_KVDB_MetadataRead(menu_kvdb_metadata_t *_data)
+mstatus_t MENU_KVDB_MetadataRead(menu_kvdb_metadata_t *_data)
 {
     uint32_t size = 0U;
-    if(kStatus_Success != MENU_PORT_KVDB_GetSize(MENU_KVDB_METADATA_KEY, &size) || (0U == size))
+    if(mstatus_Success != MENU_PORT_KVDB_GetSize(MENU_KVDB_METADATA_KEY, &size) || (0U == size))
     {
         SYSLOG_I("Metadata read failed! Metadata not found.");
-        return kStatus_MENU_KVDB_KeyAbsence;
+        return mstatus_MENU_KVDB_KeyAbsence;
     }
     else if(sizeof(menu_kvdb_metadata_t) != size)
     {
         SYSLOG_I("Metadata read failed! Metadata size incorrect.");
-        return kStatus_Fail;
+        return mstatus_Fail;
     }
-    if(kStatus_Success != MENU_PORT_KVDB_ReadValue(MENU_KVDB_METADATA_KEY, _data, sizeof(menu_kvdb_metadata_t)))
+    if(mstatus_Success != MENU_PORT_KVDB_ReadValue(MENU_KVDB_METADATA_KEY, _data, sizeof(menu_kvdb_metadata_t)))
     {
         SYSLOG_W("Metadata read failed! Read value failed.");
-        return kStatus_MENU_KVDB_ReadError;
+        return mstatus_MENU_KVDB_ReadError;
     }
 
     SYSLOG_I("Metadata read success.");
-    return kStatus_Success;
+    return mstatus_Success;
 } 
 
-status_t MENU_KVDB_MetadataSave(menu_kvdb_metadata_t *_data)
+mstatus_t MENU_KVDB_MetadataSave(menu_kvdb_metadata_t *_data)
 {
     assert(_data);
-    if(kStatus_Success != (MENU_KVDB_METADATA_KEY, _data, sizeof(menu_kvdb_metadata_t)))
+    if(mstatus_Success != (MENU_KVDB_METADATA_KEY, _data, sizeof(menu_kvdb_metadata_t)))
     {
         SYSLOG_W("Metadata save failed! Save value failed.");
-        return kStatus_MENU_KVDB_SaveError;
+        return mstatus_MENU_KVDB_SaveError;
     }
     else
     {
         SYSLOG_I("Metadata save success.");
-        return kStatus_Success;
+        return mstatus_Success;
     }
 } 
 
-status_t  MENU_KVDB_GenerateKey(menu_itemIfce_t const *const _item, char *const _str, uint32_t _size)
+mstatus_t  MENU_KVDB_GenerateKey(menu_itemIfce_t const *const _item, char *const _str, uint32_t _size)
 {//FIXME: functional but not optimal.
     if(_size < MENU_KVDB_REG_SIZE)
     {
         SYSLOG_W("Key generation failed! - no enough space.");
-        return kStatus_Fail; 
+        return mstatus_Fail; 
     }
     if(_item->pptFlag & menuItem_data_global)
         { snprintf(_str, _size, "MENUG%4.4x", _item->saveAddr); }
     else if(_item->pptFlag & menuItem_data_region)
         { snprintf(_str, _size, "MENUR%4.4x", _item->saveAddr); }
-    return kStatus_Success;
+    return mstatus_Success;
 }
 
-status_t MENU_KVDB_ResolveKey(char const * const _str, uint32_t *const _pptFlag, uint16_t *const _saveAddr)
+mstatus_t MENU_KVDB_ResolveKey(char const * const _str, uint32_t *const _pptFlag, uint16_t *const _saveAddr)
 {//FIXME: functional but not optimal.
     char c = ' ';
     sscanf(_str, "MENU%c%x", &c, _saveAddr);
     if('G' == c){*_pptFlag = menuItem_data_global;}
     else if('R' == c){*_pptFlag = menuItem_data_global;}
-    return kStatus_Success;
+    return mstatus_Success;
 }
 
-status_t MENU_KVDB_RegistryInit(void *_data, uint32_t *_size)
+mstatus_t MENU_KVDB_RegistryInit(void *_data, uint32_t *_size)
 {
     assert(NULL == _data);
 
@@ -150,7 +150,7 @@ status_t MENU_KVDB_RegistryInit(void *_data, uint32_t *_size)
     {
         *_size = 0U;
         SYSLOG_W("Registry init failed! Mem allocation failed.");
-        return kStatus_Fail;
+        return mstatus_Fail;
     }
 
 
@@ -161,7 +161,7 @@ status_t MENU_KVDB_RegistryInit(void *_data, uint32_t *_size)
     if(NULL == iter)
     {
         SYSLOG_W("Registry init failed! Iterator constructor failed.");
-        return kStatus_Fail;
+        return mstatus_Fail;
     }
 
     do
@@ -183,7 +183,7 @@ status_t MENU_KVDB_RegistryInit(void *_data, uint32_t *_size)
             continue;
         }
 
-    }while(kStatus_Success == MENU_IteratorIncrease(iter));
+    }while(mstatus_Success == MENU_IteratorIncrease(iter));
 
     MENU_IteratorSetup(iter); // Reset iter to beginning
 
@@ -206,54 +206,54 @@ status_t MENU_KVDB_RegistryInit(void *_data, uint32_t *_size)
             continue;
         }
 
-    }while(kStatus_Success == MENU_IteratorIncrease(iter));
+    }while(mstatus_Success == MENU_IteratorIncrease(iter));
 
     MENU_IteratorDestruct(iter);
 
     SYSLOG_I("Registry init success.");
-    return kStatus_Success;
+    return mstatus_Success;
 }
 
-status_t MENU_KVDB_RegistryRead(void *_data, uint32_t *_size)
+mstatus_t MENU_KVDB_RegistryRead(void *_data, uint32_t *_size)
 {
     assert(_data == NULL);
 
-    if(kStatus_Success != MENU_PORT_KVDB_GetSize(MENU_KVDB_REGISTRY_KEY, _size) || (0U == *_size))
+    if(mstatus_Success != MENU_PORT_KVDB_GetSize(MENU_KVDB_REGISTRY_KEY, _size) || (0U == *_size))
     {
         SYSLOG_I("Registry read failed! Registry not found.");
-        return kStatus_MENU_KVDB_KeyAbsence;
+        return mstatus_MENU_KVDB_KeyAbsence;
     }
 
     _data = malloc(*_size);
     if(NULL == _data)
     {
         SYSLOG_W("Registry read failed! Mem allocation failed.");
-        return kStatus_Fail;
+        return mstatus_Fail;
     }
 
-    if(kStatus_Success != MENU_PORT_KVDB_ReadValue(MENU_KVDB_REGISTRY_KEY, _data, *_size))
+    if(mstatus_Success != MENU_PORT_KVDB_ReadValue(MENU_KVDB_REGISTRY_KEY, _data, *_size))
     {
         free(_data);
         SYSLOG_W("Registry read failed! Read value failed.");
-        return kStatus_MENU_KVDB_ReadError;
+        return mstatus_MENU_KVDB_ReadError;
     }
 
     SYSLOG_I("Registry read success. %6.6d byte(s) received.", *_size);
-    return kStatus_Success;
+    return mstatus_Success;
 }
 
-status_t MENU_KVDB_RegistrySave(void *_data, uint32_t _size)
+mstatus_t MENU_KVDB_RegistrySave(void *_data, uint32_t _size)
 {
     assert(_data);
-    if(kStatus_Success != MENU_PORT_KVDB_SaveValue(MENU_KVDB_REGISTRY_KEY, _data, _size))
+    if(mstatus_Success != MENU_PORT_KVDB_SaveValue(MENU_KVDB_REGISTRY_KEY, _data, _size))
     {
         SYSLOG_W("Registry save failed! Save value failed.");
-        return kStatus_MENU_KVDB_SaveError;
+        return mstatus_MENU_KVDB_SaveError;
     }
     else
     {
         SYSLOG_I("Registry save success. %6.6d byte(s) saved.", _size);
-        return kStatus_Success;
+        return mstatus_Success;
     }
 }
 
@@ -275,7 +275,7 @@ void MENU_KVDB_DataSave(int32_t _region)
 			MENU_KVDB_GenerateKey(thisItem, regKeyStr, MENU_KVDB_REG_SIZE);
 			MENU_PORT_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_itemData_t));
 	    }
-	}while(kStatus_Success == MENU_IteratorIncrease(iter));
+	}while(mstatus_Success == MENU_IteratorIncrease(iter));
 	SYSLOG_I("Global Data End");
 	if (menu_currRegionNum[0] < 0 || menu_currRegionNum[0] >= TEXTMENU_NVM_REGION_CNT)
 	{
@@ -295,7 +295,7 @@ void MENU_KVDB_DataSave(int32_t _region)
 			MENU_KVDB_KeyAppendRegionNum(regKeyStr, _region);
 			MENU_PORT_KVDB_SaveValue(regKeyStr, (void*)&dataBuf, sizeof(menu_itemData_t));
 	    }
-	}while(kStatus_Success == MENU_IteratorIncrease(iter));
+	}while(mstatus_Success == MENU_IteratorIncrease(iter));
 	SYSLOG_I("Region %d Data End.", menu_currRegionNum[0]);
 	MENU_IteratorDestruct(iter);
 	SYSLOG_I("Save Complete");
@@ -326,7 +326,7 @@ void MENU_KVDB_DataRead(int32_t _region)
 	        MENU_ItemSetData(thisItem, &dataBuf);
 	        //SYSLOG_D("Set Data.  menu: %-16.16s addr: %-4.4d .", thisItem->nameStr, thisItem->saveAddr);
 	    }
-	}while(kStatus_Success == MENU_IteratorIncrease(iter));
+	}while(mstatus_Success == MENU_IteratorIncrease(iter));
 	SYSLOG_I("Global Data End.");
 	if (menu_currRegionNum[0] < 0 || menu_currRegionNum[0] >= TEXTMENU_NVM_REGION_CNT)
 	{
@@ -347,7 +347,7 @@ void MENU_KVDB_DataRead(int32_t _region)
 	        MENU_ItemSetData(thisItem, &dataBuf);
 	        //SYSLOG_D("Set Data.  menu: %-16.16s addr: %-4.4d .", thisItem->nameStr, thisItem->saveAddr);
 	    }
-	}while(kStatus_Success == MENU_IteratorIncrease(iter));
+	}while(mstatus_Success == MENU_IteratorIncrease(iter));
 	SYSLOG_I("Region %d Data End", menu_currRegionNum[0]);
 	MENU_IteratorDestruct(iter);
 	SYSLOG_I("Read complete");
