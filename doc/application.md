@@ -4,7 +4,7 @@
 
 ### 依赖项与初始化
 
-by：CkovMk @hitsic 2020.10.13
+by CkovMk <maqike@qq.com> 2020.10.13
 
 内容已更新以适配v0.1.4版本。
 
@@ -61,7 +61,7 @@ by：CkovMk @hitsic 2020.10.13
 
 ### 创建自己的菜单
 
-by：CkovMk @hitsic 2020.10.13
+by CkovMk <maqike@qq.com> 2020.10.13
 
 内容已更新以适配v0.1.4版本。
 
@@ -149,7 +149,7 @@ by：CkovMk @hitsic 2020.10.13
 
 ### 菜单第一次启动
 
-by CkovMk @hitsic 2020.10.30
+by CkovMk <maqike@qq.com> 2020.10.30
 
 菜单第一次启动时，由于NVM中未存储任何数据，将不会从NVM中加载数据。此时应对菜单的各个局部数据区分别执行一次保存操作，以初始化NVM存储。再次之后，菜单将在启动时读取NVM中存储的数据。
 
@@ -157,7 +157,7 @@ by CkovMk @hitsic 2020.10.30
 
 ### 编写交互式的可执行菜单项
 
-by CkovMk @hitsic 2020.11.22
+by CkovMk <maqike@qq.com> 2020.11.22
 
 本菜单模组支持运行交互式的可执行菜单项（下简称为“交互式菜单项”）。这允许您编写一个可在菜单中调用的应用程序，并可根据您的按键输入执行动作。示例代码为`app_menu_test.hpp`中的`inline void MENU_ExampleProcHandler1(menu_keyOp_t *const _op);`函数，对应示例菜单根目录中的`StrBufOvrd`菜单项。
 

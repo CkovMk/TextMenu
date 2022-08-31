@@ -204,7 +204,7 @@
 ##### 字符缓存
 
 ```c++
-char menu_dispStrBuf[HITSIC_MENU_DISPLAY_STRBUF_ROW][HITSIC_MENU_DISPLAY_STRBUF_COL];
+char menu_dispStrBuf[CMODULE_MENU_DISPLAY_STRBUF_ROW][CMODULE_MENU_DISPLAY_STRBUF_COL];
 ```
 
 
@@ -214,9 +214,9 @@ char menu_dispStrBuf[HITSIC_MENU_DISPLAY_STRBUF_ROW][HITSIC_MENU_DISPLAY_STRBUF_
 该缓存由移植文件提供。主要包括三个接口：
 
 ```c++
-#define HITSIC_MENU_DISPLAY_BUFFER_CLEAR()			///> 清除缓存
-#define HITSIC_MENU_DISPLAY_PRINT(row, col, str)	///> 打印字符
-#define HITSIC_MENU_DISPLAY_BUFFER_UPDATE()			///> 上传缓存
+#define CMODULE_MENU_DISPLAY_BUFFER_CLEAR()			///> 清除缓存
+#define CMODULE_MENU_DISPLAY_PRINT(row, col, str)	///> 打印字符
+#define CMODULE_MENU_DISPLAY_BUFFER_UPDATE()			///> 上传缓存
 ```
 
 
@@ -245,7 +245,7 @@ FIXME
   void MENU_Data_NvmSave_Boxed(menu_keyOp_t *const _op);
   ```
 
-  保存菜单内的数据到NVM（非易失性存储）。仅在启用NVM功能时有效。本模组不会自动保存参数到NVM。在程序中，您应该调用`void MENU_Data_NvmSave(int32_t _region);`来执行保存操作。`int32_t menu_currRegionNum;`是当前菜单选中的局部存储区。您也可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `HITSIC_MENU_NVM_REGION_CNT`。`void MENU_Data_NvmSave_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据保存操作。
+  保存菜单内的数据到NVM（非易失性存储）。仅在启用NVM功能时有效。本模组不会自动保存参数到NVM。在程序中，您应该调用`void MENU_Data_NvmSave(int32_t _region);`来执行保存操作。`int32_t menu_currRegionNum;`是当前菜单选中的局部存储区。您也可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `CMODULE_MENU_NVM_REGION_CNT`。`void MENU_Data_NvmSave_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据保存操作。
 
   
 
@@ -268,7 +268,7 @@ FIXME
   void MENU_Data_NvmRead_Boxed(menu_keyOp_t *const _op);
   ```
 
-  从NVM（非易失性存储）中读取数据到当前菜单。仅在启用NVM功能时有效。本模组不会自动读取参数到NVM。在程序中，您可以在初始化后立即调用`void MENU_Data_NvmSave(int32_t _region);`来执行读取操作。您可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `HITSIC_MENU_NVM_REGION_CNT`，或先读取NVM中保存的分区号，再执行读取操作。`void MENU_Data_NvmRead_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据读取操作。
+  从NVM（非易失性存储）中读取数据到当前菜单。仅在启用NVM功能时有效。本模组不会自动读取参数到NVM。在程序中，您可以在初始化后立即调用`void MENU_Data_NvmSave(int32_t _region);`来执行读取操作。您可以人为指定存储区，取值范围为0 ≤ `_region` ＜ `CMODULE_MENU_NVM_REGION_CNT`，或先读取NVM中保存的分区号，再执行读取操作。`void MENU_Data_NvmRead_Boxed(menu_keyOp_t *const _op);`是程序类型菜单项的服务函数，将被自动添加至管理菜单。您可以通过菜单执行数据读取操作。
 
   **注意：菜单内的数据在NVM中按地址存储，且设置了校验机制。如果修改了菜单结构或菜单名称，可能会导致数据丢失。请在修改菜单结构前备份数据。**
 
