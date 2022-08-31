@@ -18,7 +18,7 @@ by CkovMk 2021.12.01
 
 ### v1.0.0
 
-by：CkovMk @hitsic 2021.04.02
+by CkovMk <maqike@qq.com> 2021.04.02
 
 **改动说明**
 
@@ -37,7 +37,7 @@ by：CkovMk @hitsic 2021.04.02
 
 ### v0.1.7
 
-by：CkovMk @hitsic 2020.11.22
+by CkovMk <maqike@qq.com> 2020.11.22
 
 **改动说明**
 
@@ -62,7 +62,7 @@ by：CkovMk @hitsic 2020.11.22
 
 ### v0.1.6
 
-by：CkovMk @hitsic 2020.11.09
+by CkovMk <maqike@qq.com> 2020.11.09
 
 **改动说明**
 
@@ -85,7 +85,7 @@ by：CkovMk @hitsic 2020.11.09
 
 ### v0.1.5
 
-by：CkovMk @hitsic 2020.10.30
+by CkovMk <maqike@qq.com> 2020.10.30
 
 功能完善。
 
@@ -112,7 +112,7 @@ by：CkovMk @hitsic 2020.10.30
 
 ### v0.1.4
 
-by：CkovMk @hitsic 2020.10.09
+by CkovMk <maqike@qq.com> 2020.10.09
 
 继续完善功能
 
@@ -135,17 +135,17 @@ by：CkovMk @hitsic 2020.10.09
 
 ### v0.1.3
 
-by：CkovMk @hitsic 2020.07.31
+by CkovMk <maqike@qq.com> 2020.07.31
 
 增加了一些属性Flag。
 
 **改动说明**
 
-- 增加了`HITSIC_USE_APP_MENU`宏，用于启用或禁用整个APP_MENU模块。
-- 增加了`HITSIC_MENU_USE_BUTTON`宏，用于启用或禁用菜单依赖的DRV_BUTTON模块和自带的MENU_BUTTON按键事件模块。禁用该宏后，您需要手动向菜单发送按键消息。
-- 增加了`HITSIC_MENU_USE_NVM`宏，用于启用或禁用自带的MENU_NVM非易失性存储模块。禁用该宏后，菜单将无法以任何形式保存参数。
-- 在启用`HITSIC_MENU_USE_NVM`宏时，您现在可以自定义数据的存储方式。在`app_menu_port.h`内提供了对各存储区大小、位置的快速设置。您还可以自定义NVM后端驱动。例如，通过适配，您现在可以将数据存在外部EEPROM或SPI Flash上。目前，MENU_NVM仅支持块级存储，不支持文件存储。
-- 由于HITSIC_Modules上层结构调整，删除掉了`hitsic_def.h`，APP_MENU不再依赖该头文件。
+- 增加了`CMODULE_USE_APP_MENU`宏，用于启用或禁用整个APP_MENU模块。
+- 增加了`CMODULE_MENU_USE_BUTTON`宏，用于启用或禁用菜单依赖的DRV_BUTTON模块和自带的MENU_BUTTON按键事件模块。禁用该宏后，您需要手动向菜单发送按键消息。
+- 增加了`CMODULE_MENU_USE_NVM`宏，用于启用或禁用自带的MENU_NVM非易失性存储模块。禁用该宏后，菜单将无法以任何形式保存参数。
+- 在启用`CMODULE_MENU_USE_NVM`宏时，您现在可以自定义数据的存储方式。在`app_menu_port.h`内提供了对各存储区大小、位置的快速设置。您还可以自定义NVM后端驱动。例如，通过适配，您现在可以将数据存在外部EEPROM或SPI Flash上。目前，MENU_NVM仅支持块级存储，不支持文件存储。
+- 由于CMODULE_Modules上层结构调整，删除掉了`hitsic_def.h`，APP_MENU不再依赖该头文件。
 
 **开发计划**
 
@@ -162,7 +162,7 @@ by：CkovMk @hitsic 2020.07.31
 
 ### v0.1.2
 
-by：CkovMk @hitsic 2019.11.22
+by CkovMk <maqike@qq.com> 2019.11.22
 
 主要功能初步完善。
 
@@ -189,7 +189,7 @@ by：CkovMk @hitsic 2019.11.22
 
 ### v0.1.1
 
-by：CkovMk @hitsic 2019.11.02
+by CkovMk <maqike@qq.com> 2019.11.02
 
 第一个正式版。经过早期测试没有严重Bug。一些功能仍未完善。
 
