@@ -4,21 +4,11 @@
 #define SYSLOG_LVL  (TEXTMENU_ITEM_LOG_LVL)
 #include <inc_syslog.h>
 
-/**
- * @brief : 占位类型菜单项的操作句柄及操作函数。
- */
-const menu_itemAdapter_t menu_itemAdapter_nullType =
-{
-    .ItemConstruct = MENU_ItemConstruct_nullType,
-    .ItemGetData = MENU_ItemGetData_nullType,
-    .ItemSetData = MENU_ItemSetData_nullType,
-    .ItemPrintSlot = MENU_ItemPrintSlot_nullType,
-    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_nullType,
-    .ItemPrintDisp = MENU_ItemPrintDisp_nullType,
-    .ItemKeyOp = MENU_ItemKeyOp_nullType,
-};
-
 extern menu_t menu;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void MENU_ItemConstruct_nullType(menu_itemIfce_t *_item, void *_data)
 {
@@ -54,3 +44,21 @@ void MENU_ItemKeyOp_nullType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 {
     assert(0); //should never end up here.
 }
+
+#ifdef __cplusplus
+}
+#endif
+
+/**
+ * @brief : 占位类型菜单项的操作句柄及操作函数。
+ */
+const menu_itemAdapter_t menu_itemAdapter_nullType =
+{
+    .ItemConstruct = MENU_ItemConstruct_nullType,
+    .ItemGetData = MENU_ItemGetData_nullType,
+    .ItemSetData = MENU_ItemSetData_nullType,
+    .ItemPrintSlot = MENU_ItemPrintSlot_nullType,
+    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_nullType,
+    .ItemPrintDisp = MENU_ItemPrintDisp_nullType,
+    .ItemKeyOp = MENU_ItemKeyOp_nullType,
+};

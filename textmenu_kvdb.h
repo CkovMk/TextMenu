@@ -18,6 +18,10 @@
  * @{
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief : 键值数据库接口前置定义
  */
@@ -51,7 +55,7 @@ __PACKED typedef struct _menu_kvdb_metadata
  * @brief 生成元数据。
  * 
  * @param {menu_kvdb_metadata_t *} _data : 用于保存数据的指针。不得传入空指针。
- * @retval {mstatus_t} : 返回状态。成功返回mstatus_Success。
+ * @retval {mstatus_t} : 返回状态。成功返回mStatus_Success。
  */
 mstatus_t MENU_KVDB_MetadataInit(menu_kvdb_metadata_t *_data);
 
@@ -60,7 +64,7 @@ mstatus_t MENU_KVDB_MetadataInit(menu_kvdb_metadata_t *_data);
  * 
  * @param {menu_kvdb_metadata_t *} _data : 用于保存数据的指针。不得传入空指针。
  * @param {uint32_t *} _size : 保存读取数据的大小（字节）。
- * @retval {mstatus_t} : 返回状态。成功返回mstatus_Success。
+ * @retval {mstatus_t} : 返回状态。成功返回mStatus_Success。
  */
 mstatus_t MENU_KVDB_MetadataRead(menu_kvdb_metadata_t *_data);
 
@@ -69,7 +73,7 @@ mstatus_t MENU_KVDB_MetadataRead(menu_kvdb_metadata_t *_data);
  * 
  * @param {menu_kvdb_metadata_t *} _data : 想要保存的数据的指针。
  * @param {uint32_t *} _size : 数据的大小（字节）。
- * @retval {mstatus_t} : 返回状态。成功返回mstatus_Success。
+ * @retval {mstatus_t} : 返回状态。成功返回mStatus_Success。
  */
 mstatus_t MENU_KVDB_MetadataSave(menu_kvdb_metadata_t *_data);
 
@@ -93,7 +97,7 @@ mstatus_t MENU_KVDB_MetadataSave(menu_kvdb_metadata_t *_data);
  * @param {menuItem_t const *const} _item : 要生成键的菜单项指针。
  * @param {char *} _str : 存储键的字符串指针。
  * @param {uint32_t*} _size : 字符串指针的可用大小。
- * @retval {mstatus_t} : 返回状态。成功返回mstatus_Success。当_size空间不足时返回mstatus_Fail。
+ * @retval {mstatus_t} : 返回状态。成功返回mStatus_Success。当_size空间不足时返回mStatus_Fail。
  */
 mstatus_t MENU_KVDB_GenerateKey(menu_itemIfce_t const *const _item, char *_str, uint32_t _size);
 
@@ -103,7 +107,7 @@ mstatus_t MENU_KVDB_GenerateKey(menu_itemIfce_t const *const _item, char *_str, 
  * @param {char const * const} _str : 要解析的键字符串。
  * @param {uint32_t *const} _pptFlag : 解析出的存储区属性，可以为menuItem_data_global或menuItem_data_region。
  * @param {uint16_t *const} _saveAddr : 解析出的存储ID。
- * @retval {mstatus_t} : 返回状态。总是返回mstatus_Success。
+ * @retval {mstatus_t} : 返回状态。总是返回mStatus_Success。
  */
 mstatus_t MENU_KVDB_ResolveKey(char const * const _str, uint32_t *const _pptFlag, uint16_t *const _saveAddr);
 
@@ -113,7 +117,7 @@ mstatus_t MENU_KVDB_ResolveKey(char const * const _str, uint32_t *const _pptFlag
  * 
  * @param {void *} _data : 用于保存数据的指针。必须传入空指针。
  * @param {uint32_t *} _size : 保存生成数据的大小（字节）。
- * @retval {mstatus_t} : 返回状态。成功返回mstatus_Success。
+ * @retval {mstatus_t} : 返回状态。成功返回mStatus_Success。
  */
 mstatus_t MENU_KVDB_RegistryInit(void *_data, uint32_t *_size);
 
@@ -122,7 +126,7 @@ mstatus_t MENU_KVDB_RegistryInit(void *_data, uint32_t *_size);
  * 
  * @param {void *} _data : 用于保存数据的指针。必须传入空指针。
  * @param {uint32_t *} _size : 保存读取数据的大小（字节）。
- * @retval {mstatus_t} : 返回状态。成功返回mstatus_Success。
+ * @retval {mstatus_t} : 返回状态。成功返回mStatus_Success。
  */
 mstatus_t MENU_KVDB_RegistryRead(void *_data, uint32_t *_size);
 
@@ -131,7 +135,7 @@ mstatus_t MENU_KVDB_RegistryRead(void *_data, uint32_t *_size);
  * 
  * @param {void *} _data : 想要保存的数据的指针。
  * @param {uint32_t *} _size : 数据的大小（字节）。
- * @retval {mstatus_t} : 返回状态。成功返回mstatus_Success。
+ * @retval {mstatus_t} : 返回状态。成功返回mStatus_Success。
  */
 mstatus_t MENU_KVDB_RegistrySave(void *_data, uint32_t _size);
 
@@ -197,6 +201,10 @@ void MENU_KVDB_DataReadRegionConfig_Boxed(menu_keyOp_t *const _op);
 
 
 void MENU_KVDB_MenuDataSetup(menu_list_t *_list);
+
+#ifdef __cplusplus
+}
+#endif
 
 /* @} */
 

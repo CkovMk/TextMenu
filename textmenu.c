@@ -57,6 +57,10 @@
  * ********** 菜单顶层操作接口 **********
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void MENU_Init(void)
 {
     SYSLOG_I("Init Begin: v%d.%d.%d", CMODULE_VERSION_MAJOR(TEXTMENU_VERSION), CMODULE_VERSION_MINOR(TEXTMENU_VERSION), CMODULE_VERSION_PATCH(TEXTMENU_VERSION));
@@ -95,15 +99,15 @@ void MENU_Init(void)
 	uint32_t currRegSize = 0U, kvdbRegSize = 0U;
 
 
-	mstatus_t kvdbMetaStatus = mstatus_Success;
-	mstatus_t kvdbRegStatus = mstatus_Success;
+	mstatus_t kvdbMetaStatus = mStatus_Success;
+	mstatus_t kvdbRegStatus = mStatus_Success;
 
 	kvdbMetaStatus = MENU_KVDB_MetadataRead(&kvdbMeta);
 
 	kvdbRegStatus = MENU_KVDB_RegistryRead(kvdbReg, &kvdbRegSize);
 
 
-	if((mstatus_MENU_KVDB_KeyAbsence == kvdbMetaStatus) && (mstatus_MENU_KVDB_KeyAbsence == kvdbRegStatus))
+	if((mStatus_MENU_KVDB_KeyAbsence == kvdbMetaStatus) && (mStatus_MENU_KVDB_KeyAbsence == kvdbRegStatus))
 	{
 		//SYSLOG_I("Init: kvdb registry read failed!");
 
@@ -111,36 +115,36 @@ void MENU_Init(void)
 
 		SYSLOG_I("Create new metadata in kvdb.");
 		kvdbMetaStatus = MENU_KVDB_MetadataSave(&currMeta);
-		if(mstatus_Success != kvdbMetaStatus)
+		if(mStatus_Success != kvdbMetaStatus)
 		{
 			assert(0);
 		}
 
 		SYSLOG_I("Create new registry in kvdb.");
 		kvdbRegStatus = MENU_KVDB_RegistryInit(currReg, &currRegSize);
-		if(mstatus_Success != kvdbRegStatus)
+		if(mStatus_Success != kvdbRegStatus)
 		{
 			assert(0);
 		}
 		kvdbRegStatus = MENU_KVDB_RegistrySave(currReg, currRegSize);
-		if(mstatus_Success != kvdbRegStatus)
+		if(mStatus_Success != kvdbRegStatus)
 		{
 			assert(0);
 		}
 	}
-	else if((mstatus_MENU_KVDB_KeyAbsence == kvdbMetaStatus) && (mstatus_Success == kvdbRegStatus))
+	else if((mStatus_MENU_KVDB_KeyAbsence == kvdbMetaStatus) && (mStatus_Success == kvdbRegStatus))
 	{
 		SYSLOG_A("Init: critical error. Registry read success while metadata not found.");
 		SYSLOG_A("Please format KVDB and retry.");
 		assert(0);
 	}
-	else if((mstatus_Success == kvdbMetaStatus) && (mstatus_MENU_KVDB_KeyAbsence == kvdbRegStatus))
+	else if((mStatus_Success == kvdbMetaStatus) && (mStatus_MENU_KVDB_KeyAbsence == kvdbRegStatus))
 	{
 		SYSLOG_A("Init: critical error. Metadata read success while registry not found.");
 		SYSLOG_A("Init: Please format KVDB and retry.");
 		assert(0);
 	}
-	else if((mstatus_Success == kvdbMetaStatus) && (mstatus_Success == kvdbRegStatus))
+	else if((mStatus_Success == kvdbMetaStatus) && (mStatus_Success == kvdbRegStatus))
 	{
 		SYSLOG_I("Init: Metadata and registry read success.");
 
@@ -256,6 +260,10 @@ void MENU_Resume(void)
 		SYSLOG_I("Resumed.");
 	}
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 //#undef SYSLOG_TAG
 //#undef SYSLOG_LVL

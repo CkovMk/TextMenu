@@ -29,6 +29,10 @@ typedef struct _menu_list menu_list_t;
  ************ 菜单列表操作接口 **********
  **************************************/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief : 菜单列表的构造函数。
  *
@@ -53,7 +57,7 @@ void MENU_ListDestruct(menu_list_t *_list);
  *
  * @param  {menu_list_t*} _list     : 要访问的菜单列表的指针。
  * @param  {menu_itemIfce_t*} _item : 要插入的菜单项指针。该指针应为将亡值。
- * @return {mstatus_t}               : 返回操作的结果。正常应返回mstatus_Success。
+ * @return {mstatus_t}               : 返回操作的结果。正常应返回mStatus_Success。
  */
 mstatus_t MENU_ListInsert(menu_list_t *_list, menu_itemIfce_t *_item);
 
@@ -90,5 +94,9 @@ menu_list_t *MENU_DirGetList(const char *str);
  * @retval 返回找到的菜单列表的指针。如果未找到则返回nullptr。
  */
 menu_itemIfce_t *MENU_DirGetItem(const menu_list_t *dir, const char *str);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // ! TEXTMENU_LIST_H

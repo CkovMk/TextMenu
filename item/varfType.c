@@ -4,24 +4,14 @@
 #define SYSLOG_LVL  (TEXTMENU_ITEM_LOG_LVL)
 #include <inc_syslog.h>
 
-/**
- * @brief : 浮点类型菜单项的操作句柄及操作函数。
- */
-const menu_itemAdapter_t menu_itemAdapter_varfType =
-{
-    .ItemConstruct = MENU_ItemConstruct_varfType,
-    .ItemGetData = MENU_ItemGetData_varfType,
-    .ItemSetData = MENU_ItemSetData_varfType,
-    .ItemPrintSlot = MENU_ItemPrintSlot_varfType,
-    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_varfType,
-    .ItemPrintDisp = MENU_ItemPrintDisp_varfType,
-    .ItemKeyOp = MENU_ItemKeyOp_varfType,
-};
-
 const int32_t varfAdjustLut[6] =
 { 1, 10, 100, 1000, 10000, 100000 };
 
 extern menu_t menu;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void MENU_ItemGetContent_varfType(int32_t *const v, int32_t *const e, float data)
 {
@@ -330,3 +320,21 @@ void MENU_ItemKeyOp_varfType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         --p_varfType->e;
     }
 }
+
+#ifdef __cplusplus
+}
+#endif
+
+/**
+ * @brief : 浮点类型菜单项的操作句柄及操作函数。
+ */
+const menu_itemAdapter_t menu_itemAdapter_varfType =
+{
+    .ItemConstruct = MENU_ItemConstruct_varfType,
+    .ItemGetData = MENU_ItemGetData_varfType,
+    .ItemSetData = MENU_ItemSetData_varfType,
+    .ItemPrintSlot = MENU_ItemPrintSlot_varfType,
+    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_varfType,
+    .ItemPrintDisp = MENU_ItemPrintDisp_varfType,
+    .ItemKeyOp = MENU_ItemKeyOp_varfType,
+};

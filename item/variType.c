@@ -4,24 +4,14 @@
 #define SYSLOG_LVL  (TEXTMENU_ITEM_LOG_LVL)
 #include <inc_syslog.h>
 
-/**
- * @brief : 整数类型菜单项的操作句柄及操作函数。
- */
-const menu_itemAdapter_t menu_itemAdapter_variType =
-{
-    .ItemConstruct = MENU_ItemConstruct_variType,
-    .ItemGetData = MENU_ItemGetData_variType,
-    .ItemSetData = MENU_ItemSetData_variType,
-    .ItemPrintSlot = MENU_ItemPrintSlot_variType,
-    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_variType,
-    .ItemPrintDisp = MENU_ItemPrintDisp_variType,
-    .ItemKeyOp = MENU_ItemKeyOp_variType,
-};
-
 const int32_t variAdjustLut[6] =
 { 1, 10, 100, 1000, 10000, 100000 };
 
 extern menu_t menu;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void MENU_ItemGetContent_variType(int32_t *const v, int32_t *const e, int32_t data)
 {
@@ -321,3 +311,21 @@ void MENU_ItemKeyOp_variType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         break;
     }
 }
+
+#ifdef __cplusplus
+}
+#endif
+
+/**
+ * @brief : 整数类型菜单项的操作句柄及操作函数。
+ */
+const menu_itemAdapter_t menu_itemAdapter_variType =
+{
+    .ItemConstruct = MENU_ItemConstruct_variType,
+    .ItemGetData = MENU_ItemGetData_variType,
+    .ItemSetData = MENU_ItemSetData_variType,
+    .ItemPrintSlot = MENU_ItemPrintSlot_variType,
+    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_variType,
+    .ItemPrintDisp = MENU_ItemPrintDisp_variType,
+    .ItemKeyOp = MENU_ItemKeyOp_variType,
+};

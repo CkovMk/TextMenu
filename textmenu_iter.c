@@ -12,6 +12,10 @@
 
 extern menu_t menu;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void MENU_IteratorSetup(menu_iterator_t *_iter)
 {
     SYSLOG_I("Iterator Reset.");
@@ -96,12 +100,16 @@ mstatus_t MENU_IteratorIncrease(menu_iterator_t *_iter)
         if(_iter->listNum == _iter->listQueSize ||_iter->listQue[_iter->listNum] == NULL)
         {
             SYSLOG_I("Iteration Ended.");
-            return mstatus_Fail;
+            return mStatus_Fail;
         }
         SYSLOG_D("Enter list [%s].", _iter->listQue[_iter->listNum]->nameStr);
     }
 
     SYSLOG_I("Iterator Increased");
     SYSLOG_D("Increased Position: List.Item : %4.4d.%4.4d", _iter->listNum, _iter->itemNum);
-    return mstatus_Success;
+    return mStatus_Success;
 }
+
+#ifdef __cplusplus
+}
+#endif

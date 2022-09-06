@@ -14,6 +14,10 @@
  */
 extern menu_t menu;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * ********** 菜单项操作接口 **********
  */
@@ -111,5 +115,9 @@ void MENU_ItemRequestEventCb(menu_itemIfce_t *const _item, uint32_t const _event
 }
 
 #endif // ! TEXTMENU_FEATURE_EVENTCB
+
+#ifdef __cplusplus
+}
+#endif
 
 /* @} */

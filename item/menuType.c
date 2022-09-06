@@ -4,21 +4,11 @@
 #define SYSLOG_LVL  (TEXTMENU_ITEM_LOG_LVL)
 #include <inc_syslog.h>
 
-/**
- * @brief : 跳转类型菜单项的操作句柄及操作函数。
- */
-const menu_itemAdapter_t menu_itemAdapter_menuType =
-{
-    .ItemConstruct = MENU_ItemConstruct_menuType,
-    .ItemGetData = MENU_ItemGetData_menuType,
-    .ItemSetData = MENU_ItemSetData_menuType,
-    .ItemPrintSlot = MENU_ItemPrintSlot_menuType,
-    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_menuType,
-    .ItemPrintDisp = MENU_ItemPrintDisp_menuType,
-    .ItemKeyOp = MENU_ItemKeyOp_menuType,
-};
-
 extern menu_t menu;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void MENU_ItemConstruct_menuType(menu_itemIfce_t *_item, void *_data)
 {
@@ -62,3 +52,21 @@ void MENU_ItemKeyOp_menuType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
 {
     assert(0); //should never end up here.
 }
+
+#ifdef __cplusplus
+}
+#endif
+
+/**
+ * @brief : 跳转类型菜单项的操作句柄及操作函数。
+ */
+const menu_itemAdapter_t menu_itemAdapter_menuType =
+{
+    .ItemConstruct = MENU_ItemConstruct_menuType,
+    .ItemGetData = MENU_ItemGetData_menuType,
+    .ItemSetData = MENU_ItemSetData_menuType,
+    .ItemPrintSlot = MENU_ItemPrintSlot_menuType,
+    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_menuType,
+    .ItemPrintDisp = MENU_ItemPrintDisp_menuType,
+    .ItemKeyOp = MENU_ItemKeyOp_menuType,
+};

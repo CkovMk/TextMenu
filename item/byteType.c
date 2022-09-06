@@ -4,21 +4,11 @@
 #define SYSLOG_LVL  (TEXTMENU_ITEM_LOG_LVL)
 #include <inc_syslog.h>
 
-/**
- * @brief : 整数类型菜单项的操作句柄及操作函数。
- */
-const menu_itemAdapter_t menu_itemAdapter_byteType =
-{
-    .ItemConstruct = MENU_ItemConstruct_byteType,
-    .ItemGetData = MENU_ItemGetData_byteType,
-    .ItemSetData = MENU_ItemSetData_byteType,
-    .ItemPrintSlot = MENU_ItemPrintSlot_byteType,
-    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_byteType,
-    .ItemPrintDisp = MENU_ItemPrintDisp_byteType,
-    .ItemKeyOp = MENU_ItemKeyOp_byteType,
-};
-
 extern menu_t menu;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void MENU_ItemGetContent_byteType(bool *const bits, uint8_t data)
 {
@@ -225,3 +215,21 @@ void MENU_ItemKeyOp_byteType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         break;
     }
 }
+
+#ifdef __cplusplus
+}
+#endif
+
+/**
+ * @brief : 整数类型菜单项的操作句柄及操作函数。
+ */
+const menu_itemAdapter_t menu_itemAdapter_byteType =
+{
+    .ItemConstruct = MENU_ItemConstruct_byteType,
+    .ItemGetData = MENU_ItemGetData_byteType,
+    .ItemSetData = MENU_ItemSetData_byteType,
+    .ItemPrintSlot = MENU_ItemPrintSlot_byteType,
+    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_byteType,
+    .ItemPrintDisp = MENU_ItemPrintDisp_byteType,
+    .ItemKeyOp = MENU_ItemKeyOp_byteType,
+};

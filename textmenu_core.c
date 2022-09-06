@@ -27,6 +27,10 @@ menu_t menu;
  * @ }
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void MENU_PrintDisp(void)
 {
     /** 清空缓存，准备打印 */
@@ -78,3 +82,7 @@ void MENU_KeyOp(menu_keyOp_t *const _op)
 	}
 	MENU_StatusFlagSet(menu_message_printDisp); // FIXME: flag should only be set on display chang.
 }
+
+#ifdef __cplusplus
+}
+#endif

@@ -4,21 +4,11 @@
 #define SYSLOG_LVL  (TEXTMENU_ITEM_LOG_LVL)
 #include <inc_syslog.h>
 
-/**
- * @brief : 函数类型菜单项的操作句柄及操作函数。
- */
-const menu_itemAdapter_t menu_itemAdapter_procType =
-{
-    .ItemConstruct = MENU_ItemConstruct_procType,
-    .ItemGetData = MENU_ItemGetData_procType,
-    .ItemSetData = MENU_ItemSetData_procType,
-    .ItemPrintSlot = MENU_ItemPrintSlot_procType,
-    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_procType,
-    .ItemPrintDisp = MENU_ItemPrintDisp_procType,
-    .ItemKeyOp = MENU_ItemKeyOp_procType,
-};
-
 extern menu_t menu;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void MENU_ItemConstruct_procType(menu_itemIfce_t *_item, void *_data)
 {
@@ -96,3 +86,21 @@ void MENU_ItemKeyOp_procType(menu_itemIfce_t *_item, menu_keyOp_t *const _op)
         break;
     }
 }
+
+#ifdef __cplusplus
+}
+#endif
+
+/**
+ * @brief : 函数类型菜单项的操作句柄及操作函数。
+ */
+const menu_itemAdapter_t menu_itemAdapter_procType =
+{
+    .ItemConstruct = MENU_ItemConstruct_procType,
+    .ItemGetData = MENU_ItemGetData_procType,
+    .ItemSetData = MENU_ItemSetData_procType,
+    .ItemPrintSlot = MENU_ItemPrintSlot_procType,
+    .ItemDirectKeyOp = MENU_ItemDirectKeyOp_procType,
+    .ItemPrintDisp = MENU_ItemPrintDisp_procType,
+    .ItemKeyOp = MENU_ItemKeyOp_procType,
+};

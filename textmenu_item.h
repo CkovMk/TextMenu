@@ -191,6 +191,10 @@ struct _menu_itemAdapter
  ************ 菜单项操作接口 **********
  *************************************/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief : 菜单项结构体的构造函数。
  * 该函数分配一块内存，根据传入的参数填入内容，然后返回所产生的菜单项结构体指针。
@@ -276,7 +280,9 @@ void MENU_ItemRequestEventCb(menu_itemIfce_t *const _item, uint32_t const _event
 
 #endif // ! TEXTMENU_FEATURE_EVENTCB
 
-
+#ifdef __cplusplus
+}
+#endif
 
 /* @} */
 

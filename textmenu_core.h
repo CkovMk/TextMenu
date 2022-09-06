@@ -10,7 +10,7 @@
 #include "textmenu_strbuf.h"
 
 /** @brief : 软件版本 */
-#define TEXTMENU_VERSION (CMODULE_CMODULE_MAKE_VERSION(1U, 0U, 0U))
+#define TEXTMENU_VERSION (CMODULE_MAKE_VERSION(1U, 0U, 0U))
 
 /**
  * @brief : 菜单项和菜单列表名称的最大长度为16个字符。用于定义缓存区大小。
@@ -22,9 +22,9 @@
 /*! @brief Error codes for MENU. */
 enum
 {
-    mstatus_MENU_KVDB_KeyAbsence = CMODULE_MAKE_STATUS(mStatusGroup_MENU, 10), /*!< Key provided is absent in KVDB. */
-    mstatus_MENU_KVDB_ReadError  = CMODULE_MAKE_STATUS(mStatusGroup_MENU, 11), /*!< Value read from KVDB error. */
-    mstatus_MENU_KVDB_SaveError  = CMODULE_MAKE_STATUS(mStatusGroup_MENU, 12), /*!< Value save to KVDB error. */
+    mStatus_MENU_KVDB_KeyAbsence = CMODULE_MAKE_STATUS(mStatusGroup_MENU, 10), /*!< Key provided is absent in KVDB. */
+    mStatus_MENU_KVDB_ReadError  = CMODULE_MAKE_STATUS(mStatusGroup_MENU, 11), /*!< Value read from KVDB error. */
+    mStatus_MENU_KVDB_SaveError  = CMODULE_MAKE_STATUS(mStatusGroup_MENU, 12), /*!< Value save to KVDB error. */
 };
 
 
@@ -86,6 +86,10 @@ typedef struct _menu
 
 extern menu_t menu;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void MENU_PORT_LowLevelResume(void);
 
 void MENU_PORT_LowLevelSuspend(void);
@@ -127,5 +131,9 @@ void MENU_PrintDisp(void);
  * @param  {void} undefined :
  */
 void MENU_KeyOp(menu_keyOp_t *const _op);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // ! TEXTMENU_CORE_H

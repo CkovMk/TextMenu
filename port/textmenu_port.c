@@ -14,8 +14,7 @@
 void MENU_EventService(void);
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 void TEXTMENU_SERVICE_IRQHandler(void)
@@ -32,6 +31,10 @@ void TEXTMENU_SERVICE_IRQHandler(void)
 
 extern pitmgr_t pitmgr_main;
 extern pitmgr_handle_t menu_pitHandle;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @brief 底层就绪函数。
@@ -57,6 +60,10 @@ void MENU_PORT_LowLevelSuspend(void)
     NVIC_DisableIRQ(TEXTMENU_SERVICE_IRQn);
 }
 
+#ifdef __cplusplus
+}
+#endif
+
 /* @ } */
 
 /**
@@ -67,6 +74,10 @@ void MENU_PORT_LowLevelSuspend(void)
 #include <lib_graphic.h>
 
 #include "textmenu_strbuf.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @brief 向显示设备输出画面。
@@ -86,6 +97,10 @@ void MENU_PORT_DisplayOutput(menu_strBuf_t *_buf)
     DISP_SSD1306_BufferUpload((uint8_t*) &dispBuffer);
 }
 
+#ifdef __cplusplus
+}
+#endif
+
 /* @ } */
 
 
@@ -97,23 +112,27 @@ void MENU_PORT_DisplayOutput(menu_strBuf_t *_buf)
 
 #include "easyflash.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief 通过键获取对应值的大小。
  * 
  * @param _key 想要读取的键。
  * @param _size 保存大小的指针。
- * @return mstatus_t 成功返回mstatus_Success，失败返回mstatus_Fail。
+ * @return mstatus_t 成功返回mStatus_Success，失败返回mStatus_Fail。
  */
 mstatus_t MENU_PORT_KVDB_GetSize(char const *_key, uint32_t *_size)
 {
     ef_get_env_blob(_key, NULL, 0, _size);
     if(0U == *_size)
     {
-        return mstatus_Fail;
+        return mStatus_Fail;
     }
     else
     {
-        return mstatus_Success;
+        return mStatus_Success;
     }
 }
 
@@ -123,22 +142,22 @@ mstatus_t MENU_PORT_KVDB_GetSize(char const *_key, uint32_t *_size)
  * @param _key 想要读取的键。
  * @param _data 存放读取数据的指针。
  * @param _size 提供的缓存区的大小。
- * @return mstatus_t 成功返回mstatus_Success，失败（键不存在或缓存区太小）返回mstatus_Fail。
+ * @return mstatus_t 成功返回mStatus_Success，失败（键不存在或缓存区太小）返回mStatus_Fail。
  */
 mstatus_t MENU_PORT_KVDB_ReadValue(char const *_key, void *_data , uint32_t _size)
 {
     uint32_t dataLen = ef_get_env_blob(_key, _data, _size, NULL);
     if(0U == dataLen)
     {
-        return mstatus_Fail;
+        return mStatus_Fail;
     }
     else if (dataLen > _size)
     {
-        return mstatus_Fail;
+        return mStatus_Fail;
     }
     else
     {
-        return mstatus_Success;
+        return mStatus_Success;
     }
 }
 
@@ -148,17 +167,17 @@ mstatus_t MENU_PORT_KVDB_ReadValue(char const *_key, void *_data , uint32_t _siz
  * @param _key 想要保存的键。
  * @param _data 存放保存数据的指针。
  * @param _size 保存数据的大小。
- * @return mstatus_t 成功返回mstatus_Success，失败返回mstatus_Fail。
+ * @return mstatus_t 成功返回mStatus_Success，失败返回mStatus_Fail。
  */
 mstatus_t MENU_PORT_KVDB_SaveValue(char const *_key, void const *_data, uint32_t _size)
 {
     if(0U != ef_set_env_blob(_key, _data, _size))
     {
-        return mstatus_Fail;
+        return mStatus_Fail;
     }
     else
     {
-        return mstatus_Success;
+        return mStatus_Success;
     }
 }
 
@@ -166,19 +185,23 @@ mstatus_t MENU_PORT_KVDB_SaveValue(char const *_key, void const *_data, uint32_t
  * @brief 删除键和对应值。
  * 
  * @param _key 想要删除的键。
- * @return mstatus_t 成功返回mstatus_Success，失败返回mstatus_Fail。
+ * @return mstatus_t 成功返回mStatus_Success，失败返回mStatus_Fail。
  */
 mstatus_t MENU_PORT_KVDB_DeltValue(char const *_key)
 {
     if(0U !=  ef_del_env(_key))
     {
-        return mstatus_Fail;
+        return mStatus_Fail;
     }
     else
     {
-        return mstatus_Success;
+        return mStatus_Success;
     }
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // ! TEXTMENU_USE_KVDB
 

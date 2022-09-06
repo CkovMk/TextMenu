@@ -27,6 +27,10 @@ typedef struct _menu_iterator_t
  ************ 菜单项迭代器 **********
  **************************************/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief : 初始化菜单迭代器。
  */
@@ -65,8 +69,12 @@ menu_itemIfce_t* MENU_IteratorDerefItem(menu_iterator_t *_iter);
  * @brief : 迭代器递增。
  *
  * @param  {menu_iterator_t*} _iter : 迭代器指针。
- * @return {mstatus_t}               : 成功返回mstatus_Success，如果已到达菜单结尾，则返回kStauts_Fail。
+ * @return {mstatus_t}               : 成功返回mStatus_Success，如果已到达菜单结尾，则返回kStauts_Fail。
  */
 mstatus_t MENU_IteratorIncrease(menu_iterator_t *_iter);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // ! TEXTMENU_ITER_H

@@ -13,6 +13,10 @@
 
 extern menu_t menu;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 menu_list_t *MENU_ListConstruct(const char *_nameStr, uint32_t _size, menu_list_t *_prev)
 {
     assert(_prev);
@@ -44,12 +48,12 @@ mstatus_t MENU_ListInsert(menu_list_t *_list, menu_itemIfce_t *_item)
 
     if (_list->listNum == _list->listSize)
     {
-        return mstatus_Fail;
+        return mStatus_Fail;
     }
     _list->menu[_list->listNum] = _item;
     _item->list_id = _list->listNum++;
 
-    return mstatus_Success;
+    return mStatus_Success;
 }
 
 void MENU_ListPrintDisp(menu_list_t *_list)
@@ -187,3 +191,7 @@ menu_itemIfce_t *MENU_DirGetItem(const menu_list_t *dir, const char *str)
     }
     return NULL;
 }
+
+#ifdef __cplusplus
+}
+#endif

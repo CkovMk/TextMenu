@@ -80,6 +80,10 @@
  ************ 菜单顶层操作接口 **********
  **************************************/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief : 菜单全局初始化。
  * 该函数会初始化必要的变量，创建根菜单和其他最基本的菜单列表和菜单项。
@@ -124,6 +128,10 @@ void MENU_Suspend(void);
  *          注意：调用多次MENU_Suspend()将需要调用相同次数的MENU_Resume()才能将菜单恢复至运行状态。
  */
 void MENU_Resume(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 /*! @} */
 

@@ -28,11 +28,19 @@ typedef union _menu_strBufPrintSlotCfg
 
 // index = 65535 means disable this item
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief
  *
  * @param _buf
  */
 void MENU_PORT_DisplayOutput(menu_strBuf_t *_buf);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // ! TEXTMENU_STRBUF_H
